@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import { Minus, Plus, Heart, Shield, Truck, Award } from 'lucide-react';
 import Layout from '@/components/Layout';
 import ProductCard from '@/components/ProductCard';
+import ProductReviews from '@/components/ProductReviews';
+import StarRating from '@/components/StarRating';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
+import { getProductReviews, getProductRating } from '@/data/reviews';
 import product1 from '@/assets/product-1.jpg';
 import product2 from '@/assets/product-2.jpg';
 import product3 from '@/assets/product-3.jpg';
@@ -129,6 +132,8 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
 
   const product = id ? allProducts[id] : null;
+  const reviews = id ? getProductReviews(id) : [];
+  const { average: averageRating, total: totalReviews } = id ? getProductRating(id) : { average: 0, total: 0 };
 
   if (!product) {
     return (
@@ -137,7 +142,7 @@ const ProductDetail = () => {
           <div className="text-center">
             <h1 className="font-serif text-3xl mb-4">Product Not Found</h1>
             <p className="text-muted-foreground">
-              The product you're looking for doesn't exist.
+              The product you are looking for does not exist.
             </p>
           </div>
         </section>
@@ -223,9 +228,20 @@ const ProductDetail = () => {
               <h1 className="font-serif text-3xl md:text-4xl mb-2">
                 {product.name}
               </h1>
-              <p className="text-muted-foreground italic mb-6">
+              <p className="text-muted-foreground italic mb-4">
                 {product.tagline}
               </p>
+              
+              {/* Rating Summary */}
+              {totalReviews > 0 && (
+                <div className="flex items-center gap-3 mb-6">
+                  <StarRating rating={averageRating} size={16} />
+                  <span className="text-sm text-muted-foreground">
+                    {averageRating.toFixed(1)} ({totalReviews} {totalReviews === 1 ? 'review' : 'reviews'})
+                  </span>
+                </div>
+              )}
+              
               <p className="text-2xl font-medium mb-8">
                 ₹{product.price.toLocaleString('en-IN')}
               </p>
@@ -302,6 +318,26 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Customer Reviews Section */}
+      {reviews.length > 0 && (
+        <section className="py-20 bg-background border-t border-border">
+          <div className="container mx-auto px-6 lg:px-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <ProductReviews
+                reviews={reviews}
+                averageRating={averageRating}
+                totalReviews={totalReviews}
+              />
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* You May Also Like */}
       <section className="section-padding bg-secondary">

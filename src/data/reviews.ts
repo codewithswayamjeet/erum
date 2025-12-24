@@ -1,0 +1,197 @@
+import { Review } from '@/components/ProductReviews';
+
+export const productReviews: Record<string, Review[]> = {
+  '1': [
+    {
+      id: 'r1',
+      author: 'Priya Sharma',
+      location: 'Mumbai',
+      rating: 5,
+      date: '2024-12-15',
+      title: 'Absolutely Breathtaking',
+      content: "The Celestine Solitaire exceeded all my expectations. The diamond catches light beautifully, and the craftsmanship is impeccable. My fiancée was speechless when I proposed. Worth every rupee.",
+      verified: true,
+    },
+    {
+      id: 'r2',
+      author: 'Rahul Mehta',
+      location: 'Delhi',
+      rating: 5,
+      date: '2024-11-28',
+      title: 'Perfect Engagement Ring',
+      content: "I spent months looking for the perfect ring, and ERUM delivered beyond my dreams. The attention to detail is remarkable, and the team was incredibly helpful throughout the process.",
+      verified: true,
+    },
+    {
+      id: 'r3',
+      author: 'Ananya Reddy',
+      location: 'Bangalore',
+      rating: 4,
+      date: '2024-11-10',
+      title: 'Elegant and Timeless',
+      content: "A stunning piece that has become my everyday treasure. The quality is exceptional, and it looks even more beautiful in person than in the photos. Highly recommend ERUM.",
+      verified: true,
+    },
+    {
+      id: 'r4',
+      author: 'Vikram Singh',
+      location: 'Jaipur',
+      rating: 5,
+      date: '2024-10-22',
+      title: 'Exceptional Quality',
+      content: "The level of craftsmanship is truly world-class. The diamond is certified and the setting is flawless. ERUM has earned a customer for life.",
+      verified: true,
+    },
+    {
+      id: 'r5',
+      author: 'Meera Patel',
+      location: 'Ahmedabad',
+      rating: 5,
+      date: '2024-10-05',
+      title: 'Dreams Do Come True',
+      content: "This ring represents the pinnacle of luxury jewellery. From the first consultation to the delivery, the experience was seamless. The ring itself is a masterpiece.",
+      verified: true,
+    },
+  ],
+  '2': [
+    {
+      id: 'r6',
+      author: 'Kavitha Nair',
+      location: 'Chennai',
+      rating: 5,
+      date: '2024-12-01',
+      title: 'Elegance Personified',
+      content: "The Aurora Pendant is simply divine. The diamond catches light at every angle, and the chain is the perfect length. I receive compliments every time I wear it.",
+      verified: true,
+    },
+    {
+      id: 'r7',
+      author: 'Sunita Kapoor',
+      location: 'Pune',
+      rating: 4,
+      date: '2024-11-15',
+      title: 'Beautiful Gift',
+      content: "Purchased this for my mother's birthday, and she absolutely loves it. The packaging was luxurious, and the pendant is even more stunning in person.",
+      verified: true,
+    },
+    {
+      id: 'r8',
+      author: 'Deepa Gupta',
+      location: 'Kolkata',
+      rating: 5,
+      date: '2024-10-28',
+      title: 'My Everyday Luxury',
+      content: "I wear this pendant daily and it elevates every outfit. The minimalist design is perfect for both casual and formal occasions. True ERUM quality.",
+      verified: true,
+    },
+  ],
+  '3': [
+    {
+      id: 'r9',
+      author: 'Ritu Desai',
+      location: 'Surat',
+      rating: 5,
+      date: '2024-11-20',
+      title: 'Classic and Versatile',
+      content: "These hoops are the perfect size and weight. They look expensive without being ostentatious. I've been wearing them non-stop since I received them.",
+      verified: true,
+    },
+    {
+      id: 'r10',
+      author: 'Neha Joshi',
+      location: 'Hyderabad',
+      rating: 5,
+      date: '2024-10-30',
+      title: 'Everyday Elegance',
+      content: "The Lumière Hoops have become my go-to earrings. The gold is rich and lustrous, and the click-top closure is secure. Highly recommend!",
+      verified: true,
+    },
+  ],
+  '4': [
+    {
+      id: 'r11',
+      author: 'Aisha Khan',
+      location: 'Mumbai',
+      rating: 5,
+      date: '2024-12-10',
+      title: 'Stunning Anniversary Gift',
+      content: "My husband surprised me with this bracelet for our anniversary. The diamonds sparkle magnificently, and the rose gold is such a flattering shade. Absolutely perfect.",
+      verified: true,
+    },
+    {
+      id: 'r12',
+      author: 'Lakshmi Iyer',
+      location: 'Coimbatore',
+      rating: 4,
+      date: '2024-11-05',
+      title: 'Worth the Investment',
+      content: "A truly special piece that I will treasure forever. The craftsmanship is evident in every detail. The hidden clasp is seamless and secure.",
+      verified: true,
+    },
+  ],
+  '5': [
+    {
+      id: 'r13',
+      author: 'Pooja Agarwal',
+      location: 'Delhi',
+      rating: 5,
+      date: '2024-12-08',
+      title: 'Pure Perfection',
+      content: "The Diamond Eternity ring is everything I dreamed of and more. The diamonds are perfectly matched, and the gold is substantial yet comfortable. A true heirloom piece.",
+      verified: true,
+    },
+    {
+      id: 'r14',
+      author: 'Shreya Bhat',
+      location: 'Bangalore',
+      rating: 5,
+      date: '2024-11-18',
+      title: 'Exceptional Craftsmanship',
+      content: "Each diamond is set with precision and care. This ring represents the finest in Indian jewellery making. ERUM has set a new standard.",
+      verified: true,
+    },
+    {
+      id: 'r15',
+      author: 'Tanya Verma',
+      location: 'Lucknow',
+      rating: 5,
+      date: '2024-10-15',
+      title: 'My Forever Ring',
+      content: "Upgraded my wedding band to this eternity ring, and it was the best decision. The sparkle is unreal, and it stacks beautifully with my engagement ring.",
+      verified: true,
+    },
+  ],
+  '6': [
+    {
+      id: 'r16',
+      author: 'Gauri Malhotra',
+      location: 'Chandigarh',
+      rating: 5,
+      date: '2024-12-05',
+      title: 'Elegant and Timeless',
+      content: "The Pearl Drops are the epitome of elegance. The South Sea pearls have a beautiful lustre, and the diamond accents add just the right amount of sparkle.",
+      verified: true,
+    },
+    {
+      id: 'r17',
+      author: 'Shalini Das',
+      location: 'Guwahati',
+      rating: 4,
+      date: '2024-11-12',
+      title: 'Perfect for Special Occasions',
+      content: "These earrings make me feel like royalty. They're lightweight despite their size and comfortable for hours of wear. A statement piece for sure.",
+      verified: true,
+    },
+  ],
+};
+
+export const getProductReviews = (productId: string): Review[] => {
+  return productReviews[productId] || [];
+};
+
+export const getProductRating = (productId: string): { average: number; total: number } => {
+  const reviews = getProductReviews(productId);
+  if (reviews.length === 0) return { average: 0, total: 0 };
+  const average = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+  return { average, total: reviews.length };
+};
