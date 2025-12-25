@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingBag, Search, Heart, User, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search, Heart, User, LogOut, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -87,6 +87,9 @@ const Header = () => {
 
               {user ? (
                 <div className="hidden sm:flex items-center gap-2">
+                  <Link to="/orders" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Order History">
+                    <Package className="h-5 w-5" />
+                  </Link>
                   {isAdmin && (
                     <Link to="/admin" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Admin">
                       <User className="h-5 w-5" />
