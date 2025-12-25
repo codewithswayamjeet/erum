@@ -71,7 +71,7 @@ const Admin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'shopify'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -293,7 +293,7 @@ const Admin = () => {
                 onClick={() => setActiveTab('products')}
                 className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'products' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
               >
-                <Package className="w-4 h-4" /> Products ({products.length})
+                <Package className="w-4 h-4" /> All Products ({products.length + shopifyProducts.length})
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
@@ -301,78 +301,119 @@ const Admin = () => {
               >
                 <ShoppingBag className="w-4 h-4" /> Orders ({orders.length})
               </button>
-              <button
-                onClick={() => setActiveTab('shopify')}
-                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'shopify' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
-              >
-                <Store className="w-4 h-4" /> Shopify ({shopifyProducts.length})
-              </button>
             </div>
 
-            {/* Products Tab */}
+            {/* Unified Products Tab */}
             {activeTab === 'products' && (
-              <div className="bg-secondary border border-border overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-foreground/5 border-b border-border">
-                      <tr>
-                        <th className="text-left p-4 font-medium">Product</th>
-                        <th className="text-left p-4 font-medium">Category</th>
-                        <th className="text-left p-4 font-medium">Price</th>
-                        <th className="text-left p-4 font-medium">Stock</th>
-                        <th className="text-left p-4 font-medium">Status</th>
-                        <th className="text-right p-4 font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {isLoading ? (
-                        <tr><td colSpan={6} className="p-8 text-center">Loading...</td></tr>
-                      ) : products.length === 0 ? (
-                        <tr>
-                          <td colSpan={6} className="p-8 text-center text-muted-foreground">
-                            <Package className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                            <p>No products yet. Add your first product.</p>
-                          </td>
-                        </tr>
-                      ) : (
-                        products.map((product) => (
-                          <tr key={product.id} className="border-b border-border last:border-0 hover:bg-foreground/5">
-                            <td className="p-4">
-                              <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-background overflow-hidden">
-                                  {product.images[0] ? (
-                                    <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center"><ImageIcon className="w-6 h-6 text-muted-foreground" /></div>
-                                  )}
-                                </div>
-                                <div>
-                                  <p className="font-medium">{product.name}</p>
-                                  <p className="text-sm text-muted-foreground">{product.slug}</p>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="p-4 text-muted-foreground">{product.category}</td>
-                            <td className="p-4">₹{Number(product.price).toLocaleString('en-IN')}</td>
-                            <td className="p-4">{product.stock}</td>
-                            <td className="p-4">
-                              <div className="flex gap-2">
-                                {product.is_featured && <span className="px-2 py-1 bg-primary/10 text-primary text-xs">Featured</span>}
-                                {product.is_bestseller && <span className="px-2 py-1 bg-green-500/10 text-green-600 text-xs">Bestseller</span>}
-                              </div>
-                            </td>
-                            <td className="p-4">
-                              <div className="flex items-center justify-end gap-2">
-                                <button onClick={() => openModal(product)} className="p-2 hover:bg-foreground/10 transition-colors"><Pencil className="w-4 h-4" /></button>
-                                <button onClick={() => handleDelete(product)} className="p-2 hover:bg-destructive/10 hover:text-destructive transition-colors"><Trash2 className="w-4 h-4" /></button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+              <div className="space-y-6">
+                {/* Shopify Connection Info */}
+                <div className="bg-primary/5 border border-primary/20 p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Store className="w-5 h-5 text-primary" />
+                    <span className="text-sm">Connected to Shopify: <strong>s1z5t0-ia.myshopify.com</strong></span>
+                    <span className="px-2 py-0.5 bg-green-500/10 text-green-600 text-xs rounded-full">Synced</span>
+                  </div>
+                  <a 
+                    href="https://admin.shopify.com/store/s1z5t0-ia" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Open Shopify Admin →
+                  </a>
                 </div>
+
+                {/* Unified Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {/* Shopify Products */}
+                  {shopifyLoading ? (
+                    [...Array(4)].map((_, i) => (
+                      <div key={`loading-${i}`} className="animate-pulse bg-secondary border border-border p-4">
+                        <div className="aspect-square bg-muted mb-3" />
+                        <div className="h-4 bg-muted w-3/4 mb-2" />
+                        <div className="h-4 bg-muted w-1/2" />
+                      </div>
+                    ))
+                  ) : (
+                    shopifyProducts.map((product) => (
+                      <div key={product.node.id} className="bg-secondary border border-border p-4 group">
+                        <div className="aspect-square bg-background mb-3 overflow-hidden relative">
+                          {product.node.images.edges[0] ? (
+                            <img 
+                              src={product.node.images.edges[0].node.url} 
+                              alt={product.node.title}
+                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                          )}
+                          <span className="absolute top-2 left-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded">
+                            Shopify
+                          </span>
+                        </div>
+                        <h4 className="font-medium truncate">{product.node.title}</h4>
+                        <p className="text-primary font-medium">
+                          ${parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(2)}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">{product.node.handle}</p>
+                      </div>
+                    ))
+                  )}
+
+                  {/* Local Products */}
+                  {isLoading ? (
+                    [...Array(4)].map((_, i) => (
+                      <div key={`local-loading-${i}`} className="animate-pulse bg-secondary border border-border p-4">
+                        <div className="aspect-square bg-muted mb-3" />
+                        <div className="h-4 bg-muted w-3/4 mb-2" />
+                        <div className="h-4 bg-muted w-1/2" />
+                      </div>
+                    ))
+                  ) : (
+                    products.map((product) => (
+                      <div key={product.id} className="bg-secondary border border-border p-4 group relative">
+                        <div className="aspect-square bg-background mb-3 overflow-hidden relative">
+                          {product.images[0] ? (
+                            <img 
+                              src={product.images[0]} 
+                              alt={product.name}
+                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                          )}
+                          <span className="absolute top-2 left-2 px-2 py-0.5 bg-primary text-primary-foreground text-xs rounded">
+                            Local
+                          </span>
+                        </div>
+                        <h4 className="font-medium truncate">{product.name}</h4>
+                        <p className="text-primary font-medium">₹{Number(product.price).toLocaleString('en-IN')}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{product.category}</p>
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                          <button onClick={() => openModal(product)} className="p-1.5 bg-background border border-border hover:bg-secondary">
+                            <Pencil className="w-3 h-3" />
+                          </button>
+                          <button onClick={() => handleDelete(product)} className="p-1.5 bg-background border border-border hover:bg-destructive/10 hover:text-destructive">
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                {/* Empty state */}
+                {!isLoading && !shopifyLoading && products.length === 0 && shopifyProducts.length === 0 && (
+                  <div className="text-center py-12 bg-secondary border border-border">
+                    <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <h4 className="font-medium mb-2">No Products</h4>
+                    <p className="text-muted-foreground text-sm">Add products via the button above or through Shopify Admin.</p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -428,105 +469,6 @@ const Admin = () => {
               </div>
             )}
 
-            {/* Shopify Tab */}
-            {activeTab === 'shopify' && (
-              <div className="space-y-6">
-                <div className="bg-primary/5 border border-primary/20 p-6 rounded-lg">
-                  <div className="flex items-start gap-4">
-                    <Store className="w-8 h-8 text-primary flex-shrink-0" />
-                    <div>
-                      <h3 className="font-serif text-lg mb-2">Shopify Integration Active</h3>
-                      <p className="text-muted-foreground text-sm mb-4">
-                        Your store is connected to Shopify. Products added via Shopify are displayed separately from your local database products.
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-                          Store: s1z5t0-ia.myshopify.com
-                        </span>
-                        <span className="px-3 py-1 bg-green-500/10 text-green-600 text-sm rounded-full">
-                          Connected
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-secondary border border-border p-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-medium">Shopify Products</h3>
-                    <button 
-                      onClick={() => window.location.reload()}
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <RefreshCw className="w-4 h-4" /> Refresh
-                    </button>
-                  </div>
-
-                  {shopifyLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {[...Array(6)].map((_, i) => (
-                        <div key={i} className="animate-pulse">
-                          <div className="aspect-square bg-muted mb-2" />
-                          <div className="h-4 bg-muted w-3/4 mb-1" />
-                          <div className="h-4 bg-muted w-1/2" />
-                        </div>
-                      ))}
-                    </div>
-                  ) : shopifyProducts.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                      <h4 className="font-medium mb-2">No Shopify Products</h4>
-                      <p className="text-muted-foreground text-sm mb-4">
-                        Your Shopify store doesn't have any products yet.
-                      </p>
-                      <p className="text-sm text-primary">
-                        To add products, use the chat to tell me what products you'd like to create!
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {shopifyProducts.map((product) => (
-                        <div key={product.node.id} className="bg-background border border-border p-4">
-                          <div className="aspect-square bg-muted mb-3 overflow-hidden">
-                            {product.node.images.edges[0] ? (
-                              <img 
-                                src={product.node.images.edges[0].node.url} 
-                                alt={product.node.title}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <ImageIcon className="w-8 h-8 text-muted-foreground" />
-                              </div>
-                            )}
-                          </div>
-                          <h4 className="font-medium truncate">{product.node.title}</h4>
-                          <p className="text-primary font-medium">
-                            {product.node.priceRange.minVariantPrice.currencyCode} {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(2)}
-                          </p>
-                          <p className="text-xs text-muted-foreground mt-1 truncate">
-                            {product.node.handle}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="bg-muted/50 border border-border p-6 rounded-lg">
-                  <h4 className="font-medium mb-3">Quick Actions</h4>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Use the chat to manage your Shopify products. Here are some examples:
-                  </p>
-                  <ul className="text-sm space-y-2 text-muted-foreground">
-                    <li>• "Create a diamond ring product priced at ₹50,000"</li>
-                    <li>• "Add a gold necklace with description and images"</li>
-                    <li>• "Update the price of [product name]"</li>
-                    <li>• "Delete [product name] from Shopify"</li>
-                  </ul>
-                </div>
-              </div>
-            )}
           </motion.div>
         </div>
       </section>
