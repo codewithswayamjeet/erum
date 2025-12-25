@@ -4,6 +4,7 @@ import { Diamond, Shield, Truck, Award } from 'lucide-react';
 import Layout from '@/components/Layout';
 import ProductCard from '@/components/ProductCard';
 import CollectionCard from '@/components/CollectionCard';
+import ShopifyProductGrid from '@/components/ShopifyProductGrid';
 import { useProducts } from '@/hooks/useProducts';
 import heroImage from '@/assets/hero-jewellery.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
@@ -120,6 +121,13 @@ const Index = () => {
           )}
         </div>
       </section>
+
+      {/* Shopify Products Section */}
+      <ShopifyProductGrid 
+        title="Shop Our Collection"
+        subtitle="Powered by Shopify"
+        limit={8}
+      />
 
       {/* Trust & Craftsmanship */}
       <section className="section-padding bg-foreground text-background">
