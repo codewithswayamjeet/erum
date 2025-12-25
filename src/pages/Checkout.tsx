@@ -7,6 +7,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
@@ -14,6 +15,7 @@ const Checkout = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', city: '', state: '', pincode: '', cardNumber: '', expiry: '', cvv: '' });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !user && cartItems.length > 0) {
@@ -23,11 +25,46 @@ const Checkout = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
+    
+    setSubmitting(true);
+
+    const orderData = {
+      user_id: user.id,
+      customer_name: `${formData.firstName} ${formData.lastName}`,
+      customer_email: formData.email || user.email,
+      customer_phone: formData.phone,
+      shipping_address: formData.address,
+      shipping_city: formData.city,
+      shipping_state: formData.state,
+      shipping_pincode: formData.pincode,
+      items: cartItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+      })),
+      subtotal: cartTotal,
+      total: cartTotal,
+      status: 'pending',
+      payment_status: 'pending',
+    };
+
+    const { error } = await supabase.from('orders').insert([orderData]);
+
+    if (error) {
+      toast({ title: 'Order Failed', description: 'There was an error placing your order. Please try again.', variant: 'destructive' });
+      setSubmitting(false);
+      return;
+    }
+
     toast({ title: 'Order Placed Successfully', description: 'Thank you for your purchase. You will receive a confirmation email shortly.' });
     clearCart();
     navigate('/');
+    setSubmitting(false);
   };
 
   if (cartItems.length === 0) {
@@ -68,7 +105,9 @@ const Checkout = () => {
                   <input name="cvv" value={formData.cvv} onChange={handleChange} required placeholder="CVV" className="px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none" />
                 </div>
               </div>
-              <button type="submit" className="btn-luxury-primary w-full flex items-center justify-center gap-2"><Lock className="w-4 h-4" /> Place Order Securely</button>
+              <button type="submit" disabled={submitting} className="btn-luxury-primary w-full flex items-center justify-center gap-2 disabled:opacity-50">
+                <Lock className="w-4 h-4" /> {submitting ? 'Placing Order...' : 'Place Order Securely'}
+              </button>
               <p className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2"><Shield className="w-4 h-4" /> Your payment is encrypted and secure</p>
             </form>
             <div>
