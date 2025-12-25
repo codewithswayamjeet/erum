@@ -2,10 +2,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Diamond, Shield, Truck, Award } from 'lucide-react';
 import Layout from '@/components/Layout';
-import ProductCard from '@/components/ProductCard';
 import CollectionCard from '@/components/CollectionCard';
-import ShopifyProductGrid from '@/components/ShopifyProductGrid';
-import { useProducts } from '@/hooks/useProducts';
+import UnifiedProductGrid from '@/components/UnifiedProductGrid';
 import heroImage from '@/assets/hero-jewellery.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
 import collectionNecklaces from '@/assets/collection-necklaces.jpg';
@@ -13,7 +11,6 @@ import collectionEarrings from '@/assets/collection-earrings.jpg';
 import collectionBracelets from '@/assets/collection-bracelets.jpg';
 
 const Index = () => {
-  const { products: featuredProducts, isLoading } = useProducts({ bestseller: true });
 
   const collections = [
     { title: 'Rings', description: 'Symbols of eternal love and commitment', image: collectionRings, href: '/collections/rings' },
@@ -92,41 +89,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Signature Pieces */}
-      <section className="section-padding bg-background">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
-            <div>
-              <p className="text-sm tracking-luxury uppercase text-muted-foreground mb-4">Signature Pieces</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl">Our <span className="italic">Bestsellers</span></h2>
-            </div>
-            <Link to="/collections" className="luxury-link text-sm font-medium tracking-luxury uppercase">View All Products</Link>
-          </motion.div>
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="aspect-square bg-secondary mb-4" />
-                  <div className="h-4 bg-secondary mb-2 mx-auto w-32" />
-                  <div className="h-4 bg-secondary mx-auto w-24" />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-              {featuredProducts.slice(0, 6).map((product) => (
-                <ProductCard key={product.id} id={product.id} name={product.name} price={Number(product.price)} image={product.images[0] || '/placeholder.svg'} category={product.category} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Shopify Products Section */}
-      <ShopifyProductGrid 
-        title="Shop Our Collection"
-        subtitle="Powered by Shopify"
-        limit={8}
+      {/* Unified Products - From Shopify & Local */}
+      <UnifiedProductGrid 
+        title="Our Collection"
+        subtitle="Shop All Products"
+        limit={12}
+        showSource={false}
       />
 
       {/* Trust & Craftsmanship */}
