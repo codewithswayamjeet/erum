@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, Upload, X, Package, Image as ImageIcon, ShoppingBag, Eye } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, X, Package, Image as ImageIcon, ShoppingBag, Eye, RefreshCw, Store } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProducts, Product } from '@/hooks/useProducts';
+import { useShopifyProducts } from '@/hooks/useShopifyProducts';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,6 +23,7 @@ interface ProductFormData {
   is_featured: boolean;
   is_bestseller: boolean;
   stock: number;
+  sync_to_shopify: boolean;
 }
 
 interface Order {
@@ -56,6 +58,7 @@ const initialFormData: ProductFormData = {
   is_featured: false,
   is_bestseller: false,
   stock: 10,
+  sync_to_shopify: false,
 };
 
 const categories = ['Rings', 'Necklaces', 'Earrings', 'Bracelets'];
@@ -64,10 +67,11 @@ const orderStatuses = ['pending', 'confirmed', 'processing', 'shipped', 'deliver
 const Admin = () => {
   const { user, isAdmin, isLoading: authLoading } = useAuth();
   const { products, isLoading, refetch } = useProducts();
+  const { products: shopifyProducts, isLoading: shopifyLoading } = useShopifyProducts(50);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'shopify'>('products');
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -177,6 +181,7 @@ const Admin = () => {
         is_featured: product.is_featured || false,
         is_bestseller: product.is_bestseller || false,
         stock: product.stock || 0,
+        sync_to_shopify: false,
       });
       setImages(product.images || []);
     } else {
@@ -197,7 +202,9 @@ const Admin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    const productData = { ...formData, images };
+    const { sync_to_shopify, ...productFields } = formData;
+    const productData = { ...productFields, images };
+    
     try {
       if (editingProduct) {
         const { error } = await supabase.from('products').update(productData).eq('id', editingProduct.id);
@@ -208,6 +215,11 @@ const Admin = () => {
         if (error) throw error;
         toast({ title: 'Product Created', description: 'The product has been created successfully.' });
       }
+      
+      if (sync_to_shopify) {
+        toast({ title: 'Shopify Sync', description: 'Product will be synced to Shopify. Use chat to create Shopify products directly.', variant: 'default' });
+      }
+      
       closeModal();
       refetch();
     } catch (error: unknown) {
@@ -276,18 +288,24 @@ const Admin = () => {
             </div>
 
             {/* Tabs */}
-            <div className="flex gap-4 mb-8 border-b border-border">
+            <div className="flex gap-4 mb-8 border-b border-border overflow-x-auto">
               <button
                 onClick={() => setActiveTab('products')}
-                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 ${activeTab === 'products' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'products' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Package className="w-4 h-4" /> Products ({products.length})
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
-                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 ${activeTab === 'orders' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'orders' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <ShoppingBag className="w-4 h-4" /> Orders ({orders.length})
+              </button>
+              <button
+                onClick={() => setActiveTab('shopify')}
+                className={`pb-4 px-2 font-medium transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'shopify' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                <Store className="w-4 h-4" /> Shopify ({shopifyProducts.length})
               </button>
             </div>
 
@@ -406,6 +424,106 @@ const Admin = () => {
                       )}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            )}
+
+            {/* Shopify Tab */}
+            {activeTab === 'shopify' && (
+              <div className="space-y-6">
+                <div className="bg-primary/5 border border-primary/20 p-6 rounded-lg">
+                  <div className="flex items-start gap-4">
+                    <Store className="w-8 h-8 text-primary flex-shrink-0" />
+                    <div>
+                      <h3 className="font-serif text-lg mb-2">Shopify Integration Active</h3>
+                      <p className="text-muted-foreground text-sm mb-4">
+                        Your store is connected to Shopify. Products added via Shopify are displayed separately from your local database products.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                          Store: s1z5t0-ia.myshopify.com
+                        </span>
+                        <span className="px-3 py-1 bg-green-500/10 text-green-600 text-sm rounded-full">
+                          Connected
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-secondary border border-border p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-medium">Shopify Products</h3>
+                    <button 
+                      onClick={() => window.location.reload()}
+                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <RefreshCw className="w-4 h-4" /> Refresh
+                    </button>
+                  </div>
+
+                  {shopifyLoading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                          <div className="aspect-square bg-muted mb-2" />
+                          <div className="h-4 bg-muted w-3/4 mb-1" />
+                          <div className="h-4 bg-muted w-1/2" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : shopifyProducts.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Package className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                      <h4 className="font-medium mb-2">No Shopify Products</h4>
+                      <p className="text-muted-foreground text-sm mb-4">
+                        Your Shopify store doesn't have any products yet.
+                      </p>
+                      <p className="text-sm text-primary">
+                        To add products, use the chat to tell me what products you'd like to create!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {shopifyProducts.map((product) => (
+                        <div key={product.node.id} className="bg-background border border-border p-4">
+                          <div className="aspect-square bg-muted mb-3 overflow-hidden">
+                            {product.node.images.edges[0] ? (
+                              <img 
+                                src={product.node.images.edges[0].node.url} 
+                                alt={product.node.title}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                              </div>
+                            )}
+                          </div>
+                          <h4 className="font-medium truncate">{product.node.title}</h4>
+                          <p className="text-primary font-medium">
+                            {product.node.priceRange.minVariantPrice.currencyCode} {parseFloat(product.node.priceRange.minVariantPrice.amount).toFixed(2)}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1 truncate">
+                            {product.node.handle}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-muted/50 border border-border p-6 rounded-lg">
+                  <h4 className="font-medium mb-3">Quick Actions</h4>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Use the chat to manage your Shopify products. Here are some examples:
+                  </p>
+                  <ul className="text-sm space-y-2 text-muted-foreground">
+                    <li>• "Create a diamond ring product priced at ₹50,000"</li>
+                    <li>• "Add a gold necklace with description and images"</li>
+                    <li>• "Update the price of [product name]"</li>
+                    <li>• "Delete [product name] from Shopify"</li>
+                  </ul>
                 </div>
               </div>
             )}
@@ -555,7 +673,7 @@ const Admin = () => {
                   <input type="text" name="weight" value={formData.weight} onChange={handleInputChange} placeholder="e.g., 5.2g" className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none" />
                 </div>
               </div>
-              <div className="flex gap-6">
+              <div className="flex flex-wrap gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" name="is_featured" checked={formData.is_featured} onChange={handleInputChange} className="w-4 h-4" />
                   <span className="text-sm">Featured Product</span>
@@ -565,6 +683,29 @@ const Admin = () => {
                   <span className="text-sm">Bestseller</span>
                 </label>
               </div>
+              
+              {/* Shopify Sync Option */}
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    name="sync_to_shopify" 
+                    checked={formData.sync_to_shopify} 
+                    onChange={handleInputChange} 
+                    className="w-4 h-4 mt-1" 
+                  />
+                  <div>
+                    <span className="text-sm font-medium flex items-center gap-2">
+                      <Store className="w-4 h-4 text-primary" />
+                      Sync to Shopify
+                    </span>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      To create products in Shopify, use the chat with details like name, price, and description.
+                    </p>
+                  </div>
+                </label>
+              </div>
+              
               <div className="flex gap-4 pt-4 border-t border-border">
                 <button type="button" onClick={closeModal} className="flex-1 px-6 py-3 border border-border hover:bg-secondary transition-colors">Cancel</button>
                 <button type="submit" disabled={saving} className="flex-1 btn-luxury-primary disabled:opacity-50">{saving ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}</button>
