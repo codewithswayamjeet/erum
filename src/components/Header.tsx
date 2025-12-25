@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useShopifyCartStore } from '@/stores/shopifyCartStore';
+import { ShopifyCartDrawer } from '@/components/ShopifyCartDrawer';
 import erumLogo from '@/assets/erum-logo.jpg';
 
 const Header = () => {
@@ -15,6 +17,8 @@ const Header = () => {
   const { cartItems } = useCart();
   const { user, isAdmin, signOut } = useAuth();
   const { wishlistIds } = useWishlist();
+  const shopifyCartItems = useShopifyCartStore(state => state.items);
+  const shopifyCartCount = shopifyCartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -80,10 +84,12 @@ const Header = () => {
               
               <Link to="/cart" className="relative p-2 text-foreground hover:text-primary transition-colors" aria-label="Shopping cart">
                 <ShoppingBag className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{cartItemCount}</span>
+                {(cartItemCount + shopifyCartCount) > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{cartItemCount + shopifyCartCount}</span>
                 )}
               </Link>
+              
+              <ShopifyCartDrawer />
 
               {user ? (
                 <div className="hidden sm:flex items-center gap-2">

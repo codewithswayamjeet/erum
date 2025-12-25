@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
+import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Auth from "./pages/Auth";
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path="/collections" element={<Collection />} />
                 <Route path="/collections/:category" element={<Collection />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/auth" element={<Auth />} />
