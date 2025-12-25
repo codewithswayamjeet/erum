@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
+  const { user, isLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', address: '', city: '', state: '', pincode: '', cardNumber: '', expiry: '', cvv: '' });
+
+  useEffect(() => {
+    if (!isLoading && !user && cartItems.length > 0) {
+      navigate('/auth?redirect=/checkout');
+    }
+  }, [user, isLoading, cartItems.length, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -23,6 +32,10 @@ const Checkout = () => {
 
   if (cartItems.length === 0) {
     return <Layout><section className="pt-32 pb-20 min-h-[70vh] flex items-center justify-center"><p>Your cart is empty.</p></section></Layout>;
+  }
+
+  if (!user) {
+    return <Layout><section className="pt-32 pb-20 min-h-[70vh] flex items-center justify-center flex-col gap-4"><p>Please sign in to checkout</p><Link to="/auth?redirect=/checkout" className="btn-luxury-primary">Sign In</Link></section></Layout>;
   }
 
   return (
