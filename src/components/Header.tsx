@@ -70,7 +70,7 @@ const Header = () => {
             </button>
 
             <Link to="/" className="flex-shrink-0">
-              <img alt="ERUM - The Jewellery Studio" className="h-12 md:h-14 w-auto object-contain" src="/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" />
+              <img alt="ERUM - The Jewellery Studio" src="/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" className="h-12 md:h-14 w-auto border-none object-fill shadow-lg opacity-100 rounded-none" />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-8">
