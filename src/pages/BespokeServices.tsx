@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import bespokeHeroVideo from '@/assets/bespoke-hero-video.mp4';
 
 const BespokeServices = () => {
   const { toast } = useToast();
@@ -68,31 +69,152 @@ const BespokeServices = () => {
     'Flexible payment plans available',
   ];
 
+  // Floating diamond animation - using inline animate prop instead of variants
+  const floatingAnimation = {
+    y: [-10, 10, -10],
+    rotate: [0, 5, -5, 0],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut" as const
+    }
+  };
+
+  const sparkleAnimation = {
+    scale: [1, 1.2, 1],
+    opacity: [0.3, 0.8, 0.3],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut" as const
+    }
+  };
+
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-secondary to-background overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,hsl(var(--primary)/0.08)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,hsl(var(--primary)/0.05)_0%,transparent_50%)]" />
+      {/* Hero Section with Video Background */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={bespokeHeroVideo} type="video/mp4" />
+          </video>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-foreground/60" />
+        </div>
+
+        {/* Animated decorative elements */}
+        <motion.div
+          animate={floatingAnimation}
+          className="absolute top-20 left-[10%] z-10 hidden md:block"
+        >
+          <Diamond className="h-8 w-8 text-primary/40" />
+        </motion.div>
+        <motion.div
+          animate={floatingAnimation}
+          className="absolute top-40 right-[15%] z-10 hidden md:block"
+        >
+          <Gem className="h-6 w-6 text-primary/30" />
+        </motion.div>
+        <motion.div
+          animate={sparkleAnimation}
+          className="absolute bottom-32 left-[20%] z-10 hidden md:block"
+        >
+          <Sparkles className="h-10 w-10 text-primary/50" />
+        </motion.div>
+        <motion.div
+          animate={sparkleAnimation}
+          className="absolute top-1/3 right-[8%] z-10 hidden md:block"
+        >
+          <Sparkles className="h-6 w-6 text-primary/40" />
+        </motion.div>
         
+        {/* Content */}
         <div className="container mx-auto px-6 lg:px-12 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <span className="text-xs tracking-luxury uppercase text-primary mb-4 block">Bespoke Services</span>
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-6">
-              Your Vision,<br />Our Masterpiece
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg mb-8">
+            <motion.span 
+              initial={{ opacity: 0, letterSpacing: '0.1em' }}
+              animate={{ opacity: 1, letterSpacing: '0.3em' }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="text-xs tracking-luxury uppercase text-primary mb-6 block"
+            >
+              Bespoke Services
+            </motion.span>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="font-serif text-4xl md:text-6xl lg:text-7xl mb-6 text-background"
+            >
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
+              >
+                Your Vision,
+              </motion.span>
+              <br />
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.1 }}
+              >
+                Our Masterpiece
+              </motion.span>
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.3 }}
+              className="text-background/80 max-w-2xl mx-auto text-lg mb-10"
+            >
               Create a piece as unique as your story. Our bespoke service transforms your dreams into 
               handcrafted jewelry of extraordinary beauty and lasting significance.
-            </p>
-            <Button size="lg" className="tracking-wider uppercase text-xs" onClick={() => document.getElementById('consultation-form')?.scrollIntoView({ behavior: 'smooth' })}>
-              Begin Your Journey
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 1.5 }}
+            >
+              <Button 
+                size="lg" 
+                className="tracking-wider uppercase text-xs bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6" 
+                onClick={() => document.getElementById('consultation-form')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                Begin Your Journey
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 0.5 }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="flex flex-col items-center gap-2"
+            >
+              <span className="text-xs text-background/60 tracking-widest uppercase">Scroll</span>
+              <div className="w-px h-8 bg-gradient-to-b from-primary to-transparent" />
+            </motion.div>
           </motion.div>
         </div>
       </section>
