@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
 import MeetTheDesigner from "./pages/MeetTheDesigner";
+import BespokeServices from "./pages/BespokeServices";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Auth from "./pages/Auth";
@@ -44,6 +45,7 @@ const App = () => (
                 <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />
                 <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
+                <Route path="/bespoke-services" element={<BespokeServices />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/auth" element={<Auth />} />
