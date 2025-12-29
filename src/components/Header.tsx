@@ -84,8 +84,8 @@ const Header = () => {
   };
 
   const simpleLinks = [
-    { name: 'Hip Hop Jewelry', href: '/collections/hip-hop' },
-    { name: 'Bespoke Services', href: '/contact?service=bespoke' },
+    { name: 'Hip Hop Jewelry', href: '/hip-hop-jewelry' },
+    { name: 'Bespoke Services', href: '/bespoke-services' },
   ];
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -97,7 +97,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background/95 backdrop-blur-md ${isScrolled ? 'shadow-sm py-3' : 'py-4'}`}>
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between">
             {/* Mobile Menu Button */}
