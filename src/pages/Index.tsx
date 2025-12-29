@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
 import AffiliationsSection from '@/components/AffiliationsSection';
-import heroImage from '@/assets/hero-jewellery.jpg';
+import heroImage from '@/assets/hero-model-jewelry.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
 import collectionNecklaces from '@/assets/collection-necklaces.jpg';
 import collectionEarrings from '@/assets/collection-earrings.jpg';
