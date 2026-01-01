@@ -176,18 +176,18 @@ const About = () => {
               Our Commitment
             </p>
             <h2 className="font-serif text-3xl md:text-4xl text-background mb-8">
-              Ethical <span className="italic">Responsibility</span>
+              Natural Diamonds, <span className="italic">Ethical Sourcing</span>
             </h2>
             <p className="text-background/80 leading-relaxed mb-8">
-              We believe that true beauty carries responsibility. Every diamond we 
+              We believe that true beauty carries responsibility. Every natural diamond we 
               source is conflict-free and certified by internationally recognized 
-              laboratories. Our precious metals are responsibly sourced, and we 
+              laboratories including GIA and IGI. Our precious metals are responsibly sourced, and we 
               continuously strive to minimize our environmental footprint.
             </p>
             <p className="text-background/80 leading-relaxed">
-              When you choose ERUM, you choose jewellery that honours both artistry 
-              and ethics—pieces you can wear with pride, knowing they reflect values 
-              as beautiful as their design.
+              When you choose ERUM, you choose jewellery crafted exclusively with natural diamonds— 
+              pieces you can wear with pride, knowing they represent both exceptional quality 
+              and ethical values as beautiful as their design.
             </p>
           </motion.div>
         </div>

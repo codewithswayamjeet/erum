@@ -125,7 +125,7 @@ const MeetTheDesigner = () => {
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Today, each ERUM creation is a testament to Ali's unwavering commitment to excellence. 
                 He personally oversees every stage of production, from selecting the finest GIA and 
-                IGI certified diamonds to the final polish. His hands-on approach ensures that every 
+                IGI certified natural diamonds to the final polish. His hands-on approach ensures that every 
                 piece meets the exacting standards that have become synonymous with the ERUM name.
               </p>
 
@@ -206,7 +206,7 @@ const MeetTheDesigner = () => {
               <div className="space-y-6">
                 <div className="border-l-2 border-primary pl-6">
                   <h3 className="font-serif text-xl mb-2">Stone Selection</h3>
-                  <p className="text-muted-foreground">Each diamond is personally selected for its exceptional cut, clarity, and brilliance. Only GIA/IGI certified stones make the cut.</p>
+                  <p className="text-muted-foreground">Each natural diamond is personally selected for its exceptional cut, clarity, and brilliance. Only GIA/IGI certified stones make the cut.</p>
                 </div>
                 
                 <div className="border-l-2 border-primary pl-6">
