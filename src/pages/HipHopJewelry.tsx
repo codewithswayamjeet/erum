@@ -33,10 +33,10 @@ const HipHopJewelry = () => {
   ];
 
   const features = [
-    { title: 'VVS Clarity', description: 'Only the clearest diamonds' },
+    { title: 'VVS Clarity', description: 'Only the clearest natural diamonds' },
     { title: 'Solid Gold', description: '14K-24K pure gold options' },
     { title: 'Custom Designs', description: 'Your vision, our craft' },
-    { title: 'Lab Certified', description: 'GIA/IGI authenticity' },
+    { title: 'GIA/IGI Certified', description: 'Natural diamond authenticity' },
   ];
 
   return (
@@ -82,7 +82,7 @@ const HipHopJewelry = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-background/70 text-xl md:text-2xl font-light tracking-wide mb-10 max-w-2xl mx-auto"
             >
-              Drip Different. Real Diamonds. Real Gold. Real Statement.
+              Drip Different. Natural Diamonds. Real Gold. Real Statement.
             </motion.p>
             
             <motion.div 

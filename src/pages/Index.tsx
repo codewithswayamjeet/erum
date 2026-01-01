@@ -21,7 +21,7 @@ const Index = () => {
   ];
 
   const brandPromises = [
-    { icon: Diamond, title: 'GIA/IGI Certified', description: 'Every diamond certified by world-renowned laboratories' },
+    { icon: Diamond, title: 'GIA/IGI Certified', description: 'Every natural diamond certified by world-renowned laboratories' },
     { icon: Shield, title: 'Complete Transparency', description: 'Full disclosure on sourcing and pricing' },
     { icon: RefreshCw, title: 'Easy Exchange', description: 'Hassle-free exchange policy for your peace of mind' },
     { icon: Award, title: 'Guaranteed Buyback', description: 'We stand behind every piece we create' },

@@ -30,40 +30,34 @@ const BespokeServices = () => {
   const processSteps = [
     {
       step: '01',
-      title: 'Discovery Consultation',
-      description: 'Begin your journey with a private consultation where we explore your vision, preferences, and the story you wish to tell through your piece.',
+      title: 'Inquiry',
+      description: 'Begin your journey by sharing a sketch, photograph, heirloom, or a simple description. No detail is too small.',
       icon: Sparkles,
     },
     {
       step: '02',
-      title: 'Design & Sketching',
-      description: 'Our master designers translate your vision into detailed sketches and 3D renderings, refining every element until perfection.',
+      title: 'Design & Quote',
+      description: 'Our team will get back to you with a concept design and an estimated quote for your review and approval.',
       icon: Diamond,
     },
     {
       step: '03',
-      title: 'Stone Selection',
-      description: 'Hand-select your diamonds and gemstones from our curated collection of ethically sourced, certified stones of exceptional quality.',
+      title: 'CAD & Manufacturing',
+      description: 'Once approved, we create a 3D CAD model and initiate production with our expert artisans at the helm.',
       icon: Gem,
     },
     {
       step: '04',
-      title: 'Master Craftsmanship',
-      description: 'Our artisans bring your design to life using time-honored techniques passed down through generations, ensuring unparalleled quality.',
+      title: 'The Final Masterpiece',
+      description: 'Your vision, fully realized — a unique, handcrafted piece that reflects your story, style, and spirit.',
       icon: Award,
-    },
-    {
-      step: '05',
-      title: 'Final Presentation',
-      description: 'Receive your one-of-a-kind masterpiece in an elegant presentation, complete with certification and lifetime care guarantee.',
-      icon: Shield,
     },
   ];
 
   const whyBespoke = [
     'One-of-a-kind design created exclusively for you',
     'Direct collaboration with master artisans',
-    'Ethically sourced diamonds and gemstones',
+    'Natural diamonds and ethically sourced gemstones',
     'Lifetime warranty and complimentary care',
     'Transparent pricing with no hidden costs',
     'Flexible payment plans available',
