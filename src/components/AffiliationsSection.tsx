@@ -1,36 +1,48 @@
 import { motion } from 'framer-motion';
 
+// Import affiliation logos
+import ibjaLogo from '@/assets/affiliations/ibja-logo.png';
+import giaLogo from '@/assets/affiliations/gia-logo.png';
+import gjepcLogo from '@/assets/affiliations/gjepc-logo.png';
+import bisLogo from '@/assets/affiliations/bis-logo.png';
+import igiLogo from '@/assets/affiliations/igi-logo.png';
+
 const affiliations = [
   { 
-    name: 'India Bullion and Jewellers Association', 
+    name: 'India Bullion and Jewellers Association Ltd.', 
     shortName: 'IBJA',
-    description: 'Since 1919'
+    logo: ibjaLogo,
+    subtitle: 'Since 1919'
   },
   { 
     name: 'Gemological Institute of America', 
     shortName: 'GIA',
-    description: 'Certified Diamonds'
+    logo: giaLogo,
+    subtitle: ''
   },
   { 
     name: 'Gem & Jewellery Export Promotion Council', 
     shortName: 'GJEPC',
-    description: 'India'
+    logo: gjepcLogo,
+    subtitle: 'INDIA'
   },
   { 
     name: 'Bureau of Indian Standards', 
     shortName: 'BIS',
-    description: 'Hallmark Certified'
+    logo: bisLogo,
+    subtitle: 'The National Standards Body of India'
   },
   { 
     name: 'International Gemological Institute', 
     shortName: 'IGI',
-    description: 'Certified'
+    logo: igiLogo,
+    subtitle: ''
   }
 ];
 
 const AffiliationsSection = () => {
   return (
-    <section className="py-16 bg-secondary/50">
+    <section className="py-16 bg-[#FFF9E6]">
       <div className="container mx-auto px-6 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,8 +51,7 @@ const AffiliationsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h3 className="text-xs font-medium tracking-luxury uppercase text-muted-foreground mb-2">Trusted By Industry Leaders</h3>
-          <h2 className="font-serif text-2xl md:text-3xl">Our Affiliations</h2>
+          <h2 className="font-serif text-2xl md:text-3xl uppercase tracking-wider">Our Affiliation</h2>
         </motion.div>
         
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
@@ -51,12 +62,13 @@ const AffiliationsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center text-center group"
+              className="flex items-center justify-center"
             >
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-border bg-background flex items-center justify-center mb-3 group-hover:border-primary transition-colors duration-300">
-                <span className="font-serif text-lg md:text-xl font-semibold text-foreground group-hover:text-primary transition-colors">{affiliation.shortName}</span>
-              </div>
-              <p className="text-xs text-muted-foreground max-w-[100px] leading-tight">{affiliation.description}</p>
+              <img 
+                src={affiliation.logo} 
+                alt={affiliation.name}
+                className="h-12 md:h-16 lg:h-20 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+              />
             </motion.div>
           ))}
         </div>
