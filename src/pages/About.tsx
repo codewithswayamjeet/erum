@@ -3,35 +3,36 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import aboutImage from '@/assets/about-craftsmanship.jpg';
 import heroImage from '@/assets/hero-jewellery.jpg';
-
 const About = () => {
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={heroImage}
-            alt="ERUM craftsmanship"
-            className="w-full h-full object-cover"
-          />
+          <img src={heroImage} alt="ERUM craftsmanship" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-foreground/50" />
         </div>
         <div className="relative z-10 text-center px-6">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-background/80 text-sm tracking-luxury uppercase mb-4"
-          >
+          <motion.p initial={{
+          opacity: 0,
+          y: 20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.8
+        }} className="text-background/80 text-sm tracking-luxury uppercase mb-4">
             Our Story
           </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl text-background"
-          >
+          <motion.h1 initial={{
+          opacity: 0,
+          y: 30
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          duration: 0.8,
+          delay: 0.2
+        }} className="font-serif text-4xl md:text-5xl lg:text-6xl text-background">
             The Art of <span className="italic">Timeless Beauty</span>
           </motion.h1>
         </div>
@@ -41,13 +42,17 @@ const About = () => {
       <section className="section-padding bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-20"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 40
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.8
+          }} className="text-center mb-20">
               <div className="divider-gold mb-8" />
               <h2 className="font-serif text-3xl md:text-4xl mb-8">
                 A Legacy of Excellence
@@ -61,13 +66,17 @@ const About = () => {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="grid md:grid-cols-2 gap-12 items-center mb-20"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 40
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.8
+          }} className="grid md:grid-cols-2 gap-12 items-center mb-20">
               <div>
                 <p className="text-sm tracking-luxury uppercase text-muted-foreground mb-4">
                   Our Philosophy
@@ -89,11 +98,7 @@ const About = () => {
                 </p>
               </div>
               <div className="aspect-[4/5] overflow-hidden">
-                <img
-                  src={aboutImage}
-                  alt="Master artisan at work"
-                  className="w-full h-full object-cover"
-                />
+                <img alt="Master artisan at work" className="w-full h-full object-cover" src="/lovable-uploads/69202f55-5480-4873-81c3-094d84f850cd.jpg" />
               </div>
             </motion.div>
           </div>
@@ -103,13 +108,17 @@ const About = () => {
       {/* Craftsmanship Section */}
       <section className="section-padding bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 40
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.8
+        }} className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <p className="text-sm tracking-luxury uppercase text-muted-foreground mb-4">
                 Craftsmanship
@@ -120,34 +129,30 @@ const About = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  number: '01',
-                  title: 'Design',
-                  description:
-                    'Each piece begins as a sketch, where imagination meets expertise. Our designers draw inspiration from art, nature, and the desires of the discerning.',
-                },
-                {
-                  number: '02',
-                  title: 'Creation',
-                  description:
-                    'Master craftsmen bring designs to life, employing time-honoured techniques. Every stone is hand-selected, every setting precisely executed.',
-                },
-                {
-                  number: '03',
-                  title: 'Perfection',
-                  description:
-                    'Rigorous quality control ensures that only flawless pieces bear our name. Each creation is a testament to our uncompromising standards.',
-                },
-              ].map((step, index) => (
-                <motion.div
-                  key={step.number}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="text-center"
-                >
+              {[{
+              number: '01',
+              title: 'Design',
+              description: 'Each piece begins as a sketch, where imagination meets expertise. Our designers draw inspiration from art, nature, and the desires of the discerning.'
+            }, {
+              number: '02',
+              title: 'Creation',
+              description: 'Master craftsmen bring designs to life, employing time-honoured techniques. Every stone is hand-selected, every setting precisely executed.'
+            }, {
+              number: '03',
+              title: 'Perfection',
+              description: 'Rigorous quality control ensures that only flawless pieces bear our name. Each creation is a testament to our uncompromising standards.'
+            }].map((step, index) => <motion.div key={step.number} initial={{
+              opacity: 0,
+              y: 30
+            }} whileInView={{
+              opacity: 1,
+              y: 0
+            }} viewport={{
+              once: true
+            }} transition={{
+              duration: 0.6,
+              delay: index * 0.1
+            }} className="text-center">
                   <span className="text-4xl font-serif text-primary/30 block mb-4">
                     {step.number}
                   </span>
@@ -155,8 +160,7 @@ const About = () => {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {step.description}
                   </p>
-                </motion.div>
-              ))}
+                </motion.div>)}
             </div>
           </motion.div>
         </div>
@@ -165,13 +169,17 @@ const About = () => {
       {/* Ethics & Sustainability */}
       <section className="section-padding bg-foreground text-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto text-center"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 40
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.8
+        }} className="max-w-3xl mx-auto text-center">
             <p className="text-sm tracking-luxury uppercase text-background/60 mb-4">
               Our Commitment
             </p>
@@ -196,13 +204,17 @@ const About = () => {
       {/* CTA Section */}
       <section className="section-padding bg-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 40
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.8
+        }} className="text-center">
             <h2 className="font-serif text-3xl md:text-4xl mb-6">
               Discover Our Collections
             </h2>
@@ -216,8 +228,6 @@ const About = () => {
           </motion.div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default About;
