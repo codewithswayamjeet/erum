@@ -117,8 +117,9 @@ const Footer = () => {
               <li className="flex items-start gap-3 text-sm text-background/60">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-primary" />
                 <span>
-                  ERUM - The Jewellery Studio<br />
-                  Mumbai, India
+                  F 3/4, Golden Plaza<br />
+                  Near Kirtistambh, Palanpur<br />
+                  Gujarat 385001 (India)
                 </span>
               </li>
               <li>
