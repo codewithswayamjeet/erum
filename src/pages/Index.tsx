@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Diamond, Shield, Truck, Award, Sparkles, RefreshCw, Wrench } from 'lucide-react';
+import { Diamond, Shield, Truck, Award, Sparkles, RefreshCw, Wrench, Scale, ThumbsUp, Headphones } from 'lucide-react';
 import Layout from '@/components/Layout';
 import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
@@ -21,12 +21,11 @@ const Index = () => {
   ];
 
   const brandPromises = [
-    { icon: Diamond, title: 'GIA/IGI Certified', description: 'Every natural diamond certified by world-renowned laboratories' },
-    { icon: Shield, title: 'Complete Transparency', description: 'Full disclosure on sourcing and pricing' },
-    { icon: RefreshCw, title: 'Easy Exchange', description: 'Hassle-free exchange policy for your peace of mind' },
-    { icon: Award, title: 'Guaranteed Buyback', description: 'We stand behind every piece we create' },
-    { icon: Wrench, title: 'Lifetime Maintenance', description: 'Free cleaning and maintenance for life' },
-    { icon: Truck, title: 'Secure Delivery', description: 'Fully insured worldwide shipping' },
+    { icon: Truck, title: 'Free Shipping', description: 'Complimentary shipping on all orders' },
+    { icon: Diamond, title: 'IGI Certified Jewellery', description: 'Every natural diamond certified by world-renowned laboratories' },
+    { icon: Scale, title: 'Ethically Sourced', description: 'Natural diamonds from responsible sources' },
+    { icon: ThumbsUp, title: 'Lifetime Warranty', description: 'We stand behind every piece we create' },
+    { icon: Headphones, title: 'Customer Support', description: '24/7 dedicated customer service' },
   ];
 
   return (
@@ -224,7 +223,7 @@ const Index = () => {
             </h2>
           </motion.div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             {brandPromises.map((promise, index) => (
               <motion.div
                 key={promise.title}

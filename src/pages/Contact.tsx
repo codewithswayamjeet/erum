@@ -220,9 +220,9 @@ const Contact = () => {
                   <div>
                     <h3 className="font-medium mb-1">Address</h3>
                     <p className="text-muted-foreground">
-                      42 Jewellers Lane, Heritage District<br />
-                      Mumbai, Maharashtra 400001<br />
-                      India
+                      F 3/4, Golden Plaza<br />
+                      Near Kirtistambh, Palanpur<br />
+                      Gujarat 385001 (India)
                     </p>
                   </div>
                 </div>
