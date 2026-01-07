@@ -84,6 +84,7 @@ const Header = () => {
   };
 
   const simpleLinks = [
+    { name: 'Platinum Jewelry', href: '/platinum-jewelry' },
     { name: 'Hip Hop Jewelry', href: '/hip-hop-jewelry' },
     { name: 'Bespoke Services', href: '/bespoke-services' },
   ];
