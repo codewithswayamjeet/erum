@@ -14,6 +14,8 @@ import Collection from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
+import PlatinumJewelry from "./pages/PlatinumJewelry";
+import RingSizeGuide from "./pages/RingSizeGuide";
 import MeetTheDesigner from "./pages/MeetTheDesigner";
 import BespokeServices from "./pages/BespokeServices";
 import Cart from "./pages/Cart";
@@ -46,6 +48,8 @@ const App = () => (
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />
+                <Route path="/platinum-jewelry" element={<PlatinumJewelry />} />
+                <Route path="/ring-size-guide" element={<RingSizeGuide />} />
                 <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
                 <Route path="/bespoke-services" element={<BespokeServices />} />
                 <Route path="/cart" element={<Cart />} />
