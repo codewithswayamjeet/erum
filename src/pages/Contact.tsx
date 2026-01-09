@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Linkedin } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useToast } from '@/hooks/use-toast';
+import brandPatternBg from '@/assets/brand-pattern-bg.jpg';
+import AffiliationsSection from '@/components/AffiliationsSection';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -10,10 +12,9 @@ const Contact = () => {
     name: '',
     email: '',
     phone: '',
-    subject: '',
     message: '',
-    appointmentType: 'general',
   });
+  const [designImage, setDesignImage] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,266 +26,277 @@ const Contact = () => {
       name: '',
       email: '',
       phone: '',
-      subject: '',
       message: '',
-      appointmentType: 'general',
     });
+    setDesignImage(null);
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setDesignImage(e.target.files[0]);
+    }
+  };
+
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-secondary">
+      {/* Hero Section with Jewelry Background */}
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-primary/30 to-primary/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
+        </div>
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `url(${brandPatternBg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 text-center"
+        >
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-foreground uppercase tracking-wider">
+            Connect With Us
+          </h1>
+        </motion.div>
+      </section>
+
+      {/* Form Section with Pattern Background */}
+      <section 
+        className="relative py-20"
+        style={{
+          backgroundImage: `url(${brandPatternBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-xl mx-auto bg-background p-8 md:p-12 shadow-luxury"
           >
-            <p className="text-sm tracking-luxury uppercase text-muted-foreground mb-4">
-              Get in Touch
-            </p>
-            <h1 className="font-serif text-4xl md:text-5xl mb-6">
-              We'd Love to <span className="italic">Hear from You</span>
-            </h1>
-            <p className="text-muted-foreground leading-relaxed">
-              Whether you have a question about our collections, wish to book a 
-              private consultation, or simply want to share your thoughts, 
-              we're here to assist you.
-            </p>
+            <p className="text-primary text-sm tracking-luxury uppercase text-center mb-2">Message Us</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-center mb-8">Get in Touch</h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-4 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors"
+                  placeholder="Name"
+                />
+              </div>
+              
+              <div>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-4 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors"
+                  placeholder="Email"
+                />
+              </div>
+              
+              <div>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-4 py-4 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors"
+                  placeholder="Phone"
+                />
+              </div>
+              
+              <div>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={4}
+                  className="w-full px-4 py-4 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors resize-none"
+                  placeholder="Your Message"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-muted-foreground mb-2">
+                  Upload your design image (optional)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full px-4 py-3 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                />
+                {designImage && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Selected: {designImage.name}
+                  </p>
+                )}
+              </div>
+
+              <button type="submit" className="w-full btn-luxury-primary">
+                Send
+              </button>
+            </form>
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Content */}
-      <section className="section-padding bg-background">
+      {/* Contact Information Section */}
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
-            {/* Contact Form */}
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left Side - Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className="font-serif text-2xl md:text-3xl mb-8">
-                Send Us a Message
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
+              <h2 className="font-serif text-3xl md:text-4xl mb-4">Contact Us</h2>
+              <p className="text-muted-foreground mb-8">
+                Wherever you are in the world, we have the local expertise and the global reach you need.
+              </p>
 
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
-                      placeholder="+91 98765 43210"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="appointmentType"
-                      className="block text-sm font-medium mb-2"
-                    >
-                      Inquiry Type
-                    </label>
-                    <select
-                      id="appointmentType"
-                      name="appointmentType"
-                      value={formData.appointmentType}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
-                    >
-                      <option value="general">General Inquiry</option>
-                      <option value="appointment">Book Appointment</option>
-                      <option value="custom">Custom Design</option>
-                      <option value="order">Order Status</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium mb-2"
+              {/* Social Media Links */}
+              <div className="mb-8">
+                <h3 className="font-medium mb-4">Follow Us</h3>
+                <div className="flex items-center gap-4">
+                  <a
+                    href="https://www.instagram.com/erumjewellery"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
+                    aria-label="Instagram"
                   >
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
-                    placeholder="How can we help?"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium mb-2"
+                    <Instagram className="h-5 w-5" />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/erumjewellery/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
+                    aria-label="Facebook"
                   >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors resize-none"
-                    placeholder="Tell us more about your inquiry..."
-                  />
+                    <Facebook className="h-5 w-5" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/company/erumjewellery"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                  <a
+                    href="https://x.com/erumjewellery"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
+                    aria-label="Twitter"
+                  >
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </a>
                 </div>
+              </div>
 
-                <button type="submit" className="btn-luxury-primary">
-                  Send Message
-                </button>
-              </form>
+              {/* Contact Details */}
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                  <p className="text-muted-foreground">
+                    F 3/4, Golden Plaza, Near Kirtistambh, Palanpur, Gujarat 385001 (India)
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                  <a href="tel:+919974555440" className="text-muted-foreground hover:text-primary transition-colors">
+                    +91 9974555440
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-primary flex-shrink-0" />
+                  <a href="mailto:Contact@erum.in" className="text-muted-foreground hover:text-primary transition-colors">
+                    Contact@erum.in
+                  </a>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Contact Information */}
+            {/* Right Side - Map */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
+              className="h-[400px] bg-muted/30 border border-border overflow-hidden"
             >
-              <h2 className="font-serif text-2xl md:text-3xl mb-8">
-                Visit Our Studio
-              </h2>
-              
-              <div className="space-y-8 mb-12">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Address</h3>
-                    <p className="text-muted-foreground">
-                      F 3/4, Golden Plaza<br />
-                      Near Kirtistambh, Palanpur<br />
-                      Gujarat 385001 (India)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Phone</h3>
-                    <p className="text-muted-foreground">
-                      <a href="tel:+919876543210" className="hover:text-primary transition-colors">
-                        +91 98765 43210
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Email</h3>
-                    <p className="text-muted-foreground">
-                      <a href="mailto:hello@erum.studio" className="hover:text-primary transition-colors">
-                        hello@erum.studio
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Studio Hours</h3>
-                    <p className="text-muted-foreground">
-                      Monday – Saturday: 10:00 AM – 7:00 PM<br />
-                      Sunday: By Appointment Only
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Appointment CTA */}
-              <div className="bg-secondary p-8 border border-border">
-                <h3 className="font-serif text-xl mb-4">
-                  Private Appointments
-                </h3>
-                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
-                  Experience personalized service in our private viewing room. 
-                  Our experts will guide you through our collections and help 
-                  you find the perfect piece.
-                </p>
-                <p className="text-sm font-medium tracking-luxury uppercase text-primary">
-                  Appointments Available Daily
-                </p>
-              </div>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3638.3776!2d72.4308!3d24.1755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395ce9c9d7c7c9c7%3A0x7c7c7c7c7c7c7c7c!2sGolden%20Plaza%2C%20Palanpur%2C%20Gujarat%20385001!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="ERUM Location Map"
+              />
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Affiliations */}
+      <AffiliationsSection />
+
+      {/* Quick Links */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="font-serif text-2xl mb-8">Quick Links</h2>
+            <div className="flex flex-wrap justify-center gap-6">
+              <a href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</a>
+              <a href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</a>
+              <a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
+              <a href="/ring-size-guide" className="text-muted-foreground hover:text-primary transition-colors">Ring Size Guide</a>
+              <a href="https://www.gia.edu/retailer-lookup" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">GIA Retailer Lookup</a>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

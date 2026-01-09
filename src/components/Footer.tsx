@@ -23,7 +23,7 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="https://instagram.com/erumjewellery"
+                href="https://www.instagram.com/erumjewellery"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300"
@@ -49,6 +49,17 @@ const Footer = () => {
               >
                 <Linkedin className="h-4 w-4" />
               </a>
+              <a
+                href="https://x.com/erumjewellery"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300"
+                aria-label="Twitter/X"
+              >
+                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -61,7 +72,8 @@ const Footer = () => {
                 { name: 'Necklaces & Pendants', href: '/collections/necklaces' },
                 { name: 'Earrings & Studs', href: '/collections/earrings' },
                 { name: 'Bracelets & Bangles', href: '/collections/bracelets' },
-                { name: 'Hip Hop Jewelry', href: '/collections/hip-hop' },
+                { name: 'Platinum Jewelry', href: '/platinum-jewelry' },
+                { name: 'Hip Hop Jewelry', href: '/hip-hop-jewelry' },
               ].map((item) => (
                 <li key={item.name}>
                   <Link
@@ -81,9 +93,8 @@ const Footer = () => {
             <ul className="space-y-3">
               {[
                 { name: 'Our Heritage', href: '/about' },
-                { name: 'Meet the Designer', href: '/about#designer' },
-                { name: 'Brand Promises', href: '/about#promises' },
-                { name: 'Bespoke Services', href: '/contact?service=bespoke' },
+                { name: 'Meet the Designer', href: '/meet-the-designer' },
+                { name: 'Bespoke Services', href: '/bespoke-services' },
                 { name: 'Ring Size Guide', href: '/ring-size-guide' },
                 { name: 'GIA Retailer Lookup', href: 'https://www.gia.edu/retailer-lookup' },
               ].map((item) => (
@@ -124,20 +135,20 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919974555440"
                   className="flex items-center gap-3 text-sm text-background/60 hover:text-primary transition-colors"
                 >
                   <Phone className="h-4 w-4 flex-shrink-0 text-primary" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 9974555440</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@erum.in"
+                  href="mailto:Contact@erum.in"
                   className="flex items-center gap-3 text-sm text-background/60 hover:text-primary transition-colors"
                 >
                   <Mail className="h-4 w-4 flex-shrink-0 text-primary" />
-                  <span>info@erum.in</span>
+                  <span>Contact@erum.in</span>
                 </a>
               </li>
             </ul>
