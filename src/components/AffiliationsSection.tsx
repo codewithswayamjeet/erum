@@ -49,7 +49,7 @@ const AffiliationsSection = () => {
           <h2 className="font-serif text-2xl md:text-3xl uppercase tracking-wider">Our Affiliation</h2>
         </motion.div>
         
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16 text-primary">
           {affiliations.map((affiliation, index) => <motion.div key={affiliation.shortName} initial={{
           opacity: 0,
           y: 20
@@ -62,7 +62,7 @@ const AffiliationsSection = () => {
           duration: 0.5,
           delay: index * 0.1
         }} className="flex items-center justify-center">
-              <img src={affiliation.logo} alt={affiliation.name} className="h-12 md:h-16 lg:h-20 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 border-primary" />
+              <img src={affiliation.logo} alt={affiliation.name} className="h-12 md:h-16 lg:h-20 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 border-primary-foreground" />
             </motion.div>)}
         </div>
       </div>
