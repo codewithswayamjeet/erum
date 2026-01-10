@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import platinumHero from '@/assets/platinum-hero.jpg';
-import brandPatternBg from '@/assets/brand-pattern-bg.jpg';
 
 interface PlatinumProduct {
   id: string;
@@ -148,14 +147,7 @@ const PlatinumJewelry = () => {
       </section>
 
       {/* Category Cards */}
-      <section 
-        className="py-16 lg:py-24"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <section className="py-16 lg:py-24 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

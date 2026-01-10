@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Flame, Crown, Star, Zap } from 'lucide-react';
 import Layout from '@/components/Layout';
 import heroImage from '@/assets/hiphop-hero.jpg';
-import brandPatternBg from '@/assets/brand-pattern-bg.jpg';
 
 interface HipHopProduct {
   id: string;
@@ -267,12 +266,7 @@ const HipHopJewelry = () => {
       {/* Products Grid */}
       <section 
         id="products" 
-        className="py-24"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        className="py-24 bg-secondary"
       >
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div 

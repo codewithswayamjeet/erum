@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Linkedin } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useToast } from '@/hooks/use-toast';
-import brandPatternBg from '@/assets/brand-pattern-bg.jpg';
 import AffiliationsSection from '@/components/AffiliationsSection';
 
 const Contact = () => {
@@ -45,21 +44,8 @@ const Contact = () => {
 
   return (
     <Layout>
-      {/* Hero Section with Jewelry Background */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-primary/30 to-primary/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
-        </div>
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `url(${brandPatternBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        
+      {/* Hero Section */}
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/20 via-primary/30 to-primary/40">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,15 +58,8 @@ const Contact = () => {
         </motion.div>
       </section>
 
-      {/* Form Section with Pattern Background */}
-      <section 
-        className="relative py-20"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      {/* Form Section */}
+      <section className="relative py-20 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

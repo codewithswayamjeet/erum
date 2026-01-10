@@ -228,11 +228,6 @@ const Header = () => {
                   <Link to="/orders" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Order History">
                     <Package className="h-5 w-5" />
                   </Link>
-                  {isAdmin && (
-                    <Link to="/admin" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Admin">
-                      <User className="h-5 w-5" />
-                    </Link>
-                  )}
                   <button onClick={handleSignOut} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Sign out">
                     <LogOut className="h-5 w-5" />
                   </button>
@@ -308,9 +303,6 @@ const Header = () => {
                         <Link to="/wishlist" className="block text-sm text-foreground hover:text-primary">Wishlist</Link>
                         <Link to="/orders" className="block text-sm text-foreground hover:text-primary">Order History</Link>
                       </>
-                    )}
-                    {isAdmin && (
-                      <Link to="/admin" className="block text-sm text-foreground hover:text-primary">Admin</Link>
                     )}
                   </div>
                 </nav>
