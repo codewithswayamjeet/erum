@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import Layout from '@/components/Layout';
 import { Ruler, CircleDot, Phone, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import brandPatternBg from '@/assets/brand-pattern-bg.jpg';
 
 const RingSizeGuide = () => {
   const sizeChart = [
@@ -60,15 +59,8 @@ const RingSizeGuide = () => {
 
   return (
     <Layout>
-      {/* Hero Section with Brand Pattern */}
-      <section 
-        className="relative pt-32 pb-16"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-16 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -115,14 +107,7 @@ const RingSizeGuide = () => {
       </section>
 
       {/* Ring Size Chart */}
-      <section 
-        className="py-16 lg:py-20"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <section className="py-16 lg:py-20 bg-muted/30">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -322,14 +307,7 @@ const RingSizeGuide = () => {
       </section>
 
       {/* FAQs */}
-      <section 
-        className="py-16 lg:py-20"
-        style={{
-          backgroundImage: `url(${brandPatternBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
+      <section className="py-16 lg:py-20 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
