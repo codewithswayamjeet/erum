@@ -55,10 +55,11 @@ const sortOptions = [
 const Collection = () => {
   const { category } = useParams<{ category?: string }>();
   const [searchParams] = useSearchParams();
+  const urlCategory = searchParams.get('category');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedPriceRange, setSelectedPriceRange] = useState(0);
   const [selectedSort, setSelectedSort] = useState('featured');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(category || null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(urlCategory || category || null);
 
   // Fetch all Shopify products
   const { products, isLoading, error } = useShopifyProducts(50);
