@@ -2,109 +2,34 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Flame, Crown, Star, Zap } from 'lucide-react';
 import Layout from '@/components/Layout';
+import ShopifyProductGrid from '@/components/ShopifyProductGrid';
 import heroImage from '@/assets/hiphop-hero.jpg';
 
-interface HipHopProduct {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  image: string;
-  category: string;
-  material: string;
-  stoneType: string;
-}
-
 const HipHopJewelry = () => {
-  // Products sourced from UIU Jewelry and White Carat Diamond
-  const hipHopProducts: HipHopProduct[] = [
-    // From White Carat Diamond
-    {
-      id: 'hh-1',
-      name: '2.20 CT. Ace of Spades Diamond Pendant',
-      price: 210000,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/diamond-3_600x.jpg?v=1674675526',
-      category: 'Pendants',
-      material: '10K Gold',
-      stoneType: 'Natural Diamond'
-    },
-    {
-      id: 'hh-2',
-      name: '6.50 CT. Diamond Jesus Pendant',
-      price: 510000,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/6-50-ct-diamond-jesus-pendant-in-10kt-gold_600x.jpg?v=1674675526',
-      category: 'Pendants',
-      material: '10K Gold',
-      stoneType: 'Natural Diamond'
-    },
-    {
-      id: 'hh-3',
-      name: '3.00 CT. Cross Diamond Pendant',
-      price: 220000,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/copy-of-copy-of-copy-of-draft_600x.jpg?v=1674675526',
-      category: 'Pendants',
-      material: '10K Gold',
-      stoneType: 'Natural Diamond'
-    },
-    {
-      id: 'hh-4',
-      name: '2.30 CT. Diamond Photo Pendant',
-      price: 290000,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/diamond-9_600x.jpg?v=1674675526',
-      category: 'Custom Pendants',
-      material: '10K Gold',
-      stoneType: 'Natural Diamond'
-    },
-    {
-      id: 'hh-5',
-      name: '1.70 CT Butterfly Diamond Pendant',
-      price: 180000,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/copy-of-1-70-ct-diamond-butterfly-pendant-in-10kt-rose-gold_600x.jpg?v=1674675526',
-      category: 'Pendants',
-      material: '10K Rose Gold',
-      stoneType: 'Natural Diamond'
-    },
-    {
-      id: 'hh-6',
-      name: '5.00 CT Diamond Number "8" Pendant',
-      price: 463200,
-      currency: 'INR',
-      image: 'https://whitecaratdiamond.com/cdn/shop/products/5-00-ct-diamond-number-8-pendant-in-10kt-gold_600x.jpg?v=1674675526',
-      category: 'Custom Pendants',
-      material: '10K Gold',
-      stoneType: 'Natural Diamond'
-    },
-  ];
-
   const categories = [
     { 
       title: 'Cuban Link Chains', 
       description: 'Heavy iced-out chains that command attention',
       icon: Crown,
-      href: '/collections/chains?type=cuban'
+      href: '/collections?category=Necklaces'
     },
     { 
       title: 'Diamond Pendants', 
       description: 'Statement pieces dripping in brilliance',
       icon: Star,
-      href: '/collections/pendants'
+      href: '/collections?category=Necklaces'
     },
     { 
-      title: 'Iced Out Watches', 
-      description: 'Luxury timepieces fully flooded with VVS',
+      title: 'Diamond Rings', 
+      description: 'Bold rings with VVS natural diamonds',
       icon: Zap,
-      href: '/collections/watches'
+      href: '/collections?category=Rings'
     },
     { 
       title: 'Tennis Chains', 
       description: 'Classic diamond tennis necklaces and bracelets',
       icon: Flame,
-      href: '/collections/bracelets?type=tennis'
+      href: '/collections?category=Bracelets'
     },
   ];
 
@@ -114,14 +39,6 @@ const HipHopJewelry = () => {
     { title: 'Custom Designs', description: 'Your vision, our craft' },
     { title: 'GIA/IGI Certified', description: 'Natural diamond authenticity' },
   ];
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
 
   return (
     <Layout>
@@ -263,69 +180,13 @@ const HipHopJewelry = () => {
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section 
-        id="products" 
-        className="py-24 bg-secondary"
-      >
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">Featured</p>
-            <h2 className="font-serif text-4xl md:text-5xl">
-              Natural Diamond <span className="italic">Collection</span>
-            </h2>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-              Each piece features genuine natural diamonds set in solid gold — no lab-grown, no compromise.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {hipHopProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group bg-background border border-border overflow-hidden"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-4 left-4 bg-foreground text-background text-xs px-3 py-1 tracking-wider uppercase">
-                    {product.stoneType}
-                  </span>
-                </div>
-                <div className="p-6">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{product.category}</p>
-                  <h3 className="font-serif text-lg mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
-                  <p className="text-xs text-muted-foreground mb-3">{product.material}</p>
-                  <p className="text-xl font-medium">{formatPrice(product.price)}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
-            <Link to="/contact" className="btn-luxury-primary">
-              Enquire About These Pieces
-            </Link>
-          </motion.div>
-        </div>
+      {/* Shopify Products Grid */}
+      <section id="products" className="bg-secondary">
+        <ShopifyProductGrid 
+          title="Natural Diamond Collection" 
+          subtitle="Featured Pieces"
+          limit={12}
+        />
       </section>
 
       {/* Statement Section */}
@@ -353,7 +214,7 @@ const HipHopJewelry = () => {
               From the culture, for the culture. Every piece is handcrafted with the same precision 
               as our high jewelry, designed to make a statement that's impossible to ignore.
             </p>
-            <Link to="/contact?service=bespoke" className="btn-luxury bg-background text-foreground border border-background hover:bg-transparent hover:text-background">
+            <Link to="/bespoke-services" className="btn-luxury bg-background text-foreground border border-background hover:bg-transparent hover:text-background">
               Start Your Custom Design
             </Link>
           </motion.div>

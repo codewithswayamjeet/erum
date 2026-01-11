@@ -1,79 +1,15 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import ShopifyProductGrid from '@/components/ShopifyProductGrid';
 import platinumHero from '@/assets/platinum-hero.jpg';
 
-interface PlatinumProduct {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category: string;
-  badge?: string;
-}
-
 const PlatinumJewelry = () => {
-  // Products sourced from ORRA Platinum Collection
-  const platinumProducts: PlatinumProduct[] = [
-    {
-      id: 'pt-1',
-      name: 'Subtle Platinum Pendant',
-      price: 45293,
-      originalPrice: 48614,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/p/p/pps21003_1_1ddimivjour864nj.jpg',
-      category: 'Pendants',
-      badge: 'Best Seller'
-    },
-    {
-      id: 'pt-2',
-      name: 'Aesthetic Platinum Pendant',
-      price: 30752,
-      originalPrice: 33255,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/p/p/pps09002_1_z5rkjhp3jmr1lleg.jpg',
-      category: 'Pendants',
-      badge: 'Best Seller'
-    },
-    {
-      id: 'pt-3',
-      name: 'Solid Men\'s Platinum Chain',
-      price: 132846,
-      originalPrice: 137840,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/p/c/pch21015_2_ogvrb5xwj0wnruac.jpg',
-      category: 'Chains',
-      badge: 'Best Seller'
-    },
-    {
-      id: 'pt-4',
-      name: 'Dazzling Platinum Diamond Ring',
-      price: 50735,
-      originalPrice: 53871,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/p/r/prg20068_1_hz51tcefqi9gdw3k.jpg',
-      category: 'Rings'
-    },
-    {
-      id: 'pt-5',
-      name: 'Together Always Platinum Couple Bands',
-      price: 149030,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/c/o/couple_band.jpg',
-      category: 'Rings',
-      badge: 'Best Seller'
-    },
-    {
-      id: 'pt-6',
-      name: 'Infinity Design Platinum Ring',
-      price: 26121,
-      originalPrice: 27045,
-      image: 'https://cdn.orra.co.in/media/catalog/product/cache/0516ee377c732426770929bfc2a4f5c5/p/r/prg23k62_1_plzuql4be4dd52au.jpg',
-      category: 'Rings'
-    },
-  ];
-
   const categories = [
-    { name: 'Rings', count: 'Platinum Bands & Solitaires', href: '/collections/rings?material=platinum' },
-    { name: 'Earrings', count: 'Studs & Drops', href: '/collections/earrings?material=platinum' },
-    { name: 'Necklaces', count: 'Pendants & Chains', href: '/collections/necklaces?material=platinum' },
-    { name: 'Bracelets', count: 'Tennis & Bangles', href: '/collections/bracelets?material=platinum' },
+    { name: 'Rings', count: 'Platinum Bands & Solitaires', href: '/collections?category=Rings' },
+    { name: 'Earrings', count: 'Studs & Drops', href: '/collections?category=Earrings' },
+    { name: 'Necklaces', count: 'Pendants & Chains', href: '/collections?category=Necklaces' },
+    { name: 'Bracelets', count: 'Tennis & Bangles', href: '/collections?category=Bracelets' },
   ];
 
   const features = [
@@ -82,14 +18,6 @@ const PlatinumJewelry = () => {
     { title: 'Eternal Beauty', description: 'Naturally white metal that never fades or tarnishes over time' },
     { title: 'Expert Craftsmanship', description: 'Handcrafted by master artisans with decades of expertise' },
   ];
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(price);
-  };
 
   return (
     <Layout>
@@ -237,64 +165,33 @@ const PlatinumJewelry = () => {
         </div>
       </section>
 
-      {/* Products Grid */}
-      <section id="collection" className="py-16 lg:py-24 bg-background">
+      {/* Shopify Products Grid */}
+      <section id="collection" className="bg-background">
+        <ShopifyProductGrid 
+          title="Platinum Collection" 
+          subtitle="Natural Diamond Jewelry"
+          limit={12}
+        />
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            <h2 className="font-serif text-3xl md:text-4xl mb-4">Platinum Collection</h2>
-            <p className="text-muted-foreground">Discover our curated selection of platinum jewelry with natural diamonds</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {platinumProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
-              >
-                <div className="relative aspect-square overflow-hidden bg-muted/30 mb-4">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {product.badge && (
-                    <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-xs px-3 py-1 tracking-wider uppercase">
-                      {product.badge}
-                    </span>
-                  )}
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{product.category}</p>
-                  <h3 className="font-serif text-lg mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-lg font-medium">{formatPrice(product.price)}</span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
-            <Link to="/contact" className="btn-luxury-primary">
-              Enquire About These Pieces
-            </Link>
+            <h3 className="font-serif text-3xl md:text-4xl mb-6">Looking for Something Unique?</h3>
+            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
+              Our artisans can create bespoke platinum pieces tailored to your vision.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/contact" className="btn-luxury-primary">Enquire Now</Link>
+              <Link to="/bespoke-services" className="btn-luxury-outline">Bespoke Services</Link>
+            </div>
           </motion.div>
         </div>
       </section>
