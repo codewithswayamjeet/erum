@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
 // Import affiliation logos
-import ibjaLogo from '@/assets/affiliations/ibja-logo.png';
-import giaLogo from '@/assets/affiliations/gia-logo.png';
-import gjepcLogo from '@/assets/affiliations/gjepc-logo.png';
-import bisLogo from '@/assets/affiliations/bis-logo.png';
-import igiLogo from '@/assets/affiliations/igi-logo.png';
+import ibjaLogo from '@/assets/affiliations/ibja-logo-color.png';
+import giaLogo from '@/assets/affiliations/gia-logo-color.png';
+import gjepcLogo from '@/assets/affiliations/gjepc-logo-color.png';
+import bisLogo from '@/assets/affiliations/bis-logo-color.png';
+import igiLogo from '@/assets/affiliations/igi-logo-color.png';
 
 const affiliations = [
   {
@@ -64,11 +64,11 @@ const AffiliationsSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="flex flex-col items-center justify-center group"
             >
-              <div className="h-16 md:h-20 lg:h-24 w-auto flex items-center justify-center">
+              <div className="h-14 md:h-16 lg:h-20 w-[200px] md:w-[220px] lg:w-[240px] flex items-center justify-center">
                 <img
                   src={affiliation.logo}
                   alt={affiliation.name}
-                  className="h-full w-auto object-contain max-w-[120px] md:max-w-[150px] lg:max-w-[180px] transition-transform duration-300 group-hover:scale-105"
+                  className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                 />
               </div>
               {affiliation.subtitle && (

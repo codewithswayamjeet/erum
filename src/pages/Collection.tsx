@@ -61,8 +61,9 @@ const Collection = () => {
   const [selectedSort, setSelectedSort] = useState('featured');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(urlCategory || category || null);
 
-  // Fetch all Shopify products
-  const { products, isLoading, error } = useShopifyProducts(50);
+  // Fetch Shopify products (scoped when a category page is used)
+  const collection = category ? collectionInfo[category.toLowerCase()] : null;
+  const { products, isLoading, error } = useShopifyProducts(50, collection?.query);
 
   // Get all unique categories from products
   const categories = useMemo(() => {
@@ -124,9 +125,6 @@ const Collection = () => {
 
     return filtered;
   }, [products, selectedCategory, selectedPriceRange, selectedSort]);
-
-  const collection = category ? collectionInfo[category.toLowerCase()] : null;
-
   const clearFilters = () => {
     setSelectedPriceRange(0);
     setSelectedSort('featured');

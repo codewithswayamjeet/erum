@@ -17,6 +17,8 @@ const BespokeServices = () => {
     description: '',
     budget: '',
   });
+  const [designFile, setDesignFile] = useState<File | null>(null);
+  const [designInputKey, setDesignInputKey] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +27,8 @@ const BespokeServices = () => {
       description: "Our design team will contact you within 24 hours to schedule your consultation.",
     });
     setFormData({ name: '', email: '', phone: '', description: '', budget: '' });
+    setDesignFile(null);
+    setDesignInputKey((k) => k + 1);
   };
 
   const processSteps = [
@@ -396,6 +400,18 @@ const BespokeServices = () => {
                     placeholder="₹5,00,000 - ₹10,00,000"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-xs tracking-luxury uppercase text-muted-foreground mb-2">Upload Your Design</label>
+                <Input
+                  key={designInputKey}
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={(e) => setDesignFile(e.target.files?.[0] ?? null)}
+                  className="border-border focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:bg-secondary file:text-foreground hover:file:bg-muted"
+                />
+                <p className="mt-2 text-xs text-muted-foreground">Optional: upload a sketch, reference image, or PDF.</p>
               </div>
 
               <div>
