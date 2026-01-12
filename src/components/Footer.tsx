@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Linkedin, MapPin, Phone, Mail } from 'lucide-react';
+import footerLogo from '@/assets/erum-logo-footer.png';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-foreground text-background">
@@ -9,7 +10,11 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-6">
-              <img src="/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" alt="ERUM - The Jewellery Studio" className="h-12 w-auto object-contain brightness-0 invert border-primary" />
+              <img
+                src={footerLogo}
+                alt="ERUM - The Jewellery Studio"
+                className="h-14 md:h-16 w-auto object-contain"
+              />
             </Link>
             <p className="text-background/70 text-sm leading-relaxed mb-6">
               Where precious becomes priceless. Crafting masterpieces with the passion for jewellery and gems since establishment.

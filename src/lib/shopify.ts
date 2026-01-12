@@ -1,10 +1,9 @@
 import { toast } from 'sonner';
-
 // Shopify Configuration
 const SHOPIFY_API_VERSION = '2025-07';
 const SHOPIFY_STORE_PERMANENT_DOMAIN = 's1z5t0-ia.myshopify.com';
 const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
-const SHOPIFY_STOREFRONT_TOKEN = '0b5bf503b4dc1f2c0e06d84d349e70f5';
+const SHOPIFY_STOREFRONT_TOKEN = 'd93834d30304631563f537295cddea2c';
 
 export interface ShopifyProduct {
   node: {
@@ -235,26 +234,16 @@ const CART_CREATE_MUTATION = `
 
 // Fetch products from Shopify
 export async function fetchShopifyProducts(first: number = 20, query?: string): Promise<ShopifyProduct[]> {
-  try {
-    const data = await storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first, query });
-    if (!data) return [];
-    return data.data.products.edges;
-  } catch (error) {
-    console.error('Error fetching Shopify products:', error);
-    return [];
-  }
+  const data = await storefrontApiRequest(STOREFRONT_PRODUCTS_QUERY, { first, query });
+  if (!data) return [];
+  return data.data.products.edges;
 }
 
 // Fetch single product by handle
 export async function fetchShopifyProductByHandle(handle: string): Promise<ShopifyProduct['node'] | null> {
-  try {
-    const data = await storefrontApiRequest(STOREFRONT_PRODUCT_BY_HANDLE_QUERY, { handle });
-    if (!data) return null;
-    return data.data.productByHandle;
-  } catch (error) {
-    console.error('Error fetching Shopify product:', error);
-    return null;
-  }
+  const data = await storefrontApiRequest(STOREFRONT_PRODUCT_BY_HANDLE_QUERY, { handle });
+  if (!data) return null;
+  return data.data.productByHandle;
 }
 
 // Create checkout
