@@ -54,7 +54,7 @@ const AffiliationsSection = () => {
           <h2 className="font-serif text-2xl md:text-3xl uppercase tracking-wider">Our Affiliation</h2>
         </motion.div>
         
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
+        <div className="flex items-center justify-between gap-6 md:gap-8 overflow-x-auto flex-nowrap">
           {affiliations.map((affiliation, index) => (
             <motion.div
               key={affiliation.shortName}
@@ -62,12 +62,13 @@ const AffiliationsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center justify-center group"
+              className="flex flex-col items-center justify-center group flex-shrink-0"
             >
-              <div className="h-14 md:h-16 lg:h-20 w-[200px] md:w-[220px] lg:w-[240px] flex items-center justify-center">
+              <div className="h-16 md:h-20 w-[180px] md:w-[200px] lg:w-[220px] flex items-center justify-center">
                 <img
                   src={affiliation.logo}
                   alt={affiliation.name}
+                  loading="lazy"
                   className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                 />
               </div>
