@@ -15,6 +15,7 @@ import ShopifyCollection from "./pages/ShopifyCollection";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
+import PlatinumJewelry from "./pages/PlatinumJewelry";
 import RingSizeGuide from "./pages/RingSizeGuide";
 import MeetTheDesigner from "./pages/MeetTheDesigner";
 import BespokeServices from "./pages/BespokeServices";
