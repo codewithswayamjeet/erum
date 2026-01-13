@@ -10,11 +10,11 @@ import { WishlistProvider } from "@/contexts/WishlistContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Collection from "./pages/Collection";
+import ShopifyCollections from "./pages/ShopifyCollections";
+import ShopifyCollection from "./pages/ShopifyCollection";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
-import PlatinumJewelry from "./pages/PlatinumJewelry";
 import RingSizeGuide from "./pages/RingSizeGuide";
 import MeetTheDesigner from "./pages/MeetTheDesigner";
 import BespokeServices from "./pages/BespokeServices";
@@ -42,8 +42,8 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/collections" element={<Collection />} />
-                <Route path="/collections/:category" element={<Collection />} />
+                <Route path="/collections" element={<ShopifyCollections />} />
+                <Route path="/collections/:handle" element={<ShopifyCollection />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />

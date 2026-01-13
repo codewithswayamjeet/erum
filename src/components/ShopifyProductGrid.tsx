@@ -59,10 +59,10 @@ const ShopifyProductGrid = ({
             <Package className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
             <h3 className="font-serif text-2xl text-foreground mb-4">No products found</h3>
             <p className="text-muted-foreground mb-4">
-              Your Shopify store doesn't have any products yet.
+              No storefront products are visible yet.
             </p>
-            <p className="text-sm text-muted-foreground">
-              Tell us what products you'd like to add and we'll create them for you!
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+              If Shopify shows products as <span className="font-medium text-foreground">Active</span> but nothing appears here, make sure they’re published to the <span className="font-medium text-foreground">Storefront / Online Store</span> sales channel.
             </p>
           </motion.div>
         ) : (
