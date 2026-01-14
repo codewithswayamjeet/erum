@@ -10,7 +10,7 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const { signOut, user, isAdmin, isLoading } = useAuth();
+  const { signOut, user, isLoading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,18 +30,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   if (!user) {
     navigate('/auth');
     return null;
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Access Denied</h1>
-          <p className="text-muted-foreground mb-6">You don't have permission to access the admin panel.</p>
-          <Button onClick={() => navigate('/')}>Go to Homepage</Button>
-        </div>
-      </div>
-    );
   }
 
   const navItems = [
