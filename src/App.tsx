@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ShopifyCollections from "./pages/ShopifyCollections";
-import ShopifyCollection from "./pages/ShopifyCollection";
+import CollectionsRouter from "./pages/CollectionsRouter";
 import ProductDetail from "./pages/ProductDetail";
 import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
@@ -44,7 +44,7 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/collections" element={<ShopifyCollections />} />
-                <Route path="/collections/:handle" element={<ShopifyCollection />} />
+                <Route path="/collections/:handle" element={<CollectionsRouter />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />

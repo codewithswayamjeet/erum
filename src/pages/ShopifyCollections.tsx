@@ -2,7 +2,13 @@ import { useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Layout from '@/components/Layout';
+import CollectionCard from '@/components/CollectionCard';
 import { useShopifyCollections } from '@/hooks/useShopifyCollections';
+
+import collectionRings from '@/assets/collection-rings.jpg';
+import collectionNecklaces from '@/assets/collection-necklaces.jpg';
+import collectionEarrings from '@/assets/collection-earrings.jpg';
+import collectionBracelets from '@/assets/collection-bracelets.jpg';
 
 const ShopifyCollections = () => {
   const { collections, isLoading, error } = useShopifyCollections(50);
@@ -42,8 +48,42 @@ const ShopifyCollections = () => {
             </div>
           ) : error ? (
             <div className="text-center py-16">
-              <p className="text-destructive mb-2">Failed to load collections</p>
-              <p className="text-muted-foreground text-sm">{error}</p>
+              <p className="text-muted-foreground text-sm mb-10">
+                Shopify collections aren’t available right now, so we’re showing our catalog categories instead.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                <CollectionCard
+                  title="Rings"
+                  description="Engagement, solitaire and everyday classics"
+                  image={collectionRings}
+                  href="/collections/rings"
+                />
+                <CollectionCard
+                  title="Necklaces"
+                  description="Pendants, chains and statement pieces"
+                  image={collectionNecklaces}
+                  href="/collections/necklaces"
+                />
+                <CollectionCard
+                  title="Earrings"
+                  description="Studs, hoops and chandelier drops"
+                  image={collectionEarrings}
+                  href="/collections/earrings"
+                />
+                <CollectionCard
+                  title="Bracelets"
+                  description="Tennis bracelets, bangles and more"
+                  image={collectionBracelets}
+                  href="/collections/bracelets"
+                />
+              </div>
+
+              <div className="mt-10">
+                <Link to="/collections/all" className="btn-luxury-outline">
+                  Browse All Products
+                </Link>
+              </div>
             </div>
           ) : collections.length === 0 ? (
             <div className="text-center py-16">
