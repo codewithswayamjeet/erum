@@ -7,7 +7,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select';
 import {
   Table,
@@ -72,7 +71,6 @@ const AdminOrders = () => {
   useEffect(() => {
     fetchOrders();
     
-    // Set up realtime subscription
     const channel = supabase
       .channel('orders-changes')
       .on(
@@ -116,7 +114,6 @@ const AdminOrders = () => {
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
     } else {
-      // Parse items JSON for each order
       const parsedOrders = (data || []).map(order => ({
         ...order,
         items: Array.isArray(order.items) ? order.items : JSON.parse(JSON.stringify(order.items)) as OrderItem[],
@@ -124,6 +121,7 @@ const AdminOrders = () => {
       setOrders(parsedOrders);
     }
     setIsLoading(false);
+  };
 
   const updateOrderStatus = async (orderId: string, field: 'status' | 'payment_status', value: string) => {
     const { error } = await supabase
@@ -178,13 +176,11 @@ const AdminOrders = () => {
           </Button>
         </div>
 
-        {/* Real-time indicator */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           Real-time updates enabled
         </div>
 
-        {/* Search */}
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -195,7 +191,6 @@ const AdminOrders = () => {
           />
         </div>
 
-        {/* Orders Table */}
         {isLoading ? (
           <div className="flex justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
@@ -297,7 +292,6 @@ const AdminOrders = () => {
           </div>
         )}
 
-        {/* Order Detail Modal */}
         <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
