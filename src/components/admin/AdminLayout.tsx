@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Home } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -10,27 +9,8 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const { signOut, user, isLoading } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    navigate('/auth');
-    return null;
-  }
 
   const navItems = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -68,19 +48,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border">
-          <div className="text-sm text-muted-foreground mb-3 truncate">
-            {user.email}
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate('/')}>
-              <Home className="h-4 w-4 mr-2" />
-              Site
-            </Button>
-            <Button variant="outline" size="sm" className="flex-1" onClick={handleSignOut}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
+          <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/')}>
+            <Home className="h-4 w-4 mr-2" />
+            Back to Site
+          </Button>
         </div>
       </aside>
 
