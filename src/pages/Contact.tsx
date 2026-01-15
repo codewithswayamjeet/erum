@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Loader2 } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useToast } from '@/hooks/use-toast';
 import AffiliationsSection from '@/components/AffiliationsSection';
+import { supabase } from '@/integrations/supabase/client';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -14,20 +15,74 @@ const Contact = () => {
     message: '',
   });
   const [designImage, setDesignImage] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: 'Message Sent',
-      description: 'Thank you for reaching out. We will respond within 24 hours.',
-    });
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-    setDesignImage(null);
+    setIsSubmitting(true);
+
+    try {
+      let designImageUrl = null;
+
+      // Upload design image if provided
+      if (designImage) {
+        const fileExt = designImage.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('designs')
+          .upload(fileName, designImage);
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+        } else {
+          const { data: urlData } = supabase.storage.from('designs').getPublicUrl(fileName);
+          designImageUrl = urlData.publicUrl;
+        }
+      }
+
+      // Save to database
+      const { error: insertError } = await supabase.from('submissions').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        message: formData.message,
+        design_image_url: designImageUrl,
+        submission_type: 'contact',
+        status: 'new',
+      });
+
+      if (insertError) throw insertError;
+
+      // Send email notification
+      await supabase.functions.invoke('send-submission-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          submission_type: 'contact',
+          design_image_url: designImageUrl,
+        },
+      });
+
+      toast({
+        title: 'Message Sent',
+        description: 'Thank you for reaching out. We will respond within 24 hours.',
+      });
+
+      setFormData({ name: '', email: '', phone: '', message: '' });
+      setDesignImage(null);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send your message. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -140,8 +195,19 @@ const Contact = () => {
                 )}
               </div>
 
-              <button type="submit" className="w-full btn-luxury-primary">
-                Send
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full btn-luxury-primary flex items-center justify-center gap-2 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  'Send'
+                )}
               </button>
             </form>
           </motion.div>

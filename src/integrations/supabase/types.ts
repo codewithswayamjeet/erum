@@ -164,6 +164,48 @@ export type Database = {
         }
         Relationships: []
       }
+      submissions: {
+        Row: {
+          created_at: string
+          design_image_url: string | null
+          email: string
+          id: string
+          message: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          status: string
+          submission_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          design_image_url?: string | null
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          submission_type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          design_image_url?: string | null
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          submission_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
