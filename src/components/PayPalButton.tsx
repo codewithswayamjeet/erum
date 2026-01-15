@@ -18,7 +18,7 @@ export interface PayPalOrderDetails {
   };
 }
 
-const PAYPAL_CLIENT_ID = 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R';
+const PAYPAL_CLIENT_ID = 'AVsM0g_vTXa2G4VcgmG69pd7Fn3WDyhuSq0wxqiamVqtkk2iXO6OKHfVzLXZzu2S0gRQINUFrfODcsHa';
 
 const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
   const { toast } = useToast();
