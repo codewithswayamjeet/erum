@@ -114,7 +114,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         orderId: paypalOrder.id,
-        approvalUrl: paypalOrder.links.find((link: { rel: string }) => link.rel === 'approve')?.href,
+        status: paypalOrder.status,
+        links: paypalOrder.links,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
