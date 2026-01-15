@@ -6,9 +6,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const PAYPAL_CLIENT_ID = Deno.env.get('PAYPAL_CLIENT_ID');
-const PAYPAL_SECRET_KEY = Deno.env.get('PAYPAL_SECRET_KEY');
-const PAYPAL_API_URL = 'https://api-m.sandbox.paypal.com'; // Use 'https://api-m.paypal.com' for production
+const PAYPAL_CLIENT_ID = (Deno.env.get('PAYPAL_CLIENT_ID') ?? '').trim();
+const PAYPAL_SECRET_KEY = (Deno.env.get('PAYPAL_SECRET_KEY') ?? '').trim();
+const PAYPAL_API_URL = 'https://api-m.paypal.com'; // Live (production)
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
