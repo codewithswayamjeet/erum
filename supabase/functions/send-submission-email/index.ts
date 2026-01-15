@@ -58,7 +58,7 @@ This is an automated notification from ERUM Jewelry website.
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "ERUM Jewelry <notifications@erum.in>",
+          from: "ERUM Jewelry <onboarding@resend.dev>",
           to: ["Contact@erum.in"],
           subject: `New ${submission_type === 'bespoke' ? 'Bespoke Request' : 'Contact Message'} from ${name}`,
           text: emailBody,
