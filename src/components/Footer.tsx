@@ -83,15 +83,10 @@ const Footer = () => {
             }, {
               name: 'Ring Size Guide',
               href: '/ring-size-guide'
-            }, {
-              name: 'GIA Retailer Lookup',
-              href: 'https://www.gia.edu/retailer-lookup'
             }].map(item => <li key={item.name}>
-                  {item.href.startsWith('http') ? <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-background/60 hover:text-primary transition-colors duration-300 text-sm">
-                      {item.name}
-                    </a> : <Link to={item.href} className="text-background/60 hover:text-primary transition-colors duration-300 text-sm">
-                      {item.name}
-                    </Link>}
+                  <Link to={item.href} className="text-background/60 hover:text-primary transition-colors duration-300 text-sm">
+                    {item.name}
+                  </Link>
                 </li>)}
             </ul>
           </div>
@@ -152,15 +147,21 @@ const Footer = () => {
         <div className="container mx-auto px-6 lg:px-12 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
             <p>© {currentYear} ERUM – The Jewellery Studio. All rights reserved.</p>
-            <div className="flex items-center gap-6">
-              <Link to="/privacy" className="hover:text-primary transition-colors">
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+              <Link to="/refund-policy" className="hover:text-primary transition-colors">
+                Refund & Return
+              </Link>
+              <Link to="/cancellation-policy" className="hover:text-primary transition-colors">
+                Cancellation
+              </Link>
+              <Link to="/shipping-policy" className="hover:text-primary transition-colors">
+                Shipping
+              </Link>
+              <Link to="/terms-conditions" className="hover:text-primary transition-colors">
+                Terms & Conditions
+              </Link>
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">
                 Privacy Policy
-              </Link>
-              <Link to="/terms" className="hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
-              <Link to="/shipping" className="hover:text-primary transition-colors">
-                Delivery & Returns
               </Link>
             </div>
           </div>
