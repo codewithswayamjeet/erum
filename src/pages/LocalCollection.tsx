@@ -15,10 +15,10 @@ type SortOption = "featured" | "newest" | "price-asc" | "price-desc" | "title-as
 
 const priceRanges = [
   { label: "All Prices", min: 0, max: Infinity },
-  { label: "Under ₹50,000", min: 0, max: 50_000 },
-  { label: "₹50,000 - ₹1,00,000", min: 50_000, max: 100_000 },
-  { label: "₹1,00,000 - ₹2,00,000", min: 100_000, max: 200_000 },
-  { label: "Above ₹2,00,000", min: 200_000, max: Infinity },
+  { label: "Under $500", min: 0, max: 500 },
+  { label: "$500 - $1,000", min: 500, max: 1_000 },
+  { label: "$1,000 - $2,500", min: 1_000, max: 2_500 },
+  { label: "Above $2,500", min: 2_500, max: Infinity },
 ] as const;
 
 const sortOptions: Array<{ label: string; value: SortOption }> = [

@@ -266,7 +266,7 @@ const AdminReports = () => {
                   <TrendingUp className="h-5 w-5 text-emerald-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₹{reportData.summary.totalRevenue.toLocaleString('en-IN')}</div>
+                  <div className="text-2xl font-bold">${reportData.summary.totalRevenue.toLocaleString('en-US')}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -284,7 +284,7 @@ const AdminReports = () => {
                   <TrendingUp className="h-5 w-5 text-purple-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">₹{Math.round(reportData.summary.avgOrderValue).toLocaleString('en-IN')}</div>
+                  <div className="text-2xl font-bold">${Math.round(reportData.summary.avgOrderValue).toLocaleString('en-US')}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -311,7 +311,7 @@ const AdminReports = () => {
                     <ChartContainer config={chartConfig} className="h-[300px]">
                       <LineChart data={reportData.salesByMonth}>
                         <XAxis dataKey="month" tickLine={false} axisLine={false} fontSize={12} />
-                        <YAxis tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                        <YAxis tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
                         <ChartTooltip content={<ChartTooltipContent />} />
                         <Line type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 4 }} />
                       </LineChart>
@@ -334,7 +334,7 @@ const AdminReports = () => {
                   {reportData.salesByCategory.length > 0 ? (
                     <ChartContainer config={chartConfig} className="h-[300px]">
                       <BarChart data={reportData.salesByCategory} layout="vertical">
-                        <XAxis type="number" tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                        <XAxis type="number" tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
                         <YAxis type="category" dataKey="category" tickLine={false} axisLine={false} fontSize={12} width={80} />
                         <ChartTooltip content={<ChartTooltipContent />} />
                         <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
@@ -373,7 +373,7 @@ const AdminReports = () => {
                           <p className="text-sm text-muted-foreground">{product.quantity} units sold</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold">₹{product.revenue.toLocaleString('en-IN')}</p>
+                          <p className="font-semibold">${product.revenue.toLocaleString('en-US')}</p>
                         </div>
                       </div>
                     ))}

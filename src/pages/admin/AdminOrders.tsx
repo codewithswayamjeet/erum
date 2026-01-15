@@ -235,7 +235,7 @@ const AdminOrders = () => {
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">
-                        ₹{order.total.toLocaleString('en-IN')}
+                        ${order.total.toLocaleString('en-US')}
                       </TableCell>
                       <TableCell>
                         <Select
@@ -347,7 +347,7 @@ const AdminOrders = () => {
                             <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                           </div>
                         </div>
-                        <p className="font-medium">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                        <p className="font-medium">${(item.price * item.quantity).toLocaleString('en-US')}</p>
                       </div>
                     ))}
                   </div>
@@ -356,15 +356,15 @@ const AdminOrders = () => {
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>₹{selectedOrder.subtotal.toLocaleString('en-IN')}</span>
+                    <span>${selectedOrder.subtotal.toLocaleString('en-US')}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Shipping</span>
-                    <span>₹{selectedOrder.shipping_cost.toLocaleString('en-IN')}</span>
+                    <span>${selectedOrder.shipping_cost.toLocaleString('en-US')}</span>
                   </div>
                   <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>₹{selectedOrder.total.toLocaleString('en-IN')}</span>
+                    <span>${selectedOrder.total.toLocaleString('en-US')}</span>
                   </div>
                 </div>
 

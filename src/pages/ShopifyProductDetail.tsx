@@ -203,10 +203,9 @@ const ShopifyProductDetail = () => {
               {/* Price */}
               <div className="space-y-1">
                 <p className="text-3xl text-foreground font-medium">
-                  {selectedVariant?.price.currencyCode === 'INR' ? '₹' : '$'}
-                  {parseFloat(selectedVariant?.price.amount || '0').toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                  ${parseFloat(selectedVariant?.price.amount || '0').toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
-                <p className="text-sm text-muted-foreground">MRP Incl. of all taxes</p>
+                <p className="text-sm text-muted-foreground">Price incl. of all taxes</p>
               </div>
 
               {/* Description */}
@@ -391,8 +390,7 @@ const ShopifyProductDetail = () => {
                       {relatedProduct.node.title}
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {relatedProduct.node.priceRange.minVariantPrice.currencyCode === 'INR' ? '₹' : '$'}
-                      {parseFloat(relatedProduct.node.priceRange.minVariantPrice.amount).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                      ${parseFloat(relatedProduct.node.priceRange.minVariantPrice.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </p>
                   </Link>
                 ))}

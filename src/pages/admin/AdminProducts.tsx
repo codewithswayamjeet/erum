@@ -315,7 +315,7 @@ const AdminProducts = () => {
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price (₹) *</Label>
+                    <Label htmlFor="price">Price ($) *</Label>
                     <Input
                       id="price"
                       type="number"
@@ -324,7 +324,7 @@ const AdminProducts = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="original_price">Original Price (₹)</Label>
+                    <Label htmlFor="original_price">Original Price ($)</Label>
                     <Input
                       id="original_price"
                       type="number"
@@ -541,7 +541,7 @@ const AdminProducts = () => {
                       </TableCell>
                       <TableCell className="font-medium">{product.name}</TableCell>
                       <TableCell>{product.category}</TableCell>
-                      <TableCell>₹{product.price.toLocaleString('en-IN')}</TableCell>
+                      <TableCell>${product.price.toLocaleString('en-US')}</TableCell>
                       <TableCell>{product.stock}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">

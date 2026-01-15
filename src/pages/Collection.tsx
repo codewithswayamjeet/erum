@@ -39,10 +39,10 @@ const collectionInfo: Record<string, { title: string; description: string; heroI
 
 const priceRanges = [
   { label: 'All Prices', min: 0, max: Infinity },
-  { label: 'Under ₹50,000', min: 0, max: 50000 },
-  { label: '₹50,000 - ₹1,00,000', min: 50000, max: 100000 },
-  { label: '₹1,00,000 - ₹2,00,000', min: 100000, max: 200000 },
-  { label: 'Above ₹2,00,000', min: 200000, max: Infinity },
+  { label: 'Under $500', min: 0, max: 500 },
+  { label: '$500 - $1,000', min: 500, max: 1000 },
+  { label: '$1,000 - $2,500', min: 1000, max: 2500 },
+  { label: 'Above $2,500', min: 2500, max: Infinity },
 ];
 
 const sortOptions = [
@@ -95,9 +95,7 @@ const Collection = () => {
     if (priceRange.max !== Infinity || priceRange.min > 0) {
       filtered = filtered.filter(p => {
         const price = parseFloat(p.node.priceRange.minVariantPrice.amount);
-        // Convert to INR approximation (assuming USD base)
-        const priceInr = price * 83;
-        return priceInr >= priceRange.min && priceInr < priceRange.max;
+        return price >= priceRange.min && price < priceRange.max;
       });
     }
 

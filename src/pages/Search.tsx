@@ -10,10 +10,10 @@ const categories = ['All', 'Rings', 'Necklaces', 'Earrings', 'Bracelets'];
 const materials = ['All', '18K Yellow Gold', '18K White Gold', '18K Rose Gold', 'Platinum'];
 const priceRanges = [
   { label: 'All Prices', min: undefined, max: undefined },
-  { label: 'Under ₹1,00,000', min: undefined, max: 100000 },
-  { label: '₹1,00,000 - ₹2,00,000', min: 100000, max: 200000 },
-  { label: '₹2,00,000 - ₹3,00,000', min: 200000, max: 300000 },
-  { label: 'Above ₹3,00,000', min: 300000, max: undefined },
+  { label: 'Under $1,000', min: undefined, max: 1000 },
+  { label: '$1,000 - $2,500', min: 1000, max: 2500 },
+  { label: '$2,500 - $5,000', min: 2500, max: 5000 },
+  { label: 'Above $5,000', min: 5000, max: undefined },
 ];
 
 const Search = () => {

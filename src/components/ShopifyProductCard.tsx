@@ -84,7 +84,7 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
             {node.title}
           </h3>
           <p className="text-primary font-medium">
-            {currencyCode} {price.toFixed(2)}
+            ${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </div>
       </Link>

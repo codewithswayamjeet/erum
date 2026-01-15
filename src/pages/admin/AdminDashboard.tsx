@@ -3,7 +3,7 @@ import AdminLayout from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Package, ShoppingCart, IndianRupee, Users, TrendingUp, TrendingDown, Eye, ArrowRight, RefreshCw, Calendar } from 'lucide-react';
+import { Package, ShoppingCart, DollarSign, Users, TrendingUp, TrendingDown, Eye, ArrowRight, RefreshCw, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { format, subDays, startOfDay, endOfDay } from 'date-fns';
@@ -198,8 +198,8 @@ const AdminDashboard = () => {
   const statCards = [
     {
       title: 'Total Revenue',
-      value: `₹${stats.totalRevenue.toLocaleString('en-IN')}`,
-      icon: IndianRupee,
+      value: `$${stats.totalRevenue.toLocaleString('en-US')}`,
+      icon: DollarSign,
       color: 'text-emerald-500',
       bgColor: 'bg-emerald-500/10',
       change: '+12.5%',
@@ -318,7 +318,7 @@ const AdminDashboard = () => {
                         </linearGradient>
                       </defs>
                       <XAxis dataKey="date" tickLine={false} axisLine={false} fontSize={12} />
-                      <YAxis tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
+                      <YAxis tickLine={false} axisLine={false} fontSize={12} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
                       <ChartTooltip content={<ChartTooltipContent />} />
                       <Area 
                         type="monotone" 
@@ -422,7 +422,7 @@ const AdminDashboard = () => {
                             <p className="text-sm text-muted-foreground">{product.sales} units sold</p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold">₹{product.revenue.toLocaleString('en-IN')}</p>
+                            <p className="font-semibold">${product.revenue.toLocaleString('en-US')}</p>
                           </div>
                         </div>
                       ))}
@@ -470,7 +470,7 @@ const AdminDashboard = () => {
                           <Badge className={getStatusColor(order.status)}>
                             {order.status}
                           </Badge>
-                          <span className="font-semibold">₹{order.total.toLocaleString('en-IN')}</span>
+                          <span className="font-semibold">${order.total.toLocaleString('en-US')}</span>
                           <Link to="/admin/orders">
                             <Button variant="ghost" size="icon">
                               <Eye className="h-4 w-4" />

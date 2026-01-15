@@ -38,14 +38,14 @@ const Cart = () => {
                       <h3 className="font-serif text-lg">{item.name}</h3>
                       <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
                     </div>
-                    <p className="text-muted-foreground text-sm mb-4">₹{item.price.toLocaleString('en-IN')}</p>
+                    <p className="text-muted-foreground text-sm mb-4">${item.price.toLocaleString('en-US')}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center border border-border">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-2"><Minus className="w-4 h-4" /></button>
                         <span className="w-10 text-center">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-2"><Plus className="w-4 h-4" /></button>
                       </div>
-                      <p className="font-medium">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                      <p className="font-medium">${(item.price * item.quantity).toLocaleString('en-US')}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -55,10 +55,10 @@ const Cart = () => {
               <div className="bg-secondary border border-border p-8 sticky top-32">
                 <h2 className="font-serif text-xl mb-6">Order Summary</h2>
                 <div className="space-y-4 mb-6 pb-6 border-b border-border">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>₹{cartTotal.toLocaleString('en-IN')}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${cartTotal.toLocaleString('en-US')}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="text-primary">Complimentary</span></div>
                 </div>
-                <div className="flex justify-between text-lg font-medium mb-8"><span>Total</span><span>₹{cartTotal.toLocaleString('en-IN')}</span></div>
+                <div className="flex justify-between text-lg font-medium mb-8"><span>Total</span><span>${cartTotal.toLocaleString('en-US')}</span></div>
                 <Link to="/checkout" className="btn-luxury-primary w-full text-center block mb-6">Proceed to Checkout</Link>
                 <div className="flex items-center justify-center gap-6 text-muted-foreground text-sm">
                   <span className="flex items-center gap-2"><Shield className="w-4 h-4" /> Secure</span>

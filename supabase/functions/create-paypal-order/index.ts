@@ -39,7 +39,7 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const currency = body.currency || 'INR';
+    const currency = body.currency || 'USD';
     const orderId = body.orderId;
     const items = body.items;
     
