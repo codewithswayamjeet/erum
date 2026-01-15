@@ -316,16 +316,16 @@ const BespokeServices = () => {
             <h2 className="font-serif text-3xl md:text-4xl mb-6">Typical Timeline</h2>
             <div className="grid grid-cols-3 gap-8">
               <div className="p-6 bg-secondary rounded-sm">
-                <span className="font-serif text-3xl text-primary">2-4</span>
-                <p className="text-sm text-muted-foreground mt-2">Weeks for Design</p>
+                <span className="font-serif text-3xl text-primary">2-3</span>
+                <p className="text-sm text-muted-foreground mt-2">Days for Design</p>
               </div>
               <div className="p-6 bg-secondary rounded-sm">
-                <span className="font-serif text-3xl text-primary">4-8</span>
-                <p className="text-sm text-muted-foreground mt-2">Weeks for Creation</p>
+                <span className="font-serif text-3xl text-primary">7-8</span>
+                <p className="text-sm text-muted-foreground mt-2">Days for Creation</p>
               </div>
               <div className="p-6 bg-secondary rounded-sm">
-                <span className="font-serif text-3xl text-primary">6-12</span>
-                <p className="text-sm text-muted-foreground mt-2">Weeks Total</p>
+                <span className="font-serif text-3xl text-primary">10-12</span>
+                <p className="text-sm text-muted-foreground mt-2">Days Total</p>
               </div>
             </div>
             <p className="text-muted-foreground mt-8">
