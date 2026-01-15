@@ -29,6 +29,9 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminOrders from "./pages/admin/AdminOrders";
+import AdminInventory from "./pages/admin/AdminInventory";
+import AdminCustomers from "./pages/admin/AdminCustomers";
+import AdminReports from "./pages/admin/AdminReports";
 import RefundPolicy from "./pages/RefundPolicy";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
@@ -69,6 +72,9 @@ const App = () => (
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/orders" element={<AdminOrders />} />
+                <Route path="/admin/inventory" element={<AdminInventory />} />
+                <Route path="/admin/customers" element={<AdminCustomers />} />
+                <Route path="/admin/reports" element={<AdminReports />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
