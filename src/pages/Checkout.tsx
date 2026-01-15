@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Lock, CreditCard } from 'lucide-react';
+import { Shield, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useCart } from '@/contexts/CartContext';
@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import PayPalButton from '@/components/PayPalButton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
@@ -27,7 +27,7 @@ const Checkout = () => {
     pincode: '',
   });
   const [submitting, setSubmitting] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'cod'>('paypal');
+  
 
   useEffect(() => {
     if (!isLoading && !user && cartItems.length > 0) {
@@ -93,25 +93,6 @@ const Checkout = () => {
     setSubmitting(false);
   };
 
-  const handleCODSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user || !isFormValid()) return;
-    
-    setSubmitting(true);
-
-    const result = await createOrder('pending');
-
-    if (result?.error) {
-      toast({ title: 'Order Failed', description: 'There was an error placing your order. Please try again.', variant: 'destructive' });
-      setSubmitting(false);
-      return;
-    }
-
-    toast({ title: 'Order Placed Successfully', description: 'Thank you! Your order has been placed. Pay on delivery.' });
-    clearCart();
-    navigate('/order-history');
-    setSubmitting(false);
-  };
 
   if (cartItems.length === 0) {
     return (
@@ -229,51 +210,23 @@ const Checkout = () => {
               {/* Payment Method */}
               <div className="bg-card border border-border p-6 md:p-8">
                 <h2 className="font-serif text-xl mb-6">Payment Method</h2>
-                
-                <Tabs value={paymentMethod} onValueChange={(v) => setPaymentMethod(v as 'paypal' | 'cod')}>
-                  <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger value="paypal" className="flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.768.768 0 0 1 .757-.646h6.31c2.855 0 4.842 1.087 5.393 3.347.189.781.19 1.643-.017 2.559-.698 3.081-3.103 4.788-6.384 4.788H8.986a.768.768 0 0 0-.757.647l-.847 5.259a.641.641 0 0 1-.633.539l-.673.124Z" />
-                      </svg>
-                      PayPal
-                    </TabsTrigger>
-                    <TabsTrigger value="cod" className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      Cash on Delivery
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="paypal">
-                    <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground">
-                        Pay securely using your PayPal account or credit/debit card.
-                      </p>
-                      <PayPalButton
-                        amount={cartTotal}
-                        onSuccess={handlePayPalSuccess}
-                        disabled={!isFormValid() || submitting}
-                      />
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 border border-primary bg-primary/5 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-[#0070ba]">
+                      <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.768.768 0 0 1 .757-.646h6.31c2.855 0 4.842 1.087 5.393 3.347.189.781.19 1.643-.017 2.559-.698 3.081-3.103 4.788-6.384 4.788H8.986a.768.768 0 0 0-.757.647l-.847 5.259a.641.641 0 0 1-.633.539l-.673.124Z" />
+                      <path d="m19.938 9.237-.012.064c-.698 3.081-3.103 4.788-6.384 4.788h-2.017a.768.768 0 0 0-.757.647l-1.287 7.966a.543.543 0 0 0 .535.625h3.274a.675.675 0 0 0 .666-.568l.027-.14.529-3.354.034-.185a.675.675 0 0 1 .666-.568h.42c2.714 0 4.84-1.102 5.462-4.288.26-1.331.125-2.443-.561-3.225a2.701 2.701 0 0 0-.773-.577c.036.272.047.556.028.852l.15-.037Z" />
+                    </svg>
+                    <div>
+                      <p className="font-medium">PayPal</p>
+                      <p className="text-sm text-muted-foreground">Pay securely with PayPal or credit/debit card</p>
                     </div>
-                  </TabsContent>
-
-                  <TabsContent value="cod">
-                    <div className="space-y-4">
-                      <p className="text-sm text-muted-foreground">
-                        Pay when your order is delivered. Cash or card accepted.
-                      </p>
-                      <button 
-                        type="button"
-                        onClick={handleCODSubmit}
-                        disabled={!isFormValid() || submitting} 
-                        className="btn-luxury-primary w-full flex items-center justify-center gap-2 disabled:opacity-50"
-                      >
-                        <Lock className="w-4 h-4" /> 
-                        {submitting ? 'Placing Order...' : 'Place Order (COD)'}
-                      </button>
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                  </div>
+                  <PayPalButton
+                    amount={cartTotal}
+                    onSuccess={handlePayPalSuccess}
+                    disabled={!isFormValid() || submitting}
+                  />
+                </div>
               </div>
 
               <p className="text-center text-sm text-muted-foreground flex items-center justify-center gap-2">

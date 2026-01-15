@@ -38,11 +38,17 @@ serve(async (req) => {
   }
 
   try {
-    const { amount, currency = 'INR', orderId, items } = await req.json();
+    const body = await req.json();
+    const currency = body.currency || 'INR';
+    const orderId = body.orderId;
+    const items = body.items;
+    
+    // Ensure amount is a number
+    const amount = typeof body.amount === 'string' ? parseFloat(body.amount) : Number(body.amount);
 
     console.log('Creating PayPal order:', { amount, currency, orderId, itemCount: items?.length });
 
-    if (!amount || amount <= 0) {
+    if (!amount || isNaN(amount) || amount <= 0) {
       return new Response(
         JSON.stringify({ error: 'Invalid amount' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

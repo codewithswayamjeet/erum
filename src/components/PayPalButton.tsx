@@ -33,7 +33,7 @@ const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProp
         'create-paypal-order',
         {
           body: {
-            amount: amount.toFixed(2),
+            amount: Number(amount),
             currency: 'INR',
           },
         }
