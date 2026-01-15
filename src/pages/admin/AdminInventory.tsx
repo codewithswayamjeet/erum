@@ -215,7 +215,7 @@ const AdminInventory = () => {
                         <TableCell>
                           <Badge variant="outline">{product.category}</Badge>
                         </TableCell>
-                        <TableCell>₹{product.price.toLocaleString('en-IN')}</TableCell>
+                        <TableCell>${product.price.toLocaleString('en-US')}</TableCell>
                         <TableCell>
                           <span className={`font-semibold ${product.stock === 0 ? 'text-red-600' : product.stock < 5 ? 'text-amber-600' : ''}`}>
                             {product.stock}

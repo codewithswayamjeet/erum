@@ -28,14 +28,12 @@ const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProp
     setIsLoading(true);
 
     try {
-      // Create PayPal order - Convert INR to USD (approximate rate)
-      const amountInUSD = Number(amount) / 83; // Approximate INR to USD conversion
-      
+      // Create PayPal order in USD
       const { data: createData, error: createError } = await supabase.functions.invoke(
         'create-paypal-order',
         {
           body: {
-            amount: amountInUSD,
+            amount: Number(amount),
             currency: 'USD',
           },
         }

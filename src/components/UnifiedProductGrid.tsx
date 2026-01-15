@@ -128,7 +128,7 @@ const UnifiedProductGrid = ({
                     {product.name}
                   </h3>
                   <p className="text-sm font-medium">
-                    ₹{product.price.toLocaleString('en-IN')}
+                    ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </Link>

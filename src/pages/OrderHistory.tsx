@@ -69,7 +69,7 @@ const OrderHistory = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
+    return new Date(dateString).toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -153,7 +153,7 @@ const OrderHistory = () => {
                           {order.status}
                         </span>
                         <span className="font-serif text-lg text-foreground">
-                          ₹{order.total.toLocaleString()}
+                          ${order.total.toLocaleString('en-US')}
                         </span>
                         {expandedOrder === order.id ? (
                           <ChevronUp className="h-5 w-5 text-muted-foreground" />
@@ -190,7 +190,7 @@ const OrderHistory = () => {
                                   <p className="font-medium text-foreground">{item.name}</p>
                                   <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                                 </div>
-                                <p className="font-medium text-foreground">₹{(item.price * item.quantity).toLocaleString()}</p>
+                                <p className="font-medium text-foreground">${(item.price * item.quantity).toLocaleString('en-US')}</p>
                               </div>
                             ))}
                           </div>
@@ -214,15 +214,15 @@ const OrderHistory = () => {
                             <div className="space-y-1 text-sm">
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Subtotal</span>
-                                <span>₹{order.subtotal.toLocaleString()}</span>
+                                <span>${order.subtotal.toLocaleString('en-US')}</span>
                               </div>
                               <div className="flex justify-between">
                                 <span className="text-muted-foreground">Shipping</span>
-                                <span>{order.shipping_cost ? `₹${order.shipping_cost}` : 'Free'}</span>
+                                <span>{order.shipping_cost ? `$${order.shipping_cost}` : 'Free'}</span>
                               </div>
                               <div className="flex justify-between font-medium text-foreground pt-2 border-t border-border">
                                 <span>Total</span>
-                                <span>₹{order.total.toLocaleString()}</span>
+                                <span>${order.total.toLocaleString('en-US')}</span>
                               </div>
                             </div>
                           </div>

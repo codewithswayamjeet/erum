@@ -72,7 +72,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
             {name}
           </h3>
           <p className="text-muted-foreground">
-            ₹{price.toLocaleString('en-IN')}
+            ${price.toLocaleString('en-US')}
           </p>
         </div>
       </Link>

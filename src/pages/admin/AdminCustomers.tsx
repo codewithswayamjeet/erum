@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, Users, ShoppingCart, IndianRupee, RefreshCw, Download, Mail, Phone } from 'lucide-react';
+import { Search, Users, ShoppingCart, DollarSign, RefreshCw, Download, Mail, Phone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
@@ -146,10 +146,10 @@ const AdminCustomers = () => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
-              <IndianRupee className="h-5 w-5 text-emerald-500" />
+              <DollarSign className="h-5 w-5 text-emerald-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹{stats.totalRevenue.toLocaleString('en-IN')}</div>
+              <div className="text-2xl font-bold">${stats.totalRevenue.toLocaleString('en-US')}</div>
             </CardContent>
           </Card>
           <Card>
@@ -158,7 +158,7 @@ const AdminCustomers = () => {
               <ShoppingCart className="h-5 w-5 text-purple-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹{Math.round(stats.avgOrderValue).toLocaleString('en-IN')}</div>
+              <div className="text-2xl font-bold">${Math.round(stats.avgOrderValue).toLocaleString('en-US')}</div>
             </CardContent>
           </Card>
         </div>
@@ -232,7 +232,7 @@ const AdminCustomers = () => {
                         <Badge variant="secondary">{customer.totalOrders} orders</Badge>
                       </TableCell>
                       <TableCell className="font-medium">
-                        ₹{customer.totalSpent.toLocaleString('en-IN')}
+                        ${customer.totalSpent.toLocaleString('en-US')}
                       </TableCell>
                       <TableCell>
                         {customer.lastOrderDate 

@@ -90,7 +90,7 @@ export const ShopifyCartDrawer = () => {
                           <p className="text-sm text-muted-foreground">{item.variantTitle}</p>
                         )}
                         <p className="font-medium text-primary">
-                          {item.price.currencyCode} {parseFloat(item.price.amount).toFixed(2)}
+                          ${parseFloat(item.price.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                       </div>
                       
@@ -133,7 +133,7 @@ export const ShopifyCartDrawer = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-medium">Total</span>
                   <span className="text-xl font-serif text-primary">
-                    {items[0]?.price.currencyCode || 'USD'} {totalPrice.toFixed(2)}
+                    ${totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
                 
