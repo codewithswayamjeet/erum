@@ -104,7 +104,7 @@ const AdminDashboard = () => {
     const products: Product[] = productsRes.data || [];
     const orders: Order[] = (ordersRes.data || []).map(order => ({
       ...order,
-      items: (Array.isArray(order.items) ? order.items : []) as OrderItem[],
+      items: (Array.isArray(order.items) ? order.items : []) as unknown as OrderItem[],
     }));
 
     // Calculate stats
