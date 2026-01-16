@@ -30,13 +30,16 @@ const Cart = () => {
           </motion.h1>
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-6">
-              {cartItems.map((item) => (
-                <motion.div key={item.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-6 p-6 bg-secondary border border-border">
+              {cartItems.map((item, index) => (
+                <motion.div key={`${item.id}-${item.size || index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-6 p-6 bg-secondary border border-border">
                   <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <h3 className="font-serif text-lg">{item.name}</h3>
-                      <button onClick={() => removeFromCart(item.id)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
+                      <div>
+                        <h3 className="font-serif text-lg">{item.name}</h3>
+                        {item.size && <p className="text-sm text-primary font-medium">Size: {item.size}</p>}
+                      </div>
+                      <button onClick={() => removeFromCart(item.id, item.size)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
                     </div>
                     <p className="text-muted-foreground text-sm mb-4">${item.price.toLocaleString('en-US')}</p>
                     <div className="flex items-center justify-between">

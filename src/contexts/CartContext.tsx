@@ -13,7 +13,7 @@ export interface CartItem {
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: string) => void;
+  removeFromCart: (id: string, size?: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   cartTotal: number;
@@ -26,18 +26,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCartItems((prev) => {
-      const existingItem = prev.find((i) => i.id === item.id);
+      // Create a unique key based on id and size
+      const existingItem = prev.find((i) => i.id === item.id && i.size === item.size);
       if (existingItem) {
         return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === item.id && i.size === item.size ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
       return [...prev, { ...item, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (id: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (id: string, size?: string) => {
+    setCartItems((prev) => prev.filter((item) => !(item.id === id && item.size === size)));
   };
 
   const updateQuantity = (id: string, quantity: number) => {
