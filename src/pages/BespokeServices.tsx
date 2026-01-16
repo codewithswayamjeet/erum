@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Diamond, Gem, Sparkles, Clock, Shield, Award, ArrowRight, CheckCircle, Calendar } from 'lucide-react';
+import { Diamond, Gem, Sparkles, Clock, Shield, Award, ArrowRight, CheckCircle, Calendar, Loader2 } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import PhoneInputWithCountry from '@/components/PhoneInputWithCountry';
+import { supabase } from '@/integrations/supabase/client';
 import bespokeHeroVideo from '@/assets/bespoke-hero-video.mp4';
 
 const BespokeServices = () => {
@@ -19,16 +21,75 @@ const BespokeServices = () => {
   });
   const [designFile, setDesignFile] = useState<File | null>(null);
   const [designInputKey, setDesignInputKey] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Consultation Request Received",
-      description: "Our design team will contact you within 24 hours to schedule your consultation.",
-    });
-    setFormData({ name: '', email: '', phone: '', description: '', budget: '' });
-    setDesignFile(null);
-    setDesignInputKey((k) => k + 1);
+    setIsSubmitting(true);
+
+    try {
+      let designImageUrl = null;
+
+      // Upload design image if provided
+      if (designFile) {
+        const fileExt = designFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('designs')
+          .upload(fileName, designFile);
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+        } else {
+          const { data: urlData } = supabase.storage.from('designs').getPublicUrl(fileName);
+          designImageUrl = urlData.publicUrl;
+        }
+      }
+
+      // Save to database
+      const { error: insertError } = await supabase.from('submissions').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        message: `Budget: ${formData.budget}\n\nVision: ${formData.description}`,
+        design_image_url: designImageUrl,
+        submission_type: 'bespoke',
+        status: 'new',
+      });
+
+      if (insertError) throw insertError;
+
+      // Send email notification
+      await supabase.functions.invoke('send-submission-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: `Budget: ${formData.budget}\n\nVision: ${formData.description}`,
+          submission_type: 'bespoke',
+          design_image_url: designImageUrl,
+        },
+      });
+
+      toast({
+        title: "Consultation Request Received",
+        description: "Our design team will contact you within 24 hours to schedule your consultation.",
+      });
+      
+      setFormData({ name: '', email: '', phone: '', description: '', budget: '' });
+      setDesignFile(null);
+      setDesignInputKey((k) => k + 1);
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to submit your request. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const processSteps = [
@@ -363,7 +424,7 @@ const BespokeServices = () => {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="border-border focus:border-primary"
+                    className="border-border focus:border-primary bg-muted/30"
                     placeholder="Your full name"
                   />
                 </div>
@@ -374,7 +435,7 @@ const BespokeServices = () => {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="border-border focus:border-primary"
+                    className="border-border focus:border-primary bg-muted/30"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -383,12 +444,10 @@ const BespokeServices = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs tracking-luxury uppercase text-muted-foreground mb-2">Phone</label>
-                  <Input
-                    type="tel"
+                  <PhoneInputWithCountry
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="border-border focus:border-primary"
-                    placeholder="+91 98765 43210"
+                    onChange={(value) => setFormData({ ...formData, phone: value })}
+                    placeholder="Phone number"
                   />
                 </div>
                 <div>
@@ -396,7 +455,7 @@ const BespokeServices = () => {
                   <Input
                     value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                    className="border-border focus:border-primary"
+                    className="border-border focus:border-primary bg-muted/30"
                     placeholder="₹5,00,000 - ₹10,00,000"
                   />
                 </div>
@@ -420,13 +479,25 @@ const BespokeServices = () => {
                   required
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="border-border focus:border-primary min-h-[150px]"
+                  className="border-border focus:border-primary min-h-[150px] bg-muted/30"
                   placeholder="Tell us about the piece you envision. Include details about style, occasion, preferred stones, metals, or any inspiration you'd like to share..."
                 />
               </div>
 
-              <Button type="submit" size="lg" className="w-full tracking-wider uppercase text-xs">
-                Request Consultation
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="w-full tracking-wider uppercase text-xs"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  'Request Consultation'
+                )}
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">

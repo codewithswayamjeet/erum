@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Loader2 } from 'luc
 import Layout from '@/components/Layout';
 import { useToast } from '@/hooks/use-toast';
 import AffiliationsSection from '@/components/AffiliationsSection';
+import PhoneInputWithCountry from '@/components/PhoneInputWithCountry';
 import { supabase } from '@/integrations/supabase/client';
 
 const Contact = () => {
@@ -154,14 +155,11 @@ const Contact = () => {
               </div>
               
               <div>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
+                <label className="block text-sm text-muted-foreground mb-2">Phone</label>
+                <PhoneInputWithCountry
                   value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-4 bg-muted/30 border border-border focus:border-primary focus:outline-none transition-colors"
-                  placeholder="Phone"
+                  onChange={(value) => setFormData({ ...formData, phone: value })}
+                  placeholder="Phone number"
                 />
               </div>
               

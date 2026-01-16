@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Diamond, Award, Heart, Sparkles, Quote } from 'lucide-react';
+import { Diamond, Award, Heart, Sparkles, Quote, Linkedin } from 'lucide-react';
 import Layout from '@/components/Layout';
 import designerImage from '@/assets/designer-portrait.jpg';
 import craftImage from '@/assets/about-craftsmanship.jpg';
@@ -59,9 +59,20 @@ const MeetTheDesigner = () => {
                 A master craftsman whose passion for jewelry began in the heart of India's gem trade, 
                 Mahammad Ali has dedicated over two decades to perfecting the art of high jewelry.
               </p>
-              <Link to="/contact?service=bespoke" className="btn-luxury-primary">
-                Book a Consultation
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link to="/contact?service=bespoke" className="btn-luxury-primary">
+                  Book a Consultation
+                </Link>
+                <a 
+                  href="https://www.linkedin.com/in/themahammadali/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
+                  aria-label="LinkedIn Profile"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </div>
             </motion.div>
             
             <motion.div

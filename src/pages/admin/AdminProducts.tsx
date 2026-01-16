@@ -35,6 +35,25 @@ import { Product } from '@/hooks/useProducts';
 const CATEGORIES = ['Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants', 'Bangles'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
 
+const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
+const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
+const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
+
+const getSizesForCategory = (category: string): string[] => {
+  switch (category) {
+    case 'Rings':
+      return RING_SIZES;
+    case 'Bracelets':
+    case 'Bangles':
+      return BRACELET_SIZES;
+    case 'Necklaces':
+    case 'Pendants':
+      return NECKLACE_SIZES;
+    default:
+      return [];
+  }
+};
+
 const emptyProduct = {
   name: '',
   slug: '',
@@ -363,6 +382,23 @@ const AdminProducts = () => {
                     />
                   </div>
                 </div>
+
+                {/* Size Selection based on Category */}
+                {formData.category && getSizesForCategory(formData.category).length > 0 && (
+                  <div className="space-y-2">
+                    <Label>Available Sizes ({formData.category})</Label>
+                    <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/30">
+                      {getSizesForCategory(formData.category).map((size) => (
+                        <span key={size} className="px-3 py-1 text-sm bg-primary/10 rounded-full border border-primary/20">
+                          {size}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      These sizes will be available for customers to select
+                    </p>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="short_description">Short Description</Label>
