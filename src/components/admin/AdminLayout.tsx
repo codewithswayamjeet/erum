@@ -1,18 +1,70 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, X, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 interface AdminLayoutProps {
   children: ReactNode;
 }
 
+const ADMIN_PASSWORD = 'admin@erum';
+const ADMIN_SESSION_KEY = 'erum_admin_verified';
+
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [password, setPassword] = useState('');
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if admin is already verified in this session
+    const verified = sessionStorage.getItem(ADMIN_SESSION_KEY);
+    if (verified === 'true') {
+      setIsVerified(true);
+    } else {
+      setShowPasswordDialog(true);
+    }
+  }, []);
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+      setIsVerified(true);
+      setShowPasswordDialog(false);
+      setPassword('');
+      setPasswordError('');
+      toast({
+        title: 'Access Granted',
+        description: 'Welcome to the Admin Panel.',
+      });
+    } else {
+      setPasswordError('Incorrect password. Please try again.');
+      setPassword('');
+    }
+  };
+
+  const handleDialogClose = () => {
+    // If not verified, redirect to home
+    if (!isVerified) {
+      navigate('/');
+    }
+  };
 
   const navItems = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -60,6 +112,53 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </div>
     </>
   );
+
+  // Password Dialog
+  if (!isVerified) {
+    return (
+      <Dialog open={showPasswordDialog} onOpenChange={(open) => {
+        if (!open) handleDialogClose();
+      }}>
+        <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5 text-primary" />
+              Admin Access Required
+            </DialogTitle>
+            <DialogDescription>
+              Please enter the admin password to access this area.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <Input
+                type="password"
+                placeholder="Enter admin password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError('');
+                }}
+                className="w-full"
+                autoFocus
+              />
+              {passwordError && (
+                <p className="text-destructive text-sm mt-2">{passwordError}</p>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={() => navigate('/')} className="flex-1">
+                Cancel
+              </Button>
+              <Button type="submit" className="flex-1">
+                Unlock
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-muted/30">
