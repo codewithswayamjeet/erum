@@ -20,17 +20,22 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, user, isAdmin, isLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
 
   useEffect(() => {
-    if (user) {
-      navigate(redirectTo);
+    if (!isLoading && user) {
+      // If user is admin, redirect to admin panel, otherwise to the requested page
+      if (isAdmin) {
+        navigate('/admin');
+      } else {
+        navigate(redirectTo);
+      }
     }
-  }, [user, navigate, redirectTo]);
+  }, [user, isAdmin, isLoading, navigate, redirectTo]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string; name?: string } = {};
@@ -100,7 +105,7 @@ const Auth = () => {
             title: 'Welcome Back',
             description: 'You have successfully signed in.',
           });
-          navigate(redirectTo);
+          // Redirect will be handled by useEffect when isAdmin state updates
         }
       }
     } catch {
