@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 
@@ -18,6 +19,7 @@ const Auth = () => {
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [manualRedirectDone, setManualRedirectDone] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   
   const { signIn, signUp, user, isAdmin, isLoading, isRoleLoading } = useAuth();
@@ -27,6 +29,8 @@ const Auth = () => {
   const redirectTo = searchParams.get('redirect') || '/';
 
   useEffect(() => {
+    if (manualRedirectDone) return;
+
     if (!isLoading && !isRoleLoading && user) {
       // If user is admin, redirect to admin panel, otherwise to the requested page
       if (isAdmin) {
@@ -35,7 +39,7 @@ const Auth = () => {
         navigate(redirectTo);
       }
     }
-  }, [user, isAdmin, isLoading, isRoleLoading, navigate, redirectTo]);
+  }, [user, isAdmin, isLoading, isRoleLoading, manualRedirectDone, navigate, redirectTo]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string; name?: string } = {};
@@ -105,7 +109,26 @@ const Auth = () => {
             title: 'Welcome Back',
             description: 'You have successfully signed in.',
           });
-          // Redirect will be handled by useEffect when isAdmin state updates
+
+          // Immediately compute role and redirect (avoids any timing issues)
+          setManualRedirectDone(true);
+          const { data: userData } = await supabase.auth.getUser();
+          const authedUser = userData.user;
+
+          if (authedUser) {
+            const { data: isAdminRole, error: roleError } = await supabase.rpc('has_role', {
+              _user_id: authedUser.id,
+              _role: 'admin',
+            });
+
+            if (!roleError && isAdminRole) {
+              navigate('/admin');
+            } else {
+              navigate(redirectTo);
+            }
+          } else {
+            navigate(redirectTo);
+          }
         }
       }
     } catch {
