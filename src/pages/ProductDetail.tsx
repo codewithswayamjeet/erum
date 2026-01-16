@@ -12,6 +12,20 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
 import { useProduct, useProducts } from '@/hooks/useProducts';
 import { getProductReviews, getProductRating } from '@/data/reviews';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+// Size options by category
+const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
+const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
+
+const getSizesForCategory = (category: string): string[] => {
+  const cat = category.toLowerCase();
+  if (cat.includes('ring')) return RING_SIZES;
+  if (cat.includes('bracelet') || cat.includes('bangle')) return BRACELET_SIZES;
+  if (cat.includes('necklace') || cat.includes('chain') || cat.includes('pendant')) return NECKLACE_SIZES;
+  return [];
+};
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +35,7 @@ const ProductDetail = () => {
   const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<string>('');
 
   const { product, isLoading } = useProduct(id || '');
   const { products: relatedProducts } = useProducts({ category: product?.category });
@@ -29,6 +44,8 @@ const ProductDetail = () => {
   const { average: averageRating, total: totalReviews } = id ? getProductRating(id) : { average: 0, total: 0 };
 
   const inWishlist = id ? isInWishlist(id) : false;
+
+  const availableSizes = product ? getSizesForCategory(product.category) : [];
 
   const handleWishlistClick = async () => {
     if (!user) {
@@ -83,15 +100,21 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = () => {
+    if (availableSizes.length > 0 && !selectedSize) {
+      toast({ title: 'Please select a size', description: 'Choose a size before adding to cart', variant: 'destructive' });
+      return;
+    }
+    
     for (let i = 0; i < quantity; i++) {
       addToCart({
         id: product.id,
         name: product.name,
         price: Number(product.price),
         image: product.images[0] || '/placeholder.svg',
+        size: selectedSize || undefined,
       });
     }
-    toast({ title: 'Added to Cart', description: `${product.name} has been added to your cart.` });
+    toast({ title: 'Added to Cart', description: `${product.name}${selectedSize ? ` (Size: ${selectedSize})` : ''} has been added to your cart.` });
   };
 
   const images = product.images.length > 0 ? product.images : ['/placeholder.svg'];
@@ -159,6 +182,27 @@ const ProductDetail = () => {
                       </div>
                     ))}
                   </dl>
+                </div>
+              )}
+
+              {/* Size Selection */}
+              {availableSizes.length > 0 && (
+                <div className="mb-8">
+                  <label className="text-sm font-medium text-foreground uppercase tracking-wide block mb-3">
+                    Select Size
+                  </label>
+                  <Select value={selectedSize} onValueChange={setSelectedSize}>
+                    <SelectTrigger className="w-full max-w-xs">
+                      <SelectValue placeholder="Choose a size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableSizes.map((size) => (
+                        <SelectItem key={size} value={size}>
+                          {size}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               )}
 
