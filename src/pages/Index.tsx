@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Diamond, Shield, Truck, Award, Sparkles, RefreshCw, Wrench, Scale, ThumbsUp, Headphones } from 'lucide-react';
+import { Diamond, Shield, Truck, Award, Sparkles, RefreshCw, Wrench, Scale, ThumbsUp, Headphones, Gem, Heart, BadgeCheck } from 'lucide-react';
 import Layout from '@/components/Layout';
 import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
@@ -21,11 +21,11 @@ const Index = () => {
   ];
 
   const brandPromises = [
-    { icon: Truck, title: 'Free Shipping', description: 'Complimentary shipping on all orders' },
-    { icon: Diamond, title: 'IGI Certified Jewellery', description: 'Every natural diamond certified by world-renowned laboratories' },
-    { icon: Scale, title: 'Ethically Sourced', description: 'Natural diamonds from responsible sources' },
-    { icon: ThumbsUp, title: 'Lifetime Warranty', description: 'We stand behind every piece we create' },
-    { icon: Headphones, title: 'Customer Support', description: '24/7 dedicated customer service' },
+    { icon: Diamond, title: 'Conflict-Free Natural Diamonds Only', description: 'Every diamond is ethically sourced and conflict-free' },
+    { icon: Gem, title: 'Responsible & Ethically Sourced Precious Metals', description: 'All precious metals responsibly sourced' },
+    { icon: Shield, title: 'Lifetime Craftsmanship Warranty', description: 'We stand behind every piece we create' },
+    { icon: Headphones, title: 'Personalised Global Customer Support', description: 'Dedicated support for clients worldwide' },
+    { icon: BadgeCheck, title: 'GIA / IGI Certified Jewelry', description: 'Every piece certified by world-renowned laboratories' },
   ];
 
   return (
@@ -219,7 +219,7 @@ const Index = () => {
           >
             <p className="text-xs tracking-[0.3em] uppercase text-background/50 mb-4">Our Promise</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-background">
-              Excellence in Every <span className="italic">Detail</span>
+              Excellence, Ethics & <span className="italic">Enduring Value</span>
             </h2>
           </motion.div>
           
