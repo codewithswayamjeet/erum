@@ -59,20 +59,9 @@ const MeetTheDesigner = () => {
                 A master craftsman whose passion for jewelry began in the heart of India's gem trade, 
                 Mahammad Ali has dedicated over two decades to perfecting the art of high jewelry.
               </p>
-              <div className="flex items-center gap-4">
-                <Link to="/contact?service=bespoke" className="btn-luxury-primary">
-                  Book a Consultation
-                </Link>
-                <a 
-                  href="https://www.linkedin.com/in/themahammadali/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:text-primary hover:border-primary transition-colors duration-300"
-                  aria-label="LinkedIn Profile"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </div>
+              <Link to="/contact?service=bespoke" className="btn-luxury-primary">
+                Book a Consultation
+              </Link>
             </motion.div>
             
             <motion.div
@@ -81,8 +70,17 @@ const MeetTheDesigner = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="aspect-square overflow-hidden">
+              <div className="aspect-square overflow-hidden relative">
                 <img src={designerImage} alt="Mahammad Ali - ERUM Founder" className="w-full h-full object-cover" />
+                <a 
+                  href="https://www.linkedin.com/in/themahammadali/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:text-primary hover:bg-background transition-colors duration-300 shadow-lg"
+                  aria-label="LinkedIn Profile"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
               </div>
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 max-w-xs hidden lg:block">
                 <Quote className="w-6 h-6 mb-2 opacity-50" />
