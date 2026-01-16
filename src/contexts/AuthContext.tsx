@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const checkAdminRole = async (userId: string) => {
+  const checkAdminRole = async (userId: string): Promise<boolean> => {
     const { data } = await supabase
       .from('user_roles')
       .select('role')
@@ -28,34 +28,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq('role', 'admin')
       .single();
     
-    setIsAdmin(!!data);
+    const adminStatus = !!data;
+    setIsAdmin(adminStatus);
+    return adminStatus;
   };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setIsLoading(false);
 
         if (session?.user) {
-          setTimeout(() => {
-            checkAdminRole(session.user.id);
-          }, 0);
+          // Check admin role before setting isLoading to false
+          await checkAdminRole(session.user.id);
         } else {
           setIsAdmin(false);
         }
+        setIsLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setIsLoading(false);
       
       if (session?.user) {
-        checkAdminRole(session.user.id);
+        await checkAdminRole(session.user.id);
       }
+      setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
