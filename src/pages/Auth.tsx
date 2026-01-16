@@ -20,14 +20,14 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   
-  const { signIn, signUp, user, isAdmin, isLoading } = useAuth();
+  const { signIn, signUp, user, isAdmin, isLoading, isRoleLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/';
 
   useEffect(() => {
-    if (!isLoading && user) {
+    if (!isLoading && !isRoleLoading && user) {
       // If user is admin, redirect to admin panel, otherwise to the requested page
       if (isAdmin) {
         navigate('/admin');
@@ -35,7 +35,7 @@ const Auth = () => {
         navigate(redirectTo);
       }
     }
-  }, [user, isAdmin, isLoading, navigate, redirectTo]);
+  }, [user, isAdmin, isLoading, isRoleLoading, navigate, redirectTo]);
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string; name?: string } = {};

@@ -7,6 +7,7 @@ interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
   isAdmin: boolean;
+  isRoleLoading: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -19,43 +20,53 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isRoleLoading, setIsRoleLoading] = useState(false);
 
   const checkAdminRole = async (userId: string): Promise<boolean> => {
-    const { data } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .eq('role', 'admin')
-      .single();
-    
-    const adminStatus = !!data;
+    const { data, error } = await supabase.rpc('has_role', {
+      _user_id: userId,
+      _role: 'admin',
+    });
+
+    const adminStatus = !error && !!data;
     setIsAdmin(adminStatus);
     return adminStatus;
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-
-        if (session?.user) {
-          // Check admin role before setting isLoading to false
-          await checkAdminRole(session.user.id);
-        } else {
-          setIsAdmin(false);
-        }
-        setIsLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
-        await checkAdminRole(session.user.id);
+        setIsAdmin(false);
+        setIsRoleLoading(true);
+        setTimeout(() => {
+          checkAdminRole(session.user.id).finally(() => setIsRoleLoading(false));
+        }, 0);
+      } else {
+        setIsAdmin(false);
+        setIsRoleLoading(false);
       }
+
+      setIsLoading(false);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        setIsAdmin(false);
+        setIsRoleLoading(true);
+        setTimeout(() => {
+          checkAdminRole(session.user.id).finally(() => setIsRoleLoading(false));
+        }, 0);
+      } else {
+        setIsAdmin(false);
+        setIsRoleLoading(false);
+      }
+
       setIsLoading(false);
     });
 
@@ -91,6 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     setIsAdmin(false);
+    setIsRoleLoading(false);
   };
 
   return (
@@ -100,6 +112,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         session,
         isLoading,
         isAdmin,
+        isRoleLoading,
         signUp,
         signIn,
         signOut,
