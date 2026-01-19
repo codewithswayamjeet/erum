@@ -33,18 +33,17 @@ import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
 import { resolveImageUrl } from '@/lib/imageUtils';
 
-const CATEGORIES = ['Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants', 'Bangles'];
+const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
 const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
 
 // Sub-categories per main category
 const SUB_CATEGORIES: Record<string, string[]> = {
-  Rings: ['Engagement', 'Wedding Bands', 'Eternity', 'Statement', 'Cocktail', 'Stackable'],
-  Necklaces: ['Pendants', 'Chains', 'Chokers', 'Layered', 'Statement'],
-  Earrings: ['Studs', 'Drops', 'Hoops', 'Chandeliers', 'Huggies'],
-  Bracelets: ['Tennis', 'Charm', 'Cuff', 'Chain', 'Bangle'],
-  Pendants: ['Solitaire', 'Halo', 'Cluster', 'Heart', 'Cross'],
-  Bangles: ['Classic', 'Diamond', 'Stackable', 'Hinged'],
+  'Rings': ['Engagement Rings', 'Wedding Bands', 'Eternity Rings'],
+  'Earrings & Studs': ['Diamond Studs', 'Drop Earrings'],
+  'Bracelets & Bangles': ['Tennis Bracelets', 'Bangles'],
+  'Necklaces': ['Pendants', 'Chains', 'Chokers', 'Layered', 'Statement'],
+  'Pendants': ['Solitaire', 'Halo', 'Cluster', 'Heart', 'Cross'],
 };
 
 const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
