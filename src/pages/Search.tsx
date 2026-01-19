@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import ProductCard from '@/components/ProductCard';
 import { useProducts } from '@/hooks/useProducts';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 const categories = ['All', 'Rings', 'Necklaces', 'Earrings', 'Bracelets'];
 const materials = ['All', '18K Yellow Gold', '18K White Gold', '18K Rose Gold', 'Platinum'];
@@ -192,7 +193,7 @@ const Search = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.images[0] || '/placeholder.svg'}
+                  image={resolveImageUrl(product.images[0])}
                   category={product.category}
                 />
               ))}

@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useProduct, useProducts } from '@/hooks/useProducts';
 import { getProductReviews, getProductRating } from '@/data/reviews';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { resolveImageUrl, resolveImageUrls } from '@/lib/imageUtils';
 
 // Size options by category
 const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12'];
@@ -110,14 +111,14 @@ const ProductDetail = () => {
         id: product.id,
         name: product.name,
         price: Number(product.price),
-        image: product.images[0] || '/placeholder.svg',
+        image: resolveImageUrl(product.images[0]) || '/placeholder.svg',
         size: selectedSize || undefined,
       });
     }
     toast({ title: 'Added to Cart', description: `${product.name}${selectedSize ? ` (Size: ${selectedSize})` : ''} has been added to your cart.` });
   };
 
-  const images = product.images.length > 0 ? product.images : ['/placeholder.svg'];
+  const images = resolveImageUrls(product.images).length > 0 ? resolveImageUrls(product.images) : ['/placeholder.svg'];
   const filteredRelated = relatedProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   const productDetails = [
@@ -247,7 +248,7 @@ const ProductDetail = () => {
             </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {filteredRelated.map((prod) => (
-                <ProductCard key={prod.id} id={prod.id} name={prod.name} price={Number(prod.price)} image={prod.images[0] || '/placeholder.svg'} category={prod.category} />
+                <ProductCard key={prod.id} id={prod.id} name={prod.name} price={Number(prod.price)} image={resolveImageUrl(prod.images[0])} category={prod.category} />
               ))}
             </div>
           </div>

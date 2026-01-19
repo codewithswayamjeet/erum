@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useProducts } from '@/hooks/useProducts';
 import { useShopifyProducts } from '@/hooks/useShopifyProducts';
 import { Loader2 } from 'lucide-react';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 interface UnifiedProduct {
   id: string;
@@ -49,7 +50,7 @@ const UnifiedProductGrid = ({
       id: p.id,
       name: p.name,
       price: Number(p.price),
-      image: p.images?.[0] || '/placeholder.svg',
+      image: resolveImageUrl(p.images?.[0]),
       category: p.category,
       source: 'local' as const,
     })),

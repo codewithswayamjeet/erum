@@ -5,6 +5,7 @@ import { ChevronDown, Package, SlidersHorizontal, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
+import { resolveImageUrl } from "@/lib/imageUtils";
 
 import collectionRings from "@/assets/collection-rings.jpg";
 import collectionNecklaces from "@/assets/collection-necklaces.jpg";
@@ -303,7 +304,7 @@ export default function LocalCollection() {
                       id={p.id}
                       name={p.name}
                       price={Number(p.price)}
-                      image={p.images?.[0] || "/placeholder.svg"}
+                      image={resolveImageUrl(p.images?.[0])}
                       category={p.category}
                     />
                   ))}

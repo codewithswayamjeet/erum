@@ -22,6 +22,7 @@ import { Label } from '@/components/ui/label';
 import { Search, Package, AlertTriangle, CheckCircle, RefreshCw, Edit2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 interface Product {
   id: string;
@@ -200,7 +201,7 @@ const AdminInventory = () => {
                           <div className="flex items-center gap-3">
                             {product.images?.[0] ? (
                               <img 
-                                src={product.images[0]} 
+                                src={resolveImageUrl(product.images[0])} 
                                 alt={product.name}
                                 className="w-10 h-10 object-cover rounded"
                               />

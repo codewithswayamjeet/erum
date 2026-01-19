@@ -4,6 +4,7 @@ import { useShopifyProducts } from '@/hooks/useShopifyProducts';
 import { useProducts } from '@/hooks/useProducts';
 import ProductCard from '@/components/ProductCard';
 import ShopifyProductCard from './ShopifyProductCard';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 interface ShopifyProductGridProps {
   title?: string;
@@ -86,7 +87,7 @@ const ShopifyProductGrid = ({
                   id={p.id}
                   name={p.name}
                   price={Number(p.price)}
-                  image={p.images?.[0] || '/placeholder.svg'}
+                  image={resolveImageUrl(p.images?.[0])}
                   category={p.category}
                 />
               ))}

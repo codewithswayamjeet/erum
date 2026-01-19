@@ -4,7 +4,7 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
-
+import { resolveImageUrl } from '@/lib/imageUtils';
 interface ProductCardProps {
   id: string;
   name: string;
@@ -49,7 +49,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
       <Link to={`/product/${id}`} className="block">
         <div className="image-zoom aspect-square bg-secondary mb-4 overflow-hidden relative">
           <img
-            src={image}
+            src={resolveImageUrl(image)}
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
