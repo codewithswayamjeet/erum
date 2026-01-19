@@ -80,6 +80,8 @@ export type Database = {
       products: {
         Row: {
           category: string
+          certification_number: string | null
+          certification_type: string | null
           created_at: string
           description: string | null
           id: string
@@ -94,11 +96,14 @@ export type Database = {
           slug: string
           stock: number | null
           stone: string | null
+          sub_category: string | null
           updated_at: string
           weight: string | null
         }
         Insert: {
           category: string
+          certification_number?: string | null
+          certification_type?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -113,11 +118,14 @@ export type Database = {
           slug: string
           stock?: number | null
           stone?: string | null
+          sub_category?: string | null
           updated_at?: string
           weight?: string | null
         }
         Update: {
           category?: string
+          certification_number?: string | null
+          certification_type?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -132,6 +140,7 @@ export type Database = {
           slug?: string
           stock?: number | null
           stone?: string | null
+          sub_category?: string | null
           updated_at?: string
           weight?: string | null
         }
