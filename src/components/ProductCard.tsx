@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
@@ -13,7 +14,7 @@ interface ProductCardProps {
   category?: string;
 }
 
-const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => {
+const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ id, name, price, image, category }, ref) => {
   const { user } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { toast } = useToast();
@@ -40,6 +41,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
 
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -49,12 +51,13 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
       <Link to={`/product/${id}`} className="block">
         <div className="image-zoom aspect-square bg-secondary mb-4 overflow-hidden relative">
           <img
-            src={image}
+            src={image || '/placeholder.svg'}
             alt={name}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              if (target.src !== '/placeholder.svg') {
+              if (target.src !== '/placeholder.svg' && !target.src.endsWith('/placeholder.svg')) {
                 target.src = '/placeholder.svg';
               }
             }}
@@ -84,6 +87,8 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
       </Link>
     </motion.div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;
