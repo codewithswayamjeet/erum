@@ -76,6 +76,38 @@ const Checkout = () => {
     };
 
     const { data, error } = await supabase.from('orders').insert([orderData]).select().single();
+    
+    // Send order confirmation email
+    if (data && !error) {
+      try {
+        await supabase.functions.invoke('send-order-confirmation', {
+          body: {
+            orderId: data.id,
+            customerName: `${formData.firstName} ${formData.lastName}`,
+            customerEmail: formData.email || user.email,
+            customerPhone: formData.phone,
+            shippingAddress: formData.address,
+            shippingCity: formData.city,
+            shippingState: formData.state,
+            shippingPincode: formData.pincode,
+            items: cartItems.map(item => ({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              image: item.image,
+            })),
+            subtotal: cartTotal,
+            total: cartTotal,
+            paymentMethod: paymentDetails?.paymentId ? 'Razorpay' : 'PayPal',
+          },
+        });
+        console.log('Order confirmation email sent');
+      } catch (emailError) {
+        console.error('Failed to send order confirmation email:', emailError);
+      }
+    }
+    
     return { data, error };
   };
 
