@@ -123,6 +123,7 @@ const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProp
         clientId: PAYPAL_CLIENT_ID,
         currency: 'USD',
         intent: 'capture',
+        components: 'buttons',
       }}
     >
       <PayPalButtons
