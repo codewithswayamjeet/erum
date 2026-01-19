@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
+import nodemailer from "nodemailer";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -87,41 +87,33 @@ const handler = async (req: Request): Promise<Response> => {
     `;
 
     if (gmailAppPassword) {
-      const client = new SmtpClient();
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: senderEmail,
+          pass: gmailAppPassword,
+        },
+      });
 
-      try {
-        await client.connectTLS({
-          hostname: "smtp.gmail.com",
-          port: 465,
-          username: senderEmail,
-          password: gmailAppPassword,
-        });
+      // Send notification to admin
+      await transporter.sendMail({
+        from: `"ERUM Jewelry" <${senderEmail}>`,
+        to: adminEmail,
+        subject: subject,
+        html: htmlContent,
+      });
+      console.log("Admin notification email sent");
 
-        // Send notification to admin
-        await client.send({
-          from: senderEmail,
-          to: adminEmail,
-          subject: subject,
-          content: "Please view this email in an HTML-compatible client.",
-          html: htmlContent,
-        });
-        console.log("Admin notification email sent");
-
-        // Send confirmation to user
-        await client.send({
-          from: senderEmail,
-          to: email,
-          subject: `Thank you for contacting ERUM Jewelry`,
-          content: "Please view this email in an HTML-compatible client.",
-          html: userConfirmationHtml,
-        });
-        console.log("User confirmation email sent to:", email);
-
-        await client.close();
-      } catch (smtpError) {
-        console.error("SMTP error:", smtpError);
-        throw new Error(`SMTP error: ${smtpError instanceof Error ? smtpError.message : 'Unknown SMTP error'}`);
-      }
+      // Send confirmation to user
+      await transporter.sendMail({
+        from: `"ERUM Jewelry" <${senderEmail}>`,
+        to: email,
+        subject: `Thank you for contacting ERUM Jewelry`,
+        html: userConfirmationHtml,
+      });
+      console.log("User confirmation email sent to:", email);
     } else {
       console.log("GMAIL_APP_PASSWORD not configured. Email logged but not sent.");
       console.log("Email content:", htmlContent);
