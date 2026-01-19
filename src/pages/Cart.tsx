@@ -32,7 +32,17 @@ const Cart = () => {
             <div className="lg:col-span-2 space-y-6">
               {cartItems.map((item, index) => (
                 <motion.div key={`${item.id}-${item.size || index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-6 p-6 bg-secondary border border-border">
-                  <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-24 h-24 object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target.src !== '/placeholder.svg') {
+                        target.src = '/placeholder.svg';
+                      }
+                    }}
+                  />
                   <div className="flex-1">
                     <div className="flex justify-between">
                       <div>
