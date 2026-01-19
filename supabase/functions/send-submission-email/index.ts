@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,7 +17,6 @@ interface SubmissionEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -26,83 +26,105 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Sending submission notification email for:", name, email);
 
-    // For now, we'll use a simple fetch to an email API
-    // You can configure Resend or another email provider with RESEND_API_KEY
-    const emailBody = `
-New ${submission_type === 'bespoke' ? 'Bespoke Consultation' : 'Contact'} Submission
+    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+    const senderEmail = "erumshopify19@gmail.com";
+    const adminEmail = "erumshopify19@gmail.com";
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone || 'Not provided'}
-
-Message:
-${message}
-
-${design_image_url ? `Design Image: ${design_image_url}` : 'No design image uploaded'}
-
----
-This is an automated notification from ERUM Jewelry website.
-    `.trim();
-
-    // Log the email content for now (can be replaced with actual email sending)
-    console.log("Email content:", emailBody);
-
-    // If RESEND_API_KEY is configured, send via Resend
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    const subject = `New ${submission_type === 'bespoke' ? 'Bespoke Request' : 'Contact Message'} from ${name}`;
     
-    if (resendApiKey) {
-      const emailResponse = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "ERUM Jewelry <onboarding@resend.dev>",
-          to: ["Contact@erum.in"],
-          subject: `New ${submission_type === 'bespoke' ? 'Bespoke Request' : 'Contact Message'} from ${name}`,
-          text: emailBody,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">
-                New ${submission_type === 'bespoke' ? 'Bespoke Consultation Request' : 'Contact Message'}
-              </h2>
-              <table style="width: 100%; margin: 20px 0;">
-                <tr>
-                  <td style="padding: 10px 0; font-weight: bold; color: #666;">Name:</td>
-                  <td style="padding: 10px 0;">${name}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px 0; font-weight: bold; color: #666;">Email:</td>
-                  <td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px 0; font-weight: bold; color: #666;">Phone:</td>
-                  <td style="padding: 10px 0;">${phone || 'Not provided'}</td>
-                </tr>
-              </table>
-              <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="margin: 0 0 10px 0; color: #333;">Message:</h3>
-                <p style="margin: 0; white-space: pre-wrap;">${message}</p>
-              </div>
-              ${design_image_url ? `
-                <div style="margin: 20px 0;">
-                  <h3 style="color: #333;">Design Image:</h3>
-                  <img src="${design_image_url}" alt="Design" style="max-width: 100%; border-radius: 8px;" />
-                </div>
-              ` : ''}
-              <p style="color: #999; font-size: 12px; margin-top: 30px;">
-                This is an automated notification from ERUM Jewelry website.
-              </p>
-            </div>
-          `,
-        }),
-      });
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">
+          New ${submission_type === 'bespoke' ? 'Bespoke Consultation Request' : 'Contact Message'}
+        </h2>
+        <table style="width: 100%; margin: 20px 0;">
+          <tr>
+            <td style="padding: 10px 0; font-weight: bold; color: #666;">Name:</td>
+            <td style="padding: 10px 0;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; font-weight: bold; color: #666;">Email:</td>
+            <td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; font-weight: bold; color: #666;">Phone:</td>
+            <td style="padding: 10px 0;">${phone || 'Not provided'}</td>
+          </tr>
+        </table>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin: 0 0 10px 0; color: #333;">Message:</h3>
+          <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+        </div>
+        ${design_image_url ? `
+          <div style="margin: 20px 0;">
+            <h3 style="color: #333;">Design Image:</h3>
+            <img src="${design_image_url}" alt="Design" style="max-width: 100%; border-radius: 8px;" />
+          </div>
+        ` : ''}
+        <p style="color: #999; font-size: 12px; margin-top: 30px;">
+          This is an automated notification from ERUM Jewelry website.
+        </p>
+      </div>
+    `;
 
-      const emailResult = await emailResponse.json();
-      console.log("Email sent via Resend:", emailResult);
+    const userConfirmationHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">
+          Thank You for Contacting ERUM Jewelry
+        </h2>
+        <p>Dear ${name},</p>
+        <p>We have received your ${submission_type === 'bespoke' ? 'bespoke consultation request' : 'message'} and our team will get back to you within 24 hours.</p>
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin: 0 0 10px 0; color: #333;">Your Message:</h3>
+          <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+        </div>
+        <p>Best regards,<br/>The ERUM Jewelry Team</p>
+        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+        <p style="color: #999; font-size: 12px;">
+          ERUM Jewelry | Contact: erumshopify19@gmail.com
+        </p>
+      </div>
+    `;
+
+    if (gmailAppPassword) {
+      const client = new SmtpClient();
+
+      try {
+        await client.connectTLS({
+          hostname: "smtp.gmail.com",
+          port: 465,
+          username: senderEmail,
+          password: gmailAppPassword,
+        });
+
+        // Send notification to admin
+        await client.send({
+          from: senderEmail,
+          to: adminEmail,
+          subject: subject,
+          content: "Please view this email in an HTML-compatible client.",
+          html: htmlContent,
+        });
+        console.log("Admin notification email sent");
+
+        // Send confirmation to user
+        await client.send({
+          from: senderEmail,
+          to: email,
+          subject: `Thank you for contacting ERUM Jewelry`,
+          content: "Please view this email in an HTML-compatible client.",
+          html: userConfirmationHtml,
+        });
+        console.log("User confirmation email sent to:", email);
+
+        await client.close();
+      } catch (smtpError) {
+        console.error("SMTP error:", smtpError);
+        throw new Error(`SMTP error: ${smtpError instanceof Error ? smtpError.message : 'Unknown SMTP error'}`);
+      }
     } else {
-      console.log("RESEND_API_KEY not configured. Email logged but not sent.");
+      console.log("GMAIL_APP_PASSWORD not configured. Email logged but not sent.");
+      console.log("Email content:", htmlContent);
     }
 
     return new Response(

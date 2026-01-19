@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
 import AffiliationsSection from '@/components/AffiliationsSection';
-import heroImage from '@/assets/hero-model-jewelry.jpg';
+import heroImage from '@/assets/hero-jewelry-only.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
 import collectionNecklaces from '@/assets/collection-necklaces.jpg';
 import collectionEarrings from '@/assets/collection-earrings.jpg';
@@ -250,7 +250,7 @@ const Index = () => {
       {/* Bespoke CTA */}
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="Bespoke jewelry" className="w-full h-full object-cover" />
+          <img src={aboutImage} alt="Bespoke jewelry craftsmanship" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-foreground/70" />
         </div>
         

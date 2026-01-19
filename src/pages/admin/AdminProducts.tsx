@@ -35,6 +35,17 @@ import { resolveImageUrl } from '@/lib/imageUtils';
 
 const CATEGORIES = ['Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants', 'Bangles'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
+const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
+
+// Sub-categories per main category
+const SUB_CATEGORIES: Record<string, string[]> = {
+  Rings: ['Engagement', 'Wedding Bands', 'Eternity', 'Statement', 'Cocktail', 'Stackable'],
+  Necklaces: ['Pendants', 'Chains', 'Chokers', 'Layered', 'Statement'],
+  Earrings: ['Studs', 'Drops', 'Hoops', 'Chandeliers', 'Huggies'],
+  Bracelets: ['Tennis', 'Charm', 'Cuff', 'Chain', 'Bangle'],
+  Pendants: ['Solitaire', 'Halo', 'Cluster', 'Heart', 'Cross'],
+  Bangles: ['Classic', 'Diamond', 'Stackable', 'Hinged'],
+};
 
 const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
 const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
@@ -63,6 +74,7 @@ const emptyProduct = {
   price: 0,
   original_price: 0,
   category: '',
+  sub_category: '',
   material: '',
   stone: '',
   weight: '',
@@ -70,6 +82,8 @@ const emptyProduct = {
   is_featured: false,
   is_bestseller: false,
   stock: 10,
+  certification_type: '',
+  certification_number: '',
 };
 
 const AdminProducts = () => {
@@ -110,7 +124,7 @@ const AdminProducts = () => {
       .replace(/(^-|-$)/g, '');
   };
 
-  const handleOpenDialog = (product?: Product) => {
+  const handleOpenDialog = (product?: any) => {
     if (product) {
       setEditingProduct(product);
       setFormData({
@@ -121,6 +135,7 @@ const AdminProducts = () => {
         price: product.price,
         original_price: product.original_price || 0,
         category: product.category,
+        sub_category: product.sub_category || '',
         material: product.material || '',
         stone: product.stone || '',
         weight: product.weight || '',
@@ -128,6 +143,8 @@ const AdminProducts = () => {
         is_featured: product.is_featured || false,
         is_bestseller: product.is_bestseller || false,
         stock: product.stock || 0,
+        certification_type: product.certification_type || '',
+        certification_number: product.certification_number || '',
       });
     } else {
       setEditingProduct(null);
@@ -303,7 +320,7 @@ const AdminProducts = () => {
                     <Label htmlFor="category">Category *</Label>
                     <Select
                       value={formData.category}
-                      onValueChange={(value) => setFormData({ ...formData, category: value })}
+                      onValueChange={(value) => setFormData({ ...formData, category: value, sub_category: '' })}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
@@ -315,6 +332,26 @@ const AdminProducts = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="sub_category">Sub-Category</Label>
+                    <Select
+                      value={formData.sub_category}
+                      onValueChange={(value) => setFormData({ ...formData, sub_category: value })}
+                      disabled={!formData.category}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sub-category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {(SUB_CATEGORIES[formData.category] || []).map((sub) => (
+                          <SelectItem key={sub} value={sub}>{sub}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="material">Material</Label>
                     <Select
@@ -331,7 +368,40 @@ const AdminProducts = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="certification_type">Certification</Label>
+                    <Select
+                      value={formData.certification_type}
+                      onValueChange={(value) => setFormData({ ...formData, certification_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select certification" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CERTIFICATION_TYPES.map((cert) => (
+                          <SelectItem key={cert} value={cert}>{cert}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
+
+                {formData.certification_type && formData.certification_type !== 'None' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="certification_number">Certificate Number</Label>
+                    <Input
+                      id="certification_number"
+                      value={formData.certification_number}
+                      onChange={(e) => setFormData({ ...formData, certification_number: e.target.value })}
+                      placeholder="Enter GIA/IGI certificate number"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {formData.certification_type === 'GIA' 
+                        ? 'Verify at: https://www.gia.edu/report-data-services'
+                        : 'Verify at: https://api.igi.org/'}
+                    </p>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
