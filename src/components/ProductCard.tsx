@@ -1,4 +1,3 @@
-import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
@@ -14,7 +13,7 @@ interface ProductCardProps {
   category?: string;
 }
 
-const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ id, name, price, image, category }, ref) => {
+const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => {
   const { user } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { toast } = useToast();
@@ -41,7 +40,6 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ id, name, pr
 
   return (
     <motion.div
-      ref={ref}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -87,8 +85,6 @@ const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(({ id, name, pr
       </Link>
     </motion.div>
   );
-});
-
-ProductCard.displayName = 'ProductCard';
+};
 
 export default ProductCard;
