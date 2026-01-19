@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Product } from '@/hooks/useProducts';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -107,7 +108,7 @@ const Wishlist = () => {
                   id={product.id}
                   name={product.name}
                   price={Number(product.price)}
-                  image={product.images[0] || '/placeholder.svg'}
+                  image={resolveImageUrl(product.images[0])}
                   category={product.category}
                 />
               ))}

@@ -31,6 +31,7 @@ import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon } from 'luc
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
+import { resolveImageUrl } from '@/lib/imageUtils';
 
 const CATEGORIES = ['Rings', 'Necklaces', 'Earrings', 'Bracelets', 'Pendants', 'Bangles'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
@@ -570,7 +571,7 @@ const AdminProducts = () => {
                     <TableRow key={product.id}>
                       <TableCell>
                         <img
-                          src={product.images?.[0] || '/placeholder.svg'}
+                          src={resolveImageUrl(product.images?.[0])}
                           alt={product.name}
                           className="w-12 h-12 object-cover rounded"
                         />
