@@ -32,7 +32,7 @@ export const usePageCategories = (category?: string) => {
       .order('display_order', { ascending: true });
 
     if (category) {
-      query = query.eq('category', category);
+      query = query.ilike('category', category);
     }
 
     const { data, error } = await query;
