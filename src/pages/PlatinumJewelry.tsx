@@ -171,6 +171,7 @@ const PlatinumJewelry = () => {
           title="Platinum Collection" 
           subtitle="Natural Diamond Jewelry"
           limit={12}
+          query="product_type:platinum"
         />
       </section>
 
