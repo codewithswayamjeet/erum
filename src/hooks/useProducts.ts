@@ -10,6 +10,7 @@ export interface Product {
   price: number;
   original_price: number | null;
   category: string;
+  sub_category: string | null;
   material: string | null;
   stone: string | null;
   weight: string | null;
@@ -22,6 +23,7 @@ export interface Product {
 
 interface UseProductsOptions {
   category?: string;
+  subCategory?: string;
   featured?: boolean;
   bestseller?: boolean;
   search?: string;
@@ -37,7 +39,7 @@ export const useProducts = (options: UseProductsOptions = {}) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [options.category, options.featured, options.bestseller, options.search, options.minPrice, options.maxPrice, options.material]);
+  }, [options.category, options.subCategory, options.featured, options.bestseller, options.search, options.minPrice, options.maxPrice, options.material]);
 
   const fetchProducts = async () => {
     setIsLoading(true);
@@ -51,7 +53,9 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     if (options.category) {
       query = query.ilike('category', options.category);
     }
-    if (options.featured) {
+    if (options.subCategory) {
+      query = query.ilike('sub_category', `%${options.subCategory}%`);
+    }
       query = query.eq('is_featured', true);
     }
     if (options.bestseller) {

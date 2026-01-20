@@ -322,26 +322,6 @@ const Contact = () => {
       {/* Affiliations */}
       <AffiliationsSection />
 
-      {/* Quick Links */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <h2 className="font-serif text-2xl mb-8">Quick Links</h2>
-            <div className="flex flex-wrap justify-center gap-6">
-              <a href="/" className="text-muted-foreground hover:text-primary transition-colors">Home</a>
-              <a href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</a>
-              <a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a>
-              <a href="/ring-size-guide" className="text-muted-foreground hover:text-primary transition-colors">Ring Size Guide</a>
-              <a href="https://www.gia.edu/retailer-lookup" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">GIA Retailer Lookup</a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </Layout>
   );
 };

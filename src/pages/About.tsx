@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import aboutImage from '@/assets/about-craftsmanship.jpg';
-import heroImage from '@/assets/hero-jewellery.jpg';
+import heroImage from '@/assets/our-heritage.jpg';
+
 const About = () => {
   return <Layout>
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImage} alt="ERUM craftsmanship" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-foreground/50" />
+          <img src={heroImage} alt="ERUM heritage" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-foreground/55" />
         </div>
         <div className="relative z-10 text-center px-6">
           <motion.p initial={{
@@ -21,7 +21,7 @@ const About = () => {
         }} transition={{
           duration: 0.8
         }} className="text-background/80 text-sm tracking-luxury uppercase mb-4">
-            Our Story
+            Our Heritage
           </motion.p>
           <motion.h1 initial={{
           opacity: 0,

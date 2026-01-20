@@ -59,14 +59,14 @@ const collectionInfo: Record<
     description:
       "From delicate studs to dramatic chandeliers — the perfect finishing touch for every occasion.",
     heroImage: collectionEarrings,
-    category: "Earrings",
+    category: "Earrings & Studs",
   },
   bracelets: {
     title: "Bracelets",
     description:
       "Graceful expressions of refined taste — bracelets designed to adorn your wrist with timeless elegance.",
     heroImage: collectionBracelets,
-    category: "Bracelets",
+    category: "Bracelets & Bangles",
   },
 };
 
@@ -85,7 +85,9 @@ export default function LocalCollection() {
   const typeKeyword = searchParams.get("type")?.trim() || "";
 
   const { products, isLoading, error } = useProducts(
-    config.category ? { category: config.category } : {}
+    config.category || typeKeyword
+      ? { category: config.category, subCategory: typeKeyword || undefined }
+      : {}
   );
 
   const filteredProducts = useMemo(() => {
@@ -94,7 +96,7 @@ export default function LocalCollection() {
     if (typeKeyword) {
       const kw = typeKeyword.toLowerCase();
       list = list.filter((p) => {
-        const hay = `${p.name} ${p.slug} ${p.short_description ?? ""} ${p.description ?? ""}`.toLowerCase();
+        const hay = `${p.name} ${p.slug} ${p.short_description ?? ""} ${p.description ?? ""} ${p.sub_category ?? ""}`.toLowerCase();
         return hay.includes(kw);
       });
     }

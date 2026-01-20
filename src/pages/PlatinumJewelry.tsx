@@ -6,10 +6,10 @@ import platinumHero from '@/assets/platinum-hero.jpg';
 
 const PlatinumJewelry = () => {
   const categories = [
-    { name: 'Rings', count: 'Platinum Bands & Solitaires', href: '/collections?category=Rings' },
-    { name: 'Earrings', count: 'Studs & Drops', href: '/collections?category=Earrings' },
-    { name: 'Necklaces', count: 'Pendants & Chains', href: '/collections?category=Necklaces' },
-    { name: 'Bracelets', count: 'Tennis & Bangles', href: '/collections?category=Bracelets' },
+    { name: 'Rings', count: 'Platinum Bands & Solitaires', href: '/collections/rings?type=wedding' },
+    { name: 'Earrings', count: 'Studs & Drops', href: '/collections/earrings?type=studs' },
+    { name: 'Necklaces', count: 'Pendants & Chains', href: '/collections/necklaces?type=pendants' },
+    { name: 'Bracelets', count: 'Tennis & Bangles', href: '/collections/bracelets?type=tennis' },
   ];
 
   const features = [
