@@ -186,6 +186,7 @@ const HipHopJewelry = () => {
           title="Natural Diamond Collection" 
           subtitle="Featured Pieces"
           limit={12}
+          query="product_type:hiphop"
         />
       </section>
 

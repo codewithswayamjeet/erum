@@ -34,6 +34,7 @@ import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminReports from "./pages/admin/AdminReports";
 import AdminSubmissions from "./pages/admin/AdminSubmissions";
 import AdminImageScanner from "./pages/admin/AdminImageScanner";
+import AdminPageControls from "./pages/admin/AdminPageControls";
 import RefundPolicy from "./pages/RefundPolicy";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
@@ -79,6 +80,7 @@ const App = () => (
                 <Route path="/admin/reports" element={<AdminReports />} />
                 <Route path="/admin/submissions" element={<AdminSubmissions />} />
                 <Route path="/admin/images" element={<AdminImageScanner />} />
+                <Route path="/admin/page-controls" element={<AdminPageControls />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />

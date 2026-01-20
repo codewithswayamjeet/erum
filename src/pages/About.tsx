@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Diamond, Award, Heart, Sparkles, Globe, Shield, Star, Gem } from 'lucide-react';
 import Layout from '@/components/Layout';
-import heroImage from '@/assets/our-heritage.jpg';
 import craftImage from '@/assets/about-craftsmanship.jpg';
 
 const About = () => {
@@ -70,29 +69,47 @@ const About = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[700px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroImage} alt="ERUM heritage" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/50 to-foreground/80" />
+      {/* Hero Section - No background image, pure design */}
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-foreground via-foreground to-foreground/95">
+        {/* Decorative grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(to right, hsl(var(--background)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--background)) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }} />
         </div>
         
         {/* Floating diamond shapes */}
         <motion.div
-          animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
+          animate={{ y: [0, -20, 0], rotate: [45, 50, 45] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-20 left-10 w-20 h-20 border border-primary/30 rotate-45 hidden lg:block"
         />
         <motion.div
-          animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
+          animate={{ y: [0, 20, 0], rotate: [45, 40, 45] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-32 right-16 w-32 h-32 border border-primary/20 rotate-45 hidden lg:block"
         />
         <motion.div
-          animate={{ scale: [1, 1.1, 1] }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-40 right-20 w-4 h-4 bg-primary/40 rotate-45 hidden lg:block"
+          className="absolute top-40 right-20 w-4 h-4 bg-primary rotate-45 hidden lg:block"
         />
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-40 left-20 w-6 h-6 bg-primary/60 rotate-45 hidden lg:block"
+        />
+        
+        {/* Large decorative diamond outline */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 0.05, scale: 1 }}
+            transition={{ duration: 2 }}
+            className="w-[600px] h-[600px] border border-primary rotate-45"
+          />
+        </div>
 
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           <motion.div

@@ -22,6 +22,8 @@ const parseFallbackCategory = (query?: string): string | undefined => {
   if (raw.startsWith('necklace')) return 'Necklaces';
   if (raw.startsWith('earring')) return 'Earrings & Studs';
   if (raw.startsWith('bracelet')) return 'Bracelets & Bangles';
+  if (raw === 'platinum') return 'Platinum';
+  if (raw === 'hiphop' || raw === 'hip-hop') return 'Hip Hop';
   return undefined;
 };
 

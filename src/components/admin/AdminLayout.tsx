@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, Lock, ScanSearch } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, Lock, ScanSearch, Settings2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -73,6 +73,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/inventory', icon: Boxes, label: 'Inventory' },
     { path: '/admin/customers', icon: Users, label: 'Customers' },
     { path: '/admin/submissions', icon: MessageSquare, label: 'Submissions' },
+    { path: '/admin/page-controls', icon: Settings2, label: 'Page Controls' },
     { path: '/admin/images', icon: ScanSearch, label: 'Image Scanner' },
     { path: '/admin/reports', icon: FileBarChart, label: 'Reports' },
   ];
