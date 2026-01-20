@@ -56,6 +56,7 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     if (options.subCategory) {
       query = query.ilike('sub_category', `%${options.subCategory}%`);
     }
+    if (options.featured) {
       query = query.eq('is_featured', true);
     }
     if (options.bestseller) {
