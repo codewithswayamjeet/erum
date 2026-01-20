@@ -88,11 +88,14 @@ export type Database = {
           images: string[] | null
           is_bestseller: boolean | null
           is_featured: boolean | null
+          karat: string | null
           material: string | null
+          metal_type: string | null
           name: string
           original_price: number | null
           price: number
           short_description: string | null
+          size: string | null
           slug: string
           stock: number | null
           stone: string | null
@@ -110,11 +113,14 @@ export type Database = {
           images?: string[] | null
           is_bestseller?: boolean | null
           is_featured?: boolean | null
+          karat?: string | null
           material?: string | null
+          metal_type?: string | null
           name: string
           original_price?: number | null
           price: number
           short_description?: string | null
+          size?: string | null
           slug: string
           stock?: number | null
           stone?: string | null
@@ -132,11 +138,14 @@ export type Database = {
           images?: string[] | null
           is_bestseller?: boolean | null
           is_featured?: boolean | null
+          karat?: string | null
           material?: string | null
+          metal_type?: string | null
           name?: string
           original_price?: number | null
           price?: number
           short_description?: string | null
+          size?: string | null
           slug?: string
           stock?: number | null
           stone?: string | null
