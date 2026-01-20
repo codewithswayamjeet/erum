@@ -20,8 +20,8 @@ const parseFallbackCategory = (query?: string): string | undefined => {
   const raw = match[1].toLowerCase();
   if (raw.startsWith('ring')) return 'Rings';
   if (raw.startsWith('necklace')) return 'Necklaces';
-  if (raw.startsWith('earring')) return 'Earrings';
-  if (raw.startsWith('bracelet')) return 'Bracelets';
+  if (raw.startsWith('earring')) return 'Earrings & Studs';
+  if (raw.startsWith('bracelet')) return 'Bracelets & Bangles';
   return undefined;
 };
 

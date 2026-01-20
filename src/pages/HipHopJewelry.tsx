@@ -11,25 +11,25 @@ const HipHopJewelry = () => {
       title: 'Cuban Link Chains', 
       description: 'Heavy iced-out chains that command attention',
       icon: Crown,
-      href: '/collections?category=Necklaces'
+      href: '/collections/necklaces?type=chains'
     },
     { 
       title: 'Diamond Pendants', 
       description: 'Statement pieces dripping in brilliance',
       icon: Star,
-      href: '/collections?category=Necklaces'
+      href: '/collections/necklaces?type=pendants'
     },
     { 
       title: 'Diamond Rings', 
       description: 'Bold rings with VVS natural diamonds',
       icon: Zap,
-      href: '/collections?category=Rings'
+      href: '/collections/rings'
     },
     { 
       title: 'Tennis Chains', 
       description: 'Classic diamond tennis necklaces and bracelets',
       icon: Flame,
-      href: '/collections?category=Bracelets'
+      href: '/collections/bracelets?type=tennis'
     },
   ];
 
