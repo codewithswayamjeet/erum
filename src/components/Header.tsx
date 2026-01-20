@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag, Search, Heart, User, LogOut, Package, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useShopifyCartStore } from '@/stores/shopifyCartStore';
 import { ShopifyCartDrawer } from '@/components/ShopifyCartDrawer';
+import { useAllPageCategories } from '@/hooks/usePageCategories';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,6 +20,96 @@ const Header = () => {
   const { wishlistIds } = useWishlist();
   const shopifyCartItems = useShopifyCartStore(state => state.items);
   const shopifyCartCount = shopifyCartItems.reduce((sum, item) => sum + item.quantity, 0);
+  
+  // Fetch dynamic categories from database
+  const { categories: allCategories } = useAllPageCategories();
+
+  // Build dynamic mega menu from database categories
+  const megaMenuItems = useMemo(() => {
+    const categoryMap: Record<string, { sub_category: string }[]> = {};
+    
+    allCategories.forEach(cat => {
+      const key = cat.category;
+      if (!categoryMap[key]) {
+        categoryMap[key] = [];
+      }
+      categoryMap[key].push(cat);
+    });
+
+    const sections = [];
+    
+    // Rings
+    const ringsHandle = 'rings';
+    const ringsSubs = categoryMap['Rings'] || [];
+    sections.push({
+      title: 'Rings',
+      links: [
+        ...ringsSubs.map(sub => ({
+          name: sub.sub_category,
+          href: `/collections/${ringsHandle}?type=${encodeURIComponent(sub.sub_category.toLowerCase().replace(/\s+/g, '-'))}`
+        })),
+        { name: 'All Rings', href: '/collections/rings' }
+      ]
+    });
+
+    // Earrings
+    const earringsHandle = 'earrings';
+    const earringsSubs = categoryMap['Earrings & Studs'] || [];
+    sections.push({
+      title: 'Earrings & Studs',
+      links: [
+        ...earringsSubs.map(sub => ({
+          name: sub.sub_category,
+          href: `/collections/${earringsHandle}?type=${encodeURIComponent(sub.sub_category.toLowerCase().replace(/\s+/g, '-'))}`
+        })),
+        { name: 'All Earrings', href: '/collections/earrings' }
+      ]
+    });
+
+    // Bracelets
+    const braceletsHandle = 'bracelets';
+    const braceletsSubs = categoryMap['Bracelets & Bangles'] || [];
+    sections.push({
+      title: 'Bracelets & Bangles',
+      links: [
+        ...braceletsSubs.map(sub => ({
+          name: sub.sub_category,
+          href: `/collections/${braceletsHandle}?type=${encodeURIComponent(sub.sub_category.toLowerCase().replace(/\s+/g, '-'))}`
+        })),
+        { name: 'All Bracelets', href: '/collections/bracelets' }
+      ]
+    });
+
+    // Necklaces
+    const necklacesHandle = 'necklaces';
+    const necklacesSubs = categoryMap['Necklaces'] || [];
+    sections.push({
+      title: 'Necklaces & Pendants',
+      links: [
+        ...necklacesSubs.map(sub => ({
+          name: sub.sub_category,
+          href: `/collections/${necklacesHandle}?type=${encodeURIComponent(sub.sub_category.toLowerCase().replace(/\s+/g, '-'))}`
+        })),
+        { name: 'All Necklaces', href: '/collections/necklaces' }
+      ]
+    });
+
+    return {
+      'High Jewelry': { sections },
+      'About Us': {
+        sections: [
+          {
+            title: 'The House',
+            links: [
+              { name: 'Meet the Designer', href: '/about#designer' },
+              { name: 'Brand Promises', href: '/about#promises' },
+              { name: 'Our Heritage', href: '/about' },
+            ]
+          }
+        ]
+      }
+    };
+  }, [allCategories]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -30,58 +121,6 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [location]);
-
-  const megaMenuItems = {
-    'High Jewelry': {
-      sections: [
-        {
-          title: 'Rings',
-          links: [
-            { name: 'Engagement Rings', href: '/collections/rings?type=engagement' },
-            { name: 'Wedding Bands', href: '/collections/rings?type=wedding' },
-            { name: 'Eternity Rings', href: '/collections/rings?type=eternity' },
-            { name: 'All Rings', href: '/collections/rings' },
-          ]
-        },
-        {
-          title: 'Earrings & Studs',
-          links: [
-            { name: 'Diamond Studs', href: '/collections/earrings?type=studs' },
-            { name: 'Drop Earrings', href: '/collections/earrings?type=drop' },
-            { name: 'All Earrings', href: '/collections/earrings' },
-          ]
-        },
-        {
-          title: 'Bracelets & Bangles',
-          links: [
-            { name: 'Tennis Bracelets', href: '/collections/bracelets?type=tennis' },
-            { name: 'Bangles', href: '/collections/bracelets?type=bangles' },
-            { name: 'All Bracelets', href: '/collections/bracelets' },
-          ]
-        },
-        {
-          title: 'Necklaces & Pendants',
-          links: [
-            { name: 'Tennis Necklaces', href: '/collections/necklaces?type=tennis' },
-            { name: 'Pendants', href: '/collections/necklaces?type=pendants' },
-            { name: 'All Necklaces', href: '/collections/necklaces' },
-          ]
-        }
-      ]
-    },
-    'About Us': {
-      sections: [
-        {
-          title: 'The House',
-          links: [
-            { name: 'Meet the Designer', href: '/about#designer' },
-            { name: 'Brand Promises', href: '/about#promises' },
-            { name: 'Our Heritage', href: '/about' },
-          ]
-        }
-      ]
-    }
-  };
 
   const simpleLinks = [
     { name: 'Platinum Jewelry', href: '/platinum-jewelry' },

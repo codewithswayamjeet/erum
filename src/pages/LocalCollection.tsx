@@ -5,7 +5,6 @@ import { ChevronDown, Package, SlidersHorizontal, X } from "lucide-react";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
-import { usePageCategories } from "@/hooks/usePageCategories";
 import { resolveImageUrl } from "@/lib/imageUtils";
 
 import collectionRings from "@/assets/collection-rings.jpg";
@@ -84,9 +83,6 @@ export default function LocalCollection() {
   const [availabilityOnly, setAvailabilityOnly] = useState(false);
 
   const typeKeyword = searchParams.get("type")?.trim() || "";
-
-  // Fetch dynamic sub-categories for this collection
-  const { categories: subCategories } = usePageCategories(config.category);
 
   const { products, isLoading, error } = useProducts(
     config.category || typeKeyword
@@ -180,56 +176,6 @@ export default function LocalCollection() {
         </div>
       </section>
 
-      {/* Dynamic Sub-Categories from Page Controls */}
-      {subCategories.length > 0 && !typeKeyword && (
-        <section className="py-12 bg-secondary">
-          <div className="container mx-auto px-6 lg:px-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-8"
-            >
-              <h2 className="font-serif text-2xl md:text-3xl">Shop by Category</h2>
-            </motion.div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {subCategories.map((subCat, index) => (
-                <motion.div
-                  key={subCat.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                >
-                  <Link
-                    to={`/collections/${handle}?type=${encodeURIComponent(subCat.sub_category.toLowerCase().replace(/\s+/g, '-'))}`}
-                    className="group block bg-background border border-border hover:border-primary transition-all duration-300 overflow-hidden"
-                  >
-                    {subCat.thumbnail_url ? (
-                      <div className="aspect-[4/3] overflow-hidden">
-                        <img 
-                          src={subCat.thumbnail_url} 
-                          alt={subCat.sub_category}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                    ) : (
-                      <div className="aspect-[4/3] bg-muted flex items-center justify-center">
-                        <span className="text-4xl text-muted-foreground/30">💎</span>
-                      </div>
-                    )}
-                    <div className="p-4 text-center">
-                      <h3 className="font-serif text-lg group-hover:text-primary transition-colors">
-                        {subCat.sub_category}
-                      </h3>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <section className="py-10 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
