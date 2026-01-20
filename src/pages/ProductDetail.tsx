@@ -122,9 +122,12 @@ const ProductDetail = () => {
   const filteredRelated = relatedProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   const productDetails = [
-    { label: 'Metal', value: product.material },
+    { label: 'Material', value: product.material },
+    { label: 'Metal Type', value: product.metal_type },
+    { label: 'Karat', value: product.karat },
     { label: 'Stone', value: product.stone },
     { label: 'Weight', value: product.weight },
+    { label: 'Size', value: product.size },
   ].filter(d => d.value);
 
   return (
@@ -187,18 +190,18 @@ const ProductDetail = () => {
               )}
 
               {/* GIA/IGI Certification */}
-              {(product as any).certification_type && (product as any).certification_type !== 'None' && (product as any).certification_number && (
+              {product.certification_type && product.certification_type !== 'None' && product.certification_number && (
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-8">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Certification</p>
-                      <p className="font-semibold text-lg">{(product as any).certification_type} Certified</p>
-                      <p className="text-sm font-mono text-muted-foreground">#{(product as any).certification_number}</p>
+                      <p className="font-semibold text-lg">{product.certification_type} Certified</p>
+                      <p className="text-sm font-mono text-muted-foreground">#{product.certification_number}</p>
                     </div>
                     <a
-                      href={(product as any).certification_type === 'GIA' 
-                        ? `https://www.gia.edu/report-check-landing?reportno=${(product as any).certification_number}`
-                        : `https://www.igi.org/verify-your-report?r=${(product as any).certification_number}`}
+                      href={product.certification_type === 'GIA' 
+                        ? `https://www.gia.edu/report-check-landing?reportno=${product.certification_number}`
+                        : `https://www.igi.org/verify-your-report?r=${product.certification_number}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-primary hover:underline text-sm font-medium"

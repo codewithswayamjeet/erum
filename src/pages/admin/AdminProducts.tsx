@@ -27,7 +27,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon, CheckSquare, Square } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
@@ -95,6 +95,10 @@ const AdminProducts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isBulkEditOpen, setIsBulkEditOpen] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [bulkField, setBulkField] = useState('');
+  const [bulkValue, setBulkValue] = useState('');
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
   const [formData, setFormData] = useState(emptyProduct);
   const [isSaving, setIsSaving] = useState(false);
@@ -276,10 +280,93 @@ const AdminProducts = () => {
     }
   };
 
+  const toggleProductSelection = (productId: string) => {
+    setSelectedProducts(prev => 
+      prev.includes(productId) 
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedProducts.length === filteredProducts.length) {
+      setSelectedProducts([]);
+    } else {
+      setSelectedProducts(filteredProducts.map(p => p.id));
+    }
+  };
+
+  const handleBulkEdit = async () => {
+    if (!bulkField || !bulkValue || selectedProducts.length === 0) {
+      toast({ title: 'Error', description: 'Please select products and fill in field/value', variant: 'destructive' });
+      return;
+    }
+
+    setIsSaving(true);
+    const updateData: Record<string, any> = {};
+    
+    // Handle different field types
+    if (bulkField === 'price' || bulkField === 'original_price' || bulkField === 'stock') {
+      updateData[bulkField] = Number(bulkValue);
+    } else if (bulkField === 'is_featured' || bulkField === 'is_bestseller') {
+      updateData[bulkField] = bulkValue === 'true';
+    } else {
+      updateData[bulkField] = bulkValue;
+    }
+
+    const { error } = await supabase
+      .from('products')
+      .update(updateData)
+      .in('id', selectedProducts);
+
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Success', description: `${selectedProducts.length} products updated` });
+      setIsBulkEditOpen(false);
+      setSelectedProducts([]);
+      setBulkField('');
+      setBulkValue('');
+      fetchProducts();
+    }
+    setIsSaving(false);
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedProducts.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedProducts.length} products?`)) return;
+
+    const { error } = await supabase
+      .from('products')
+      .delete()
+      .in('id', selectedProducts);
+
+    if (error) {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: 'Success', description: `${selectedProducts.length} products deleted` });
+      setSelectedProducts([]);
+      fetchProducts();
+    }
+  };
+
   const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const BULK_EDIT_FIELDS = [
+    { value: 'category', label: 'Category' },
+    { value: 'sub_category', label: 'Sub-Category' },
+    { value: 'material', label: 'Material' },
+    { value: 'metal_type', label: 'Metal Type' },
+    { value: 'karat', label: 'Karat' },
+    { value: 'stone', label: 'Stone' },
+    { value: 'price', label: 'Price' },
+    { value: 'stock', label: 'Stock' },
+    { value: 'is_featured', label: 'Featured' },
+    { value: 'is_bestseller', label: 'Bestseller' },
+  ];
 
   return (
     <AdminLayout>
@@ -650,15 +737,92 @@ const AdminProducts = () => {
           </Dialog>
         </div>
 
-        {/* Search */}
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
+        {/* Search and Bulk Actions */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-between">
+          <div className="relative max-w-md flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          {selectedProducts.length > 0 && (
+            <div className="flex gap-2 items-center">
+              <span className="text-sm text-muted-foreground">{selectedProducts.length} selected</span>
+              <Dialog open={isBulkEditOpen} onOpenChange={setIsBulkEditOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Bulk Edit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Bulk Edit {selectedProducts.length} Products</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label>Field to Update</Label>
+                      <Select value={bulkField} onValueChange={setBulkField}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select field" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {BULK_EDIT_FIELDS.map((field) => (
+                            <SelectItem key={field.value} value={field.value}>{field.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>New Value</Label>
+                      {bulkField === 'is_featured' || bulkField === 'is_bestseller' ? (
+                        <Select value={bulkValue} onValueChange={setBulkValue}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select value" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="true">Yes</SelectItem>
+                            <SelectItem value="false">No</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : bulkField === 'category' ? (
+                        <Select value={bulkValue} onValueChange={setBulkValue}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {CATEGORIES.map((cat) => (
+                              <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <Input
+                          value={bulkValue}
+                          onChange={(e) => setBulkValue(e.target.value)}
+                          placeholder={`Enter new ${bulkField}`}
+                        />
+                      )}
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button variant="outline" onClick={() => setIsBulkEditOpen(false)}>Cancel</Button>
+                      <Button onClick={handleBulkEdit} disabled={isSaving}>
+                        {isSaving ? 'Updating...' : 'Update All'}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Selected
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Products Table */}
@@ -667,10 +831,22 @@ const AdminProducts = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
           </div>
         ) : (
-          <div className="border rounded-lg">
+          <div className="border rounded-lg overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-12">
+                    <button 
+                      onClick={toggleSelectAll}
+                      className="p-1 hover:bg-muted rounded"
+                    >
+                      {selectedProducts.length === filteredProducts.length && filteredProducts.length > 0 ? (
+                        <CheckSquare className="h-4 w-4 text-primary" />
+                      ) : (
+                        <Square className="h-4 w-4" />
+                      )}
+                    </button>
+                  </TableHead>
                   <TableHead>Image</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
@@ -683,13 +859,25 @@ const AdminProducts = () => {
               <TableBody>
                 {filteredProducts.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                       No products found
                     </TableCell>
                   </TableRow>
                 ) : (
                   filteredProducts.map((product) => (
-                    <TableRow key={product.id}>
+                    <TableRow key={product.id} className={selectedProducts.includes(product.id) ? 'bg-primary/5' : ''}>
+                      <TableCell>
+                        <button 
+                          onClick={() => toggleProductSelection(product.id)}
+                          className="p-1 hover:bg-muted rounded"
+                        >
+                          {selectedProducts.includes(product.id) ? (
+                            <CheckSquare className="h-4 w-4 text-primary" />
+                          ) : (
+                            <Square className="h-4 w-4" />
+                          )}
+                        </button>
+                      </TableCell>
                       <TableCell>
                         <img
                           src={resolveImageUrl(product.images?.[0])}
