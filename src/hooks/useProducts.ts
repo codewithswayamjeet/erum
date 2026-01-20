@@ -12,12 +12,17 @@ export interface Product {
   category: string;
   sub_category: string | null;
   material: string | null;
+  metal_type: string | null;
+  karat: string | null;
+  size: string | null;
   stone: string | null;
   weight: string | null;
   images: string[];
   is_featured: boolean | null;
   is_bestseller: boolean | null;
   stock: number | null;
+  certification_type: string | null;
+  certification_number: string | null;
   created_at: string;
 }
 
