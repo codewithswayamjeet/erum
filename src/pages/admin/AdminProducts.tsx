@@ -33,8 +33,10 @@ import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
 import { resolveImageUrl } from '@/lib/imageUtils';
 
-const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants'];
+const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants', 'Hip Hop', 'Platinum'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
+const METAL_TYPES = ['Yellow Gold', 'White Gold', 'Rose Gold', 'Platinum', 'Silver', 'Mixed Metals'];
+const KARAT_OPTIONS = ['10K', '14K', '18K', '22K', '24K'];
 const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
 
 // Sub-categories per main category
@@ -75,6 +77,9 @@ const emptyProduct = {
   category: '',
   sub_category: '',
   material: '',
+  metal_type: '',
+  karat: '',
+  size: '',
   stone: '',
   weight: '',
   images: [] as string[],
@@ -136,6 +141,9 @@ const AdminProducts = () => {
         category: product.category,
         sub_category: product.sub_category || '',
         material: product.material || '',
+        metal_type: product.metal_type || '',
+        karat: product.karat || '',
+        size: product.size || '',
         stone: product.stone || '',
         weight: product.weight || '',
         images: product.images?.length ? product.images : [],
@@ -350,23 +358,73 @@ const AdminProducts = () => {
                   </div>
                 </div>
 
+                {/* Material & Karat Row */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="material">Material</Label>
-                    <Select
+                    <Label htmlFor="material">Material (Manual Entry)</Label>
+                    <Input
+                      id="material"
                       value={formData.material}
-                      onValueChange={(value) => setFormData({ ...formData, material: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select material" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {MATERIALS.map((mat) => (
-                          <SelectItem key={mat} value={mat}>{mat}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      onChange={(e) => setFormData({ ...formData, material: e.target.value })}
+                      placeholder="e.g., 18K Gold, Sterling Silver"
+                      list="material-suggestions"
+                    />
+                    <datalist id="material-suggestions">
+                      {MATERIALS.map((mat) => (
+                        <option key={mat} value={mat} />
+                      ))}
+                    </datalist>
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="karat">Karat (KT)</Label>
+                    <Input
+                      id="karat"
+                      value={formData.karat}
+                      onChange={(e) => setFormData({ ...formData, karat: e.target.value })}
+                      placeholder="e.g., 18K, 22K, 24K"
+                      list="karat-suggestions"
+                    />
+                    <datalist id="karat-suggestions">
+                      {KARAT_OPTIONS.map((kt) => (
+                        <option key={kt} value={kt} />
+                      ))}
+                    </datalist>
+                  </div>
+                </div>
+
+                {/* Metal Type & Size Row */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="metal_type">Metal Type</Label>
+                    <Input
+                      id="metal_type"
+                      value={formData.metal_type}
+                      onChange={(e) => setFormData({ ...formData, metal_type: e.target.value })}
+                      placeholder="e.g., Yellow Gold, White Gold"
+                      list="metal-type-suggestions"
+                    />
+                    <datalist id="metal-type-suggestions">
+                      {METAL_TYPES.map((metal) => (
+                        <option key={metal} value={metal} />
+                      ))}
+                    </datalist>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="size">Size (Manual Entry)</Label>
+                    <Input
+                      id="size"
+                      value={formData.size}
+                      onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                      placeholder="e.g., 2.6, 7 inch, Ring Size 8"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Enter size manually (e.g., bangle: 2.6, bracelet: 7 inch)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Certification Row */}
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="certification_type">Certification</Label>
                     <Select
@@ -383,24 +441,18 @@ const AdminProducts = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                  {formData.certification_type && formData.certification_type !== 'None' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="certification_number">Certificate Number</Label>
+                      <Input
+                        id="certification_number"
+                        value={formData.certification_number}
+                        onChange={(e) => setFormData({ ...formData, certification_number: e.target.value })}
+                        placeholder="Enter GIA/IGI certificate number"
+                      />
+                    </div>
+                  )}
                 </div>
-
-                {formData.certification_type && formData.certification_type !== 'None' && (
-                  <div className="space-y-2">
-                    <Label htmlFor="certification_number">Certificate Number</Label>
-                    <Input
-                      id="certification_number"
-                      value={formData.certification_number}
-                      onChange={(e) => setFormData({ ...formData, certification_number: e.target.value })}
-                      placeholder="Enter GIA/IGI certificate number"
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      {formData.certification_type === 'GIA' 
-                        ? 'Verify at: https://www.gia.edu/report-data-services'
-                        : 'Verify at: https://api.igi.org/'}
-                    </p>
-                  </div>
-                )}
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
