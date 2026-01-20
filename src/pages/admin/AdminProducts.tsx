@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +31,7 @@ import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon, CheckSquar
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
+import { useAllPageCategories } from '@/hooks/usePageCategories';
 import { resolveImageUrl } from '@/lib/imageUtils';
 
 const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants', 'Hip Hop', 'Platinum'];
@@ -39,14 +40,7 @@ const METAL_TYPES = ['Yellow Gold', 'White Gold', 'Rose Gold', 'Platinum', 'Silv
 const KARAT_OPTIONS = ['10K', '14K', '18K', '22K', '24K'];
 const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
 
-// Sub-categories per main category
-const SUB_CATEGORIES: Record<string, string[]> = {
-  'Rings': ['Engagement Rings', 'Wedding Bands', 'Eternity Rings'],
-  'Earrings & Studs': ['Diamond Studs', 'Drop Earrings'],
-  'Bracelets & Bangles': ['Tennis Bracelets', 'Bangles'],
-  'Necklaces': ['Pendants', 'Chains', 'Chokers', 'Layered', 'Statement'],
-  'Pendants': ['Solitaire', 'Halo', 'Cluster', 'Heart', 'Cross'],
-};
+// Sub-categories are now fetched dynamically from page_categories table
 
 const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
 const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
@@ -105,6 +99,19 @@ const AdminProducts = () => {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { categories: pageCategories } = useAllPageCategories();
+
+  // Build sub-categories map from dynamic page_categories
+  const SUB_CATEGORIES = useMemo(() => {
+    const map: Record<string, string[]> = {};
+    pageCategories.forEach((cat) => {
+      if (!map[cat.category]) map[cat.category] = [];
+      if (!map[cat.category].includes(cat.sub_category)) {
+        map[cat.category].push(cat.sub_category);
+      }
+    });
+    return map;
+  }, [pageCategories]);
 
   useEffect(() => {
     fetchProducts();
