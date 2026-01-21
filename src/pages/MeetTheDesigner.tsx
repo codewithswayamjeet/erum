@@ -4,7 +4,6 @@ import { Diamond, Award, Heart, Sparkles, Quote, Linkedin } from 'lucide-react';
 import Layout from '@/components/Layout';
 import designerImage from '@/assets/designer-portrait.jpg';
 import craftImage from '@/assets/about-craftsmanship.jpg';
-import designerCraftingImage from '@/assets/designer-crafting.jpg';
 
 const MeetTheDesigner = () => {
   const philosophy = [
@@ -200,9 +199,6 @@ const MeetTheDesigner = () => {
             >
               <div className="aspect-[4/5] overflow-hidden">
                 <img src={craftImage} alt="ERUM craftsmanship process" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-[3/4] overflow-hidden">
-                <img src={designerCraftingImage} alt="Mahammad Ali crafting jewelry" className="w-full h-full object-cover" />
               </div>
             </motion.div>
             
