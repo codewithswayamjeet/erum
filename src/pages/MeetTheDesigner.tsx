@@ -4,50 +4,59 @@ import { Diamond, Award, Heart, Sparkles, Quote, Linkedin } from 'lucide-react';
 import Layout from '@/components/Layout';
 import designerImage from '@/assets/designer-portrait.jpg';
 import craftImage from '@/assets/about-craftsmanship.jpg';
-
 const MeetTheDesigner = () => {
-  const philosophy = [
-    {
-      icon: Diamond,
-      title: 'Uncompromising Quality',
-      description: 'Every stone is hand-selected, every setting is perfected. We never settle for anything less than extraordinary.'
-    },
-    {
-      icon: Heart,
-      title: 'Emotional Connection',
-      description: 'Jewelry marks life\'s most precious moments. Each piece must carry the weight of that emotion.'
-    },
-    {
-      icon: Sparkles,
-      title: 'Timeless Design',
-      description: 'Trends fade, but true elegance endures. We create pieces meant to be treasured for generations.'
-    },
-    {
-      icon: Award,
-      title: 'Master Craftsmanship',
-      description: 'Combining centuries-old techniques with modern precision to achieve perfection in every detail.'
-    },
-  ];
-
-  const milestones = [
-    { year: '2010', title: 'The Beginning', description: 'Founded ERUM with a vision to bring heavenly jewelry to the world' },
-    { year: '2015', title: 'First Atelier', description: 'Opened our flagship atelier in Mumbai, bringing bespoke services to discerning clients' },
-    { year: '2018', title: 'GIA Partnership', description: 'Became an authorized partner for GIA certified diamonds' },
-    { year: '2022', title: 'International Recognition', description: 'Featured in leading jewelry publications and expanded to international clientele' },
-    { year: '2024', title: 'Hip Hop Collection', description: 'Launched our bold Hip Hop jewelry line, bridging cultures through craftsmanship' },
-  ];
-
-  return (
-    <Layout>
+  const philosophy = [{
+    icon: Diamond,
+    title: 'Uncompromising Quality',
+    description: 'Every stone is hand-selected, every setting is perfected. We never settle for anything less than extraordinary.'
+  }, {
+    icon: Heart,
+    title: 'Emotional Connection',
+    description: 'Jewelry marks life\'s most precious moments. Each piece must carry the weight of that emotion.'
+  }, {
+    icon: Sparkles,
+    title: 'Timeless Design',
+    description: 'Trends fade, but true elegance endures. We create pieces meant to be treasured for generations.'
+  }, {
+    icon: Award,
+    title: 'Master Craftsmanship',
+    description: 'Combining centuries-old techniques with modern precision to achieve perfection in every detail.'
+  }];
+  const milestones = [{
+    year: '2010',
+    title: 'The Beginning',
+    description: 'Founded ERUM with a vision to bring heavenly jewelry to the world'
+  }, {
+    year: '2015',
+    title: 'First Atelier',
+    description: 'Opened our flagship atelier in Mumbai, bringing bespoke services to discerning clients'
+  }, {
+    year: '2018',
+    title: 'GIA Partnership',
+    description: 'Became an authorized partner for GIA certified diamonds'
+  }, {
+    year: '2022',
+    title: 'International Recognition',
+    description: 'Featured in leading jewelry publications and expanded to international clientele'
+  }, {
+    year: '2024',
+    title: 'Hip Hop Collection',
+    description: 'Launched our bold Hip Hop jewelry line, bridging cultures through craftsmanship'
+  }];
+  return <Layout>
       {/* Hero Section */}
       <section className="relative min-h-[70vh] flex items-center overflow-hidden bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: -40
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            duration: 0.8
+          }}>
               <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">Meet the Designer</p>
               <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
                 Mahammad Ali
@@ -63,21 +72,19 @@ const MeetTheDesigner = () => {
               </Link>
             </motion.div>
             
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: 40
+          }} animate={{
+            opacity: 1,
+            x: 0
+          }} transition={{
+            duration: 0.8,
+            delay: 0.2
+          }} className="relative">
               <div className="aspect-square overflow-hidden relative">
-                <img src={designerImage} alt="Mahammad Ali - ERUM Founder" className="w-full h-full object-cover" />
-                <a 
-                  href="https://www.linkedin.com/in/themahammadali/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:text-primary hover:bg-background transition-colors duration-300 shadow-lg"
-                  aria-label="LinkedIn Profile"
-                >
+                <img alt="Mahammad Ali - ERUM Founder" className="w-full h-full object-cover" src="/lovable-uploads/1fa3e37f-71c7-4134-a51b-391016364c3a.png" />
+                <a href="https://www.linkedin.com/in/themahammadali/" target="_blank" rel="noopener noreferrer" className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:text-primary hover:bg-background transition-colors duration-300 shadow-lg" aria-label="LinkedIn Profile">
                   <Linkedin className="h-5 w-5" />
                 </a>
               </div>
@@ -96,26 +103,35 @@ const MeetTheDesigner = () => {
       <section className="py-24 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.6
+          }} className="text-center mb-16">
               <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">The Story</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl">
                 From Passion to <span className="italic">Mastery</span>
               </h2>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="prose prose-lg max-w-none"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.6,
+            delay: 0.2
+          }} className="prose prose-lg max-w-none">
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Born into a family with deep roots in the gemstone trade, Mahammad Ali's love affair with 
                 jewelry began at the age of twelve, watching master artisans transform raw diamonds into 
@@ -152,13 +168,17 @@ const MeetTheDesigner = () => {
       {/* Craftsmanship Philosophy */}
       <section className="py-24 bg-foreground text-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-16">
             <p className="text-xs tracking-[0.3em] uppercase text-background/50 mb-4">Philosophy</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-background">
               The Art of <span className="italic text-primary">Perfection</span>
@@ -166,22 +186,24 @@ const MeetTheDesigner = () => {
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {philosophy.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center"
-              >
+            {philosophy.map((item, index) => <motion.div key={item.title} initial={{
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.6,
+            delay: index * 0.1
+          }} className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-background/20 mb-6">
                   <item.icon className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-xl mb-3">{item.title}</h3>
                 <p className="text-background/60 text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </div>
         </div>
       </section>
@@ -190,24 +212,33 @@ const MeetTheDesigner = () => {
       <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: -40
+          }} whileInView={{
+            opacity: 1,
+            x: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.8
+          }} className="space-y-6">
               <div className="aspect-[4/5] overflow-hidden">
                 <img src={craftImage} alt="ERUM craftsmanship process" className="w-full h-full object-cover" />
               </div>
             </motion.div>
             
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
+            <motion.div initial={{
+            opacity: 0,
+            x: 40
+          }} whileInView={{
+            opacity: 1,
+            x: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.8
+          }}>
               <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">The Process</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-8">
                 Where Tradition Meets <span className="italic">Innovation</span>
@@ -242,13 +273,17 @@ const MeetTheDesigner = () => {
       {/* Journey Timeline */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="text-center mb-16">
             <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">Our Journey</p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl">
               Milestones of <span className="italic">Excellence</span>
@@ -256,15 +291,18 @@ const MeetTheDesigner = () => {
           </motion.div>
           
           <div className="max-w-4xl mx-auto">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={milestone.year}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`flex items-start gap-8 mb-12 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}
-              >
+            {milestones.map((milestone, index) => <motion.div key={milestone.year} initial={{
+            opacity: 0,
+            x: index % 2 === 0 ? -30 : 30
+          }} whileInView={{
+            opacity: 1,
+            x: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.6,
+            delay: index * 0.1
+          }} className={`flex items-start gap-8 mb-12 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
                 <div className="flex-shrink-0 w-20 h-20 rounded-full bg-primary flex items-center justify-center">
                   <span className="font-serif text-lg text-primary-foreground">{milestone.year}</span>
                 </div>
@@ -272,8 +310,7 @@ const MeetTheDesigner = () => {
                   <h3 className="font-serif text-xl mb-2">{milestone.title}</h3>
                   <p className="text-muted-foreground">{milestone.description}</p>
                 </div>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </div>
         </div>
       </section>
@@ -281,13 +318,17 @@ const MeetTheDesigner = () => {
       {/* CTA Section */}
       <section className="py-24 bg-primary">
         <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto text-center text-primary-foreground"
-          >
+          <motion.div initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="max-w-2xl mx-auto text-center text-primary-foreground">
             <h2 className="font-serif text-3xl md:text-4xl mb-6">
               Let's Create Something <span className="italic">Extraordinary</span>
             </h2>
@@ -300,8 +341,6 @@ const MeetTheDesigner = () => {
           </motion.div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default MeetTheDesigner;
