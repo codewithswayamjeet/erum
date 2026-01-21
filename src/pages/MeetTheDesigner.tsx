@@ -82,12 +82,7 @@ const MeetTheDesigner = () => {
             duration: 0.8,
             delay: 0.2
           }} className="relative">
-              <div className="aspect-square overflow-hidden relative">
-                <img alt="Mahammad Ali - ERUM Founder" className="w-full h-full object-cover" src="/lovable-uploads/1fa3e37f-71c7-4134-a51b-391016364c3a.png" />
-                <a href="https://www.linkedin.com/in/themahammadali/" target="_blank" rel="noopener noreferrer" className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center text-foreground hover:text-primary hover:bg-background transition-colors duration-300 shadow-lg" aria-label="LinkedIn Profile">
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </div>
+              
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 max-w-xs hidden lg:block">
                 <Quote className="w-6 h-6 mb-2 opacity-50" />
                 <p className="font-serif text-sm italic">
