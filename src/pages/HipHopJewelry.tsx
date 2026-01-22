@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Flame, Crown, Star, Zap } from 'lucide-react';
 import Layout from '@/components/Layout';
-import ShopifyProductGrid from '@/components/ShopifyProductGrid';
+import ProductCard from '@/components/ProductCard';
+import { useProducts } from '@/hooks/useProducts';
+import { resolveImageUrl } from '@/lib/imageUtils';
 import heroImage from '@/assets/hiphop-hero.jpg';
 
 const HipHopJewelry = () => {
@@ -39,6 +41,8 @@ const HipHopJewelry = () => {
     { title: 'Custom Designs', description: 'Your vision, our craft' },
     { title: 'GIA/IGI Certified', description: 'Natural diamond authenticity' },
   ];
+
+  const { products, isLoading } = useProducts({ category: 'Hip Hop' });
 
   return (
     <Layout>
@@ -180,14 +184,49 @@ const HipHopJewelry = () => {
         </div>
       </section>
 
-      {/* Shopify Products Grid */}
-      <section id="products" className="bg-secondary">
-        <ShopifyProductGrid 
-          title="Natural Diamond Collection" 
-          subtitle="Featured Pieces"
-          limit={12}
-          query="product_type:hiphop"
-        />
+      {/* Products Grid */}
+      <section id="products" className="py-20 bg-secondary">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <p className="text-sm tracking-luxury uppercase text-muted-foreground mb-4">Featured Pieces</p>
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl">Natural Diamond Collection</h2>
+          </motion.div>
+
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-square bg-muted mb-4" />
+                  <div className="h-4 bg-muted mb-2 w-3/4 mx-auto" />
+                  <div className="h-4 bg-muted w-1/2 mx-auto" />
+                </div>
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground">No Hip Hop jewelry products yet. Add products with category "Hip Hop" in the admin panel.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {products.slice(0, 12).map((p) => (
+                <ProductCard
+                  key={p.id}
+                  id={p.id}
+                  name={p.name}
+                  price={Number(p.price)}
+                  image={resolveImageUrl(p.images?.[0])}
+                  category={p.category}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Statement Section */}

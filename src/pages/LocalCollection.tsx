@@ -82,7 +82,8 @@ export default function LocalCollection() {
   const [selectedSort, setSelectedSort] = useState<SortOption>("featured");
   const [availabilityOnly, setAvailabilityOnly] = useState(false);
 
-  const typeKeyword = searchParams.get("type")?.trim() || "";
+  // Convert URL hyphens to spaces for DB matching (e.g., "diamond-studs" → "diamond studs")
+  const typeKeyword = searchParams.get("type")?.trim().replace(/-/g, ' ') || "";
 
   const { products, isLoading, error } = useProducts(
     config.category || typeKeyword

@@ -12,6 +12,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import CollectionsRouter from "./pages/CollectionsRouter";
 import ProductDetail from "./pages/ProductDetail";
+import ShopifyProductDetail from "./pages/ShopifyProductDetail";
 import HipHopJewelry from "./pages/HipHopJewelry";
 import PlatinumJewelry from "./pages/PlatinumJewelry";
 import RingSizeGuide from "./pages/RingSizeGuide";
@@ -58,6 +59,7 @@ const App = () => (
                 <Route path="/collections" element={<CollectionsRouter />} />
                 <Route path="/collections/:handle" element={<CollectionsRouter />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
                 <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />
                 <Route path="/platinum-jewelry" element={<PlatinumJewelry />} />
                 <Route path="/ring-size-guide" element={<RingSizeGuide />} />

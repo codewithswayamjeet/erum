@@ -145,8 +145,18 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-background/10">
         <div className="container mx-auto px-6 lg:px-12 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
-            <p>© {currentYear} ERUM – The Jewellery Studio. All rights reserved.</p>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
+            <p>
+              © {currentYear} ERUM – The Jewellery Studio. All rights reserved. Design By{' '}
+              <a 
+                href="https://www.mindscapehub.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-background transition-colors"
+              >
+                @MindscapeHub
+              </a>
+            </p>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               <Link to="/refund-policy" className="hover:text-primary transition-colors">
                 Refund & Return
