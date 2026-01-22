@@ -45,8 +45,7 @@ const ShopifyProductCard = ({ product }: ShopifyProductCardProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <Link to={`/shopify-product/${node.handle}`} className="group block">
