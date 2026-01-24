@@ -143,8 +143,7 @@ const Footer = () => {
         <div className="container mx-auto px-6 lg:px-12 py-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
             <p>
-              © {currentYear} ERUM – The Jewellery Studio. All rights reserved. Design By{' '}
-              
+              © {currentYear} ERUM – The Jewellery Studio. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               <Link to="/refund-policy" className="hover:text-primary transition-colors">
