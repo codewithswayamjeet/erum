@@ -101,8 +101,8 @@ const Header = () => {
           {
             title: 'The House',
             links: [
-              { name: 'Meet the Designer', href: '/about#designer' },
-              { name: 'Brand Promises', href: '/about#promises' },
+              { name: 'Meet the Designer', href: '/meet-the-designer' },
+              { name: 'Brand Promises', href: '/brand-promises' },
               { name: 'Our Heritage', href: '/about' },
             ]
           }
