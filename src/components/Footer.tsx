@@ -10,11 +10,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-6">
-              <img
-                src={footerLogo}
-                alt="ERUM - The Jewellery Studio"
-                className="h-14 md:h-16 w-auto object-contain"
-              />
+              <img src={footerLogo} alt="ERUM - The Jewellery Studio" className="h-14 md:h-16 w-auto object-contain" />
             </Link>
             <p className="text-background/70 text-sm leading-relaxed mb-6">
               Where precious becomes priceless. Crafting masterpieces with the passion for jewellery and gems since establishment.
@@ -148,14 +144,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/50">
             <p>
               © {currentYear} ERUM – The Jewellery Studio. All rights reserved. Design By{' '}
-              <a 
-                href="https://www.mindscapehub.in" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-primary hover:text-background transition-colors"
-              >
-                @MindscapeHub
-              </a>
+              
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               <Link to="/refund-policy" className="hover:text-primary transition-colors">
