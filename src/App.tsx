@@ -18,6 +18,7 @@ import PlatinumJewelry from "./pages/PlatinumJewelry";
 import RingSizeGuide from "./pages/RingSizeGuide";
 import MeetTheDesigner from "./pages/MeetTheDesigner";
 import BespokeServices from "./pages/BespokeServices";
+import BrandPromises from "./pages/BrandPromises";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Auth from "./pages/Auth";
@@ -64,6 +65,7 @@ const App = () => (
                 <Route path="/platinum-jewelry" element={<PlatinumJewelry />} />
                 <Route path="/ring-size-guide" element={<RingSizeGuide />} />
                 <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
+                <Route path="/brand-promises" element={<BrandPromises />} />
                 <Route path="/bespoke-services" element={<BespokeServices />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />

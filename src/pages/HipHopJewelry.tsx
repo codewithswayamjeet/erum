@@ -123,7 +123,7 @@ const HipHopJewelry = () => {
         </motion.div>
       </section>
 
-      {/* Categories Grid */}
+      {/* Signature Categories */}
       <section className="py-24 bg-foreground">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div 
@@ -133,10 +133,13 @@ const HipHopJewelry = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">Categories</p>
+            <p className="text-primary text-sm tracking-[0.3em] uppercase mb-4">Signature Styles</p>
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-background">
-              Choose Your <span className="italic text-primary">Drip</span>
+              The <span className="italic text-primary">Iced Out</span> Collection
             </h2>
+            <p className="text-background/60 text-lg mt-4 max-w-2xl mx-auto">
+              Premium natural diamond pieces crafted for those who demand excellence
+            </p>
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -147,17 +150,13 @@ const HipHopJewelry = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group bg-background/5 border border-background/10 p-8 md:p-12 hover:bg-background/10 hover:border-primary/30 transition-all duration-500"
               >
-                <Link 
-                  to={category.href}
-                  className="group block bg-background/5 border border-background/10 p-8 md:p-12 hover:bg-background/10 hover:border-primary/50 transition-all duration-500"
-                >
-                  <category.icon className="w-12 h-12 text-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
-                  <h3 className="font-serif text-2xl md:text-3xl text-background mb-3 group-hover:text-primary transition-colors">
-                    {category.title}
-                  </h3>
-                  <p className="text-background/60 text-lg">{category.description}</p>
-                </Link>
+                <category.icon className="w-12 h-12 text-primary mb-6 group-hover:scale-110 transition-transform duration-300" />
+                <h3 className="font-serif text-2xl md:text-3xl text-background mb-3">
+                  {category.title}
+                </h3>
+                <p className="text-background/60 text-lg">{category.description}</p>
               </motion.div>
             ))}
           </div>

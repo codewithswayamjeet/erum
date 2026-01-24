@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Diamond, Award, Heart, Sparkles, Quote, Linkedin } from 'lucide-react';
+import { Diamond, Award, Heart, Sparkles, Quote } from 'lucide-react';
 import Layout from '@/components/Layout';
-import designerImage from '@/assets/designer-portrait.jpg';
+import designerImage from '@/assets/designer-crafting-new.jpg';
 import craftImage from '@/assets/about-craftsmanship.jpg';
 const MeetTheDesigner = () => {
   const philosophy = [{
@@ -82,7 +82,9 @@ const MeetTheDesigner = () => {
             duration: 0.8,
             delay: 0.2
           }} className="relative">
-              
+              <div className="aspect-[3/4] overflow-hidden">
+                <img src={designerImage} alt="Mahammad Ali - Founder & Creative Director of ERUM" className="w-full h-full object-cover" />
+              </div>
               <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 max-w-xs hidden lg:block">
                 <Quote className="w-6 h-6 mb-2 opacity-50" />
                 <p className="font-serif text-sm italic">
