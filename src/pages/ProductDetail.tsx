@@ -247,7 +247,7 @@ const ProductDetail = () => {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
-                {[{ icon: Shield, label: 'Certified' }, { icon: Truck, label: 'Free Shipping' }, { icon: Award, label: '30-Day Returns' }].map((badge) => (
+                {[{ icon: Shield, label: 'Certified' }, { icon: Truck, label: 'Free Shipping' }, { icon: Award, label: 'Lifetime Warranty' }].map((badge) => (
                   <div key={badge.label} className="flex flex-col items-center gap-2 py-4 bg-secondary text-center">
                     <badge.icon className="w-5 h-5 text-primary" />
                     <span className="text-xs font-medium">{badge.label}</span>
