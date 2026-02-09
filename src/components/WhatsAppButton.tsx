@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 const WhatsAppButton = () => {
-  const phoneNumber = '919727614129'; // India country code + number
+  const phoneNumber = '919974555440'; // India country code + number
   const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
   return (

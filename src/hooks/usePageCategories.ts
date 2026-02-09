@@ -49,7 +49,7 @@ export const usePageCategories = (category?: string) => {
   return { categories, isLoading, error, refetch: fetchCategories };
 };
 
-export const useAllPageCategories = () => {
+export const useAllPageCategories = (activeOnly: boolean = false) => {
   const [categories, setCategories] = useState<PageCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,11 +62,17 @@ export const useAllPageCategories = () => {
     setIsLoading(true);
     setError(null);
 
-    const { data, error } = await supabase
+    let query = supabase
       .from('page_categories')
       .select('*')
       .order('category', { ascending: true })
       .order('display_order', { ascending: true });
+
+    if (activeOnly) {
+      query = query.eq('is_active', true);
+    }
+
+    const { data, error } = await query;
 
     if (error) {
       setError(error.message);
