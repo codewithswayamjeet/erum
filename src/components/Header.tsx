@@ -22,7 +22,7 @@ const Header = () => {
   const shopifyCartCount = shopifyCartItems.reduce((sum, item) => sum + item.quantity, 0);
   
   // Fetch dynamic categories from database
-  const { categories: allCategories } = useAllPageCategories();
+  const { categories: allCategories } = useAllPageCategories(true);
 
   // Build dynamic mega menu from database categories
   const megaMenuItems = useMemo(() => {
