@@ -143,8 +143,9 @@ const PayPalButtonsWrapper = ({ amount, onSuccess, onError, disabled }: PayPalBu
 
   if (isRejected) {
     return (
-      <div className="w-full p-4 text-center border border-destructive/30 rounded bg-destructive/5">
-        <p className="text-sm text-destructive">PayPal failed to load. Please refresh and try again, or use another payment method.</p>
+      <div className="w-full p-4 text-center border border-destructive/30 rounded bg-destructive/5 space-y-2">
+        <p className="text-sm text-destructive">PayPal failed to load. Please refresh the page and try again, or use Razorpay instead.</p>
+        <p className="text-xs text-muted-foreground">If this persists, PayPal may not be available on this domain. Try the published site URL.</p>
       </div>
     );
   }
