@@ -1,7 +1,8 @@
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Component, ReactNode, ErrorInfo } from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface PayPalButtonProps {
   amount: number;
@@ -42,8 +43,10 @@ class PayPalErrorBoundary extends Component<
 
 const PAYPAL_CLIENT_ID = 'AVsM0g_vTXa2G4VcgmG69pd7Fn3WDyhuSq0wxqiamVqtkk2iXO6OKHfVzLXZzu2S0gRQINUFrfODcsHa';
 
-const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
+// Inner component that waits for SDK to load before rendering buttons
+const PayPalButtonsWrapper = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
   const { toast } = useToast();
+  const [{ isPending, isResolved, isRejected }] = usePayPalScriptReducer();
 
   const createOrder = async () => {
     try {
@@ -129,6 +132,46 @@ const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProp
     });
   };
 
+  if (isPending) {
+    return (
+      <div className="w-full h-12 flex items-center justify-center gap-2 bg-[#ffc439] rounded text-black font-semibold">
+        <Loader2 className="w-5 h-5 animate-spin" />
+        Loading PayPal...
+      </div>
+    );
+  }
+
+  if (isRejected) {
+    return (
+      <div className="w-full p-4 text-center border border-destructive/30 rounded bg-destructive/5">
+        <p className="text-sm text-destructive">PayPal failed to load. Please refresh and try again, or use another payment method.</p>
+      </div>
+    );
+  }
+
+  if (!isResolved) {
+    return null;
+  }
+
+  return (
+    <PayPalButtons
+      style={{
+        layout: 'vertical',
+        color: 'gold',
+        shape: 'rect',
+        label: 'paypal',
+        height: 48,
+      }}
+      createOrder={createOrder}
+      onApprove={onApprove}
+      onCancel={onCancelHandler}
+      onError={onErrorHandler}
+      disabled={disabled}
+    />
+  );
+};
+
+const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
   if (disabled) {
     return (
       <div className="w-full opacity-50 pointer-events-none">
@@ -155,18 +198,10 @@ const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProp
           components: 'buttons',
         }}
       >
-        <PayPalButtons
-          style={{
-            layout: 'vertical',
-            color: 'gold',
-            shape: 'rect',
-            label: 'paypal',
-            height: 48,
-          }}
-          createOrder={createOrder}
-          onApprove={onApprove}
-          onCancel={onCancelHandler}
-          onError={onErrorHandler}
+        <PayPalButtonsWrapper
+          amount={amount}
+          onSuccess={onSuccess}
+          onError={onError}
           disabled={disabled}
         />
       </PayPalScriptProvider>
