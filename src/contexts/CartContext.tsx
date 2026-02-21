@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface CartItem {
   id: string;
@@ -19,14 +19,29 @@ interface CartContextType {
   cartTotal: number;
 }
 
+const CART_STORAGE_KEY = 'erum_cart_items';
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const loadCart = (): CartItem[] => {
+  try {
+    const stored = sessionStorage.getItem(CART_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+};
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(loadCart);
+
+  // Persist to sessionStorage on every change
+  useEffect(() => {
+    sessionStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCartItems((prev) => {
-      // Create a unique key based on id and size
       const existingItem = prev.find((i) => i.id === item.id && i.size === item.size);
       if (existingItem) {
         return prev.map((i) =>
@@ -53,6 +68,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => {
     setCartItems([]);
+    sessionStorage.removeItem(CART_STORAGE_KEY);
   };
 
   const cartTotal = cartItems.reduce(
@@ -62,14 +78,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider
-      value={{
-        cartItems,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        cartTotal,
-      }}
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal }}
     >
       {children}
     </CartContext.Provider>
