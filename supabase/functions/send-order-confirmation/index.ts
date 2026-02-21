@@ -56,7 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
     const senderEmail = "erumshopify19@gmail.com";
-    const adminEmail = "erumshopify19@gmail.com";
+    const adminEmail = "contact@erum.in";
 
     // Generate items HTML
     const itemsHtml = items.map(item => `
@@ -131,7 +131,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="margin-top: 40px; padding: 20px; background: #1a1a1a; text-align: center;">
             <p style="color: #d4af37; margin: 0 0 10px; font-size: 14px;">Need Help?</p>
             <p style="color: #fff; margin: 0; font-size: 13px;">
-              Contact us at <a href="mailto:erumshopify19@gmail.com" style="color: #d4af37;">erumshopify19@gmail.com</a>
+              Contact us at <a href="mailto:contact@erum.in" style="color: #d4af37;">contact@erum.in</a>
             </p>
           </div>
         </div>

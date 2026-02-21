@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
     const senderEmail = "erumshopify19@gmail.com";
-    const adminEmail = "erumshopify19@gmail.com";
+    const adminEmail = "contact@erum.in";
 
     const subject = `New ${submission_type === 'bespoke' ? 'Bespoke Request' : 'Contact Message'} from ${name}`;
     
@@ -81,7 +81,7 @@ const handler = async (req: Request): Promise<Response> => {
         <p>Best regards,<br/>The ERUM Jewelry Team</p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
         <p style="color: #999; font-size: 12px;">
-          ERUM Jewelry | Contact: erumshopify19@gmail.com
+          ERUM Jewelry | Contact: contact@erum.in
         </p>
       </div>
     `;
