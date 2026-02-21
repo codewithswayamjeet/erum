@@ -87,6 +87,7 @@ serve(async (req) => {
         user_action: 'PAY_NOW',
         return_url: `${req.headers.get('origin') || 'https://erum.lovable.app'}/checkout?success=true`,
         cancel_url: `${req.headers.get('origin') || 'https://erum.lovable.app'}/checkout?cancelled=true`,
+        shipping_preference: 'NO_SHIPPING',
       },
     };
 
