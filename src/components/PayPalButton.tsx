@@ -1,7 +1,6 @@
-import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Component, ReactNode, ErrorInfo } from 'react';
 import { Loader2 } from 'lucide-react';
 
 interface PayPalButtonProps {
@@ -20,35 +19,14 @@ export interface PayPalOrderDetails {
   };
 }
 
-// Error boundary to catch PayPal SDK crashes
-class PayPalErrorBoundary extends Component<
-  { children: ReactNode; fallback: ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: ReactNode; fallback: ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('PayPal component error:', error, info);
-  }
-  render() {
-    if (this.state.hasError) return this.props.fallback;
-    return this.props.children;
-  }
-}
-
-const PAYPAL_CLIENT_ID = 'AVsM0g_vTXa2G4VcgmG69pd7Fn3WDyhuSq0wxqiamVqtkk2iXO6OKHfVzLXZzu2S0gRQINUFrfODcsHa';
-
-// Inner component that waits for SDK to load before rendering buttons
-const PayPalButtonsWrapper = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
+const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
   const { toast } = useToast();
-  const [{ isPending, isResolved, isRejected }] = usePayPalScriptReducer();
+  const [loading, setLoading] = useState(false);
 
-  const createOrder = async () => {
+  const handlePayPalClick = async () => {
+    if (disabled || loading) return;
+    setLoading(true);
+
     try {
       const { data, error } = await supabase.functions.invoke('create-paypal-order', {
         body: {
@@ -61,152 +39,49 @@ const PayPalButtonsWrapper = ({ amount, onSuccess, onError, disabled }: PayPalBu
         throw new Error(error?.message || 'Failed to create PayPal order');
       }
 
-      return data.orderId;
+      // Store order info in sessionStorage so we can retrieve it on return
+      sessionStorage.setItem('paypal_order_id', data.orderId);
+
+      // Find the approve link and redirect user to PayPal
+      const approveLink = data.links?.find((link: { rel: string; href: string }) => link.rel === 'approve');
+      if (approveLink?.href) {
+        window.location.href = approveLink.href;
+      } else {
+        throw new Error('No PayPal approval URL found');
+      }
     } catch (err) {
-      console.error('Create order error:', err);
+      console.error('PayPal error:', err);
+      setLoading(false);
+      onError?.(err as Error);
       toast({
         title: 'Payment Error',
         description: 'Could not initiate PayPal payment. Please try again.',
         variant: 'destructive',
       });
-      throw err;
     }
   };
-
-  const onApprove = async (data: { orderID: string }) => {
-    try {
-      const { data: captureData, error: captureError } = await supabase.functions.invoke(
-        'capture-paypal-order',
-        {
-          body: { paypalOrderId: data.orderID },
-        }
-      );
-
-      if (captureError) {
-        throw new Error(captureError.message || 'Payment capture failed');
-      }
-
-      if (captureData?.success && captureData?.status === 'COMPLETED') {
-        onSuccess({
-          orderId: data.orderID,
-          status: captureData.status,
-          payer: {
-            email: captureData.payerEmail || '',
-            name: '',
-          },
-        });
-        
-        toast({
-          title: 'Payment Successful',
-          description: 'Your PayPal payment has been processed.',
-        });
-      } else {
-        throw new Error('Payment was not completed');
-      }
-    } catch (err) {
-      console.error('Capture error:', err);
-      onError?.(err as Error);
-      toast({
-        title: 'Payment Failed',
-        description: 'Unable to complete the PayPal payment. Please try again.',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const onCancelHandler = () => {
-    toast({
-      title: 'Payment Cancelled',
-      description: 'You cancelled the PayPal payment.',
-      variant: 'default',
-    });
-  };
-
-  const onErrorHandler = (err: Record<string, unknown>) => {
-    console.error('PayPal error:', err);
-    onError?.(new Error('PayPal encountered an error'));
-    toast({
-      title: 'Payment Error',
-      description: 'PayPal encountered an error. Please try again.',
-      variant: 'destructive',
-    });
-  };
-
-  if (isPending) {
-    return (
-      <div className="w-full h-12 flex items-center justify-center gap-2 bg-[#ffc439] rounded text-black font-semibold">
-        <Loader2 className="w-5 h-5 animate-spin" />
-        Loading PayPal...
-      </div>
-    );
-  }
-
-  if (isRejected) {
-    return (
-      <div className="w-full p-4 text-center border border-destructive/30 rounded bg-destructive/5 space-y-2">
-        <p className="text-sm text-destructive">PayPal failed to load. Please refresh the page and try again, or use Razorpay instead.</p>
-        <p className="text-xs text-muted-foreground">If this persists, PayPal may not be available on this domain. Try the published site URL.</p>
-      </div>
-    );
-  }
-
-  if (!isResolved) {
-    return null;
-  }
 
   return (
-    <PayPalButtons
-      style={{
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'paypal',
-        height: 48,
-      }}
-      createOrder={createOrder}
-      onApprove={onApprove}
-      onCancel={onCancelHandler}
-      onError={onErrorHandler}
-      disabled={disabled}
-    />
-  );
-};
-
-const PayPalButton = ({ amount, onSuccess, onError, disabled }: PayPalButtonProps) => {
-  if (disabled) {
-    return (
-      <div className="w-full opacity-50 pointer-events-none">
-        <div className="w-full h-12 bg-[#ffc439] rounded flex items-center justify-center text-black font-semibold">
+    <button
+      onClick={handlePayPalClick}
+      disabled={disabled || loading}
+      className="w-full h-12 bg-[#ffc439] hover:bg-[#f0b72d] rounded flex items-center justify-center gap-2 text-black font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {loading ? (
+        <>
+          <Loader2 className="w-5 h-5 animate-spin" />
+          Redirecting to PayPal...
+        </>
+      ) : (
+        <>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 fill-[#003087]">
+            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.768.768 0 0 1 .757-.646h6.31c2.855 0 4.842 1.087 5.393 3.347.189.781.19 1.643-.017 2.559-.698 3.081-3.103 4.788-6.384 4.788H8.986a.768.768 0 0 0-.757.647l-.847 5.259a.641.641 0 0 1-.633.539l-.673.124Z" />
+            <path d="m19.938 9.237-.012.064c-.698 3.081-3.103 4.788-6.384 4.788h-2.017a.768.768 0 0 0-.757.647l-1.287 7.966a.543.543 0 0 0 .535.625h3.274a.675.675 0 0 0 .666-.568l.027-.14.529-3.354.034-.185a.675.675 0 0 1 .666-.568h.42c2.714 0 4.84-1.102 5.462-4.288.26-1.331.125-2.443-.561-3.225a2.701 2.701 0 0 0-.773-.577c.036.272.047.556.028.852l.15-.037Z" />
+          </svg>
           Pay with PayPal
-        </div>
-      </div>
-    );
-  }
-
-  const fallback = (
-    <div className="w-full p-4 text-center border border-destructive/30 rounded bg-destructive/5">
-      <p className="text-sm text-destructive">PayPal failed to load. Please try again or use another payment method.</p>
-    </div>
-  );
-
-  return (
-    <PayPalErrorBoundary fallback={fallback}>
-      <PayPalScriptProvider
-        options={{
-          clientId: PAYPAL_CLIENT_ID,
-          currency: 'USD',
-          intent: 'capture',
-          components: 'buttons',
-        }}
-      >
-        <PayPalButtonsWrapper
-          amount={amount}
-          onSuccess={onSuccess}
-          onError={onError}
-          disabled={disabled}
-        />
-      </PayPalScriptProvider>
-    </PayPalErrorBoundary>
+        </>
+      )}
+    </button>
   );
 };
 

@@ -37,6 +37,65 @@ const Checkout = () => {
     }
   }, [user, isLoading, cartItems.length, navigate]);
 
+  // Handle PayPal redirect return
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const paypalOrderId = sessionStorage.getItem('paypal_order_id');
+
+    if (token && paypalOrderId && user && cartItems.length > 0 && !submitting) {
+      // User returned from PayPal — capture the payment
+      const capturePayment = async () => {
+        setSubmitting(true);
+        try {
+          const { data: captureData, error: captureError } = await supabase.functions.invoke(
+            'capture-paypal-order',
+            { body: { paypalOrderId } }
+          );
+
+          if (captureError || !captureData?.success) {
+            throw new Error(captureError?.message || 'Payment capture failed');
+          }
+
+          sessionStorage.removeItem('paypal_order_id');
+
+          // Remove query params
+          window.history.replaceState({}, '', '/checkout');
+
+          await handlePayPalSuccess({
+            orderId: paypalOrderId,
+            status: captureData.status,
+            payer: {
+              email: captureData.payerEmail || '',
+              name: '',
+            },
+          });
+        } catch (err) {
+          console.error('PayPal capture error:', err);
+          sessionStorage.removeItem('paypal_order_id');
+          window.history.replaceState({}, '', '/checkout');
+          toast({
+            title: 'Payment Failed',
+            description: 'Unable to complete PayPal payment. Please try again.',
+            variant: 'destructive',
+          });
+          setSubmitting(false);
+        }
+      };
+      capturePayment();
+    }
+
+    // Handle cancelled PayPal payment
+    if (params.get('cancelled') === 'true') {
+      sessionStorage.removeItem('paypal_order_id');
+      window.history.replaceState({}, '', '/checkout');
+      toast({
+        title: 'Payment Cancelled',
+        description: 'You cancelled the PayPal payment.',
+      });
+    }
+  }, [user, cartItems.length]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const isFormValid = () => {
