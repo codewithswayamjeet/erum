@@ -5,6 +5,7 @@ import Layout from '@/components/Layout';
 import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
 import AffiliationsSection from '@/components/AffiliationsSection';
+import NewsletterSection from '@/components/NewsletterSection';
 import heroImage from '@/assets/hero-jewelry-only.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
 import collectionNecklaces from '@/assets/collection-necklaces.jpg';
@@ -278,28 +279,7 @@ const Index = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="py-20 bg-background border-t border-border">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <h3 className="font-serif text-2xl md:text-3xl mb-4">Join Our Inner Circle</h3>
-            <p className="text-muted-foreground mb-8">Be the first to discover new collections, exclusive events, and timeless inspirations.</p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="flex-1 px-6 py-4 bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-              />
-              <button type="submit" className="btn-luxury-primary">Subscribe</button>
-            </form>
-          </motion.div>
-        </div>
-      </section>
+      <NewsletterSection />
     </Layout>
   );
 };
