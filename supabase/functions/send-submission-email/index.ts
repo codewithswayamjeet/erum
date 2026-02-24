@@ -1,10 +1,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import nodemailer from "nodemailer";
+import nodemailer from "npm:nodemailer@6.9.10";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface SubmissionEmailRequest {
@@ -26,9 +26,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Sending submission notification email for:", name, email);
 
-    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-    const senderEmail = "erumshopify19@gmail.com";
-    const adminEmail = "contact@erum.in";
+    const smtpPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+    const smtpUser = Deno.env.get("SMTP_USER_EMAIL") ?? "erumshopify19@gmail.com";
+    const senderEmail = Deno.env.get("SMTP_FROM_EMAIL") ?? smtpUser;
+    const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "contact@erum.in";
+    const smtpHost = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
+    const smtpPort = Number(Deno.env.get("SMTP_PORT") ?? "465");
+    const smtpSecure = (Deno.env.get("SMTP_SECURE") ?? "true").toLowerCase() !== "false";
+
+    if (!smtpPassword) {
+      throw new Error("SMTP password is not configured");
+    }
 
     const subject = `New ${submission_type === 'bespoke' ? 'Bespoke Request' : 'Contact Message'} from ${name}`;
     
@@ -86,38 +94,35 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    if (gmailAppPassword) {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: senderEmail,
-          pass: gmailAppPassword,
-        },
-      });
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: smtpUser,
+        pass: smtpPassword,
+      },
+    });
 
-      // Send notification to admin
-      await transporter.sendMail({
-        from: `"ERUM Jewelry" <${senderEmail}>`,
-        to: adminEmail,
-        subject: subject,
-        html: htmlContent,
-      });
-      console.log("Admin notification email sent");
+    await transporter.verify();
 
-      // Send confirmation to user
-      await transporter.sendMail({
-        from: `"ERUM Jewelry" <${senderEmail}>`,
-        to: email,
-        subject: `Thank you for contacting ERUM Jewelry`,
-        html: userConfirmationHtml,
-      });
-      console.log("User confirmation email sent to:", email);
-    } else {
-      console.log("GMAIL_APP_PASSWORD not configured. Email logged but not sent.");
-      console.log("Email content:", htmlContent);
-    }
+    // Send notification to admin
+    await transporter.sendMail({
+      from: `"ERUM Jewelry" <${senderEmail}>`,
+      to: adminEmail,
+      subject: subject,
+      html: htmlContent,
+    });
+    console.log("Admin notification email sent");
+
+    // Send confirmation to user
+    await transporter.sendMail({
+      from: `"ERUM Jewelry" <${senderEmail}>`,
+      to: email,
+      subject: `Thank you for contacting ERUM Jewelry`,
+      html: userConfirmationHtml,
+    });
+    console.log("User confirmation email sent to:", email);
 
     return new Response(
       JSON.stringify({ success: true, message: "Submission notification processed" }),

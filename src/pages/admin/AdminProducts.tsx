@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
@@ -27,7 +28,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon, CheckSquare, Square } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Upload, X, Image as ImageIcon, CheckSquare, Square, Video } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
@@ -82,8 +83,8 @@ const emptyProduct = {
   stock: 10,
   certification_type: '',
   certification_number: '',
+  video_url: '',
 };
-
 const AdminProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,7 +98,9 @@ const AdminProducts = () => {
   const [formData, setFormData] = useState(emptyProduct);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoFileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { categories: pageCategories } = useAllPageCategories();
 
@@ -163,6 +166,7 @@ const AdminProducts = () => {
         stock: product.stock || 0,
         certification_type: product.certification_type || '',
         certification_number: product.certification_number || '',
+        video_url: product.video_url || '',
       });
     } else {
       setEditingProduct(null);
@@ -237,6 +241,56 @@ const AdminProducts = () => {
     }));
   };
 
+  const uploadVideo = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    const filePath = `products/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('videos')
+      .upload(filePath, file, { contentType: file.type, upsert: false });
+
+    if (uploadError) {
+      toast({ title: 'Video Upload Error', description: uploadError.message, variant: 'destructive' });
+      return null;
+    }
+
+    const { data } = supabase.storage.from('videos').getPublicUrl(filePath);
+    return data.publicUrl;
+  };
+
+  const handleVideoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('video/')) {
+      toast({ title: 'Invalid File', description: 'Only video files are allowed', variant: 'destructive' });
+      return;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+      toast({ title: 'File Too Large', description: 'Maximum video size is 50MB', variant: 'destructive' });
+      return;
+    }
+
+    setIsVideoUploading(true);
+    const videoUrl = await uploadVideo(file);
+
+    if (videoUrl) {
+      setFormData(prev => ({ ...prev, video_url: videoUrl }));
+      toast({ title: 'Success', description: 'Video uploaded successfully' });
+    }
+
+    setIsVideoUploading(false);
+    if (videoFileInputRef.current) {
+      videoFileInputRef.current.value = '';
+    }
+  };
+
+  const removeVideo = () => {
+    setFormData(prev => ({ ...prev, video_url: '' }));
+  };
+
   const handleSave = async () => {
     if (!formData.name || !formData.category || !formData.price) {
       toast({ title: 'Validation Error', description: 'Please fill in required fields', variant: 'destructive' });
@@ -249,6 +303,7 @@ const AdminProducts = () => {
       ...formData,
       slug,
       images: formData.images.filter(img => img.trim() !== ''),
+      video_url: formData.video_url.trim() || null,
     };
 
     let error;
@@ -393,6 +448,7 @@ const AdminProducts = () => {
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{editingProduct ? 'Edit Product' : 'Add New Product'}</DialogTitle>
+                <DialogDescription>Fill product details, upload images, and optionally upload one showcase video.</DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -710,6 +766,68 @@ const AdminProducts = () => {
                   </p>
                 </div>
 
+                <div className="space-y-3">
+                  <Label>Product Video (Optional)</Label>
+                  <input
+                    ref={videoFileInputRef}
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => videoFileInputRef.current?.click()}
+                    disabled={isVideoUploading}
+                    className="w-full"
+                  >
+                    {isVideoUploading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-primary mr-2"></div>
+                        Uploading Video...
+                      </>
+                    ) : (
+                      <>
+                        <Video className="h-4 w-4 mr-2" />
+                        Upload Product Video
+                      </>
+                    )}
+                  </Button>
+
+                  {formData.video_url ? (
+                    <div className="space-y-2">
+                      <div className="relative rounded-lg border overflow-hidden bg-muted/30">
+                        <video
+                          src={formData.video_url}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          className="w-full h-auto max-h-72 object-contain"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeVideo}
+                          className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1"
+                          aria-label="Remove video"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                      <p className="text-xs text-muted-foreground break-all">{formData.video_url}</p>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
+                      <Video className="h-8 w-8 mx-auto text-muted-foreground/50" />
+                      <p className="text-sm text-muted-foreground mt-2">No product video uploaded yet.</p>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-muted-foreground">
+                    Max 50MB. Supported formats: MP4, MOV, WebM.
+                  </p>
+                </div>
+
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2">
                     <input
@@ -735,7 +853,7 @@ const AdminProducts = () => {
                   <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleSave} disabled={isSaving || isUploading}>
+                  <Button onClick={handleSave} disabled={isSaving || isUploading || isVideoUploading}>
                     {isSaving ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
                   </Button>
                 </div>
@@ -769,6 +887,7 @@ const AdminProducts = () => {
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Bulk Edit {selectedProducts.length} Products</DialogTitle>
+                    <DialogDescription>Apply one field update to all selected products at once.</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
                     <div className="space-y-2">

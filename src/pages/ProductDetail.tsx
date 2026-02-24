@@ -119,6 +119,7 @@ const ProductDetail = () => {
   };
 
   const images = resolveImageUrls(product.images).length > 0 ? resolveImageUrls(product.images) : ['/placeholder.svg'];
+  const productVideoUrl = product.video_url ? resolveImageUrl(product.video_url) : null;
   const filteredRelated = relatedProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   const productDetails = [
@@ -150,6 +151,21 @@ const ProductDetail = () => {
                       <img src={image} alt={`${product.name} view ${index + 1}`} className="w-full h-full object-cover" />
                     </button>
                   ))}
+                </div>
+              )}
+
+              {productVideoUrl && (
+                <div className="mt-6">
+                  <p className="text-xs tracking-luxury uppercase text-muted-foreground mb-2">Product Video</p>
+                  <div className="aspect-video rounded-lg border border-border bg-secondary overflow-hidden">
+                    <video
+                      src={productVideoUrl}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
               )}
             </motion.div>

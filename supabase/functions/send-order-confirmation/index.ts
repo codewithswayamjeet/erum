@@ -1,10 +1,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import nodemailer from "nodemailer";
+import nodemailer from "npm:nodemailer@6.9.10";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface OrderItem {
@@ -54,9 +54,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Sending order confirmation email to:", customerEmail);
 
-    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-    const senderEmail = "erumshopify19@gmail.com";
-    const adminEmail = "contact@erum.in";
+    const smtpPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+    const smtpUser = Deno.env.get("SMTP_USER_EMAIL") ?? "erumshopify19@gmail.com";
+    const senderEmail = Deno.env.get("SMTP_FROM_EMAIL") ?? smtpUser;
+    const adminEmail = Deno.env.get("ADMIN_NOTIFICATION_EMAIL") ?? "contact@erum.in";
+    const smtpHost = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
+    const smtpPort = Number(Deno.env.get("SMTP_PORT") ?? "465");
+    const smtpSecure = (Deno.env.get("SMTP_SECURE") ?? "true").toLowerCase() !== "false";
+
+    if (!smtpPassword) {
+      throw new Error("SMTP password is not configured");
+    }
 
     // Generate items HTML
     const itemsHtml = items.map(item => `
@@ -203,37 +211,35 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
-    if (gmailAppPassword) {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: senderEmail,
-          pass: gmailAppPassword,
-        },
-      });
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: smtpUser,
+        pass: smtpPassword,
+      },
+    });
 
-      // Send confirmation to customer
-      await transporter.sendMail({
-        from: `"ERUM Jewelry" <${senderEmail}>`,
-        to: customerEmail,
-        subject: `Order Confirmed - ERUM Jewelry #${orderId.slice(0, 8)}`,
-        html: customerEmailHtml,
-      });
-      console.log("Customer order confirmation sent to:", customerEmail);
+    await transporter.verify();
 
-      // Send notification to admin
-      await transporter.sendMail({
-        from: `"ERUM Orders" <${senderEmail}>`,
-        to: adminEmail,
-        subject: `🎉 New Order #${orderId.slice(0, 8)} - $${total.toLocaleString()}`,
-        html: adminEmailHtml,
-      });
-      console.log("Admin order notification sent");
-    } else {
-      console.log("GMAIL_APP_PASSWORD not configured. Emails logged but not sent.");
-    }
+    // Send confirmation to customer
+    await transporter.sendMail({
+      from: `"ERUM Jewelry" <${senderEmail}>`,
+      to: customerEmail,
+      subject: `Order Confirmed - ERUM Jewelry #${orderId.slice(0, 8)}`,
+      html: customerEmailHtml,
+    });
+    console.log("Customer order confirmation sent to:", customerEmail);
+
+    // Send notification to admin
+    await transporter.sendMail({
+      from: `"ERUM Orders" <${senderEmail}>`,
+      to: adminEmail,
+      subject: `🎉 New Order #${orderId.slice(0, 8)} - $${total.toLocaleString()}`,
+      html: adminEmailHtml,
+    });
+    console.log("Admin order notification sent");
 
     return new Response(
       JSON.stringify({ success: true, message: "Order confirmation emails sent" }),
