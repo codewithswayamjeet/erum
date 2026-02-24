@@ -6,6 +6,7 @@ import CollectionCard from '@/components/CollectionCard';
 import UnifiedProductGrid from '@/components/UnifiedProductGrid';
 import AffiliationsSection from '@/components/AffiliationsSection';
 import NewsletterSection from '@/components/NewsletterSection';
+import VideoShowcase from '@/components/VideoShowcase';
 import heroImage from '@/assets/hero-jewelry-only.jpg';
 import collectionRings from '@/assets/collection-rings.jpg';
 import collectionNecklaces from '@/assets/collection-necklaces.jpg';
@@ -244,6 +245,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Video Showcase */}
+      <VideoShowcase />
 
       {/* Affiliations */}
       <AffiliationsSection />
