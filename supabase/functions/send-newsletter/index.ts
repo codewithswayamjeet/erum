@@ -5,7 +5,7 @@ import nodemailer from "npm:nodemailer@6.9.10";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 const handler = async (req: Request): Promise<Response> => {
@@ -63,21 +63,28 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-    if (!gmailAppPassword) {
+    const smtpPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+    const smtpUser = Deno.env.get("SMTP_USER_EMAIL") ?? "erumshopify19@gmail.com";
+    const senderEmail = Deno.env.get("SMTP_FROM_EMAIL") ?? smtpUser;
+    const smtpHost = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
+    const smtpPort = Number(Deno.env.get("SMTP_PORT") ?? "465");
+    const smtpSecure = (Deno.env.get("SMTP_SECURE") ?? "true").toLowerCase() !== "false";
+
+    if (!smtpPassword) {
       return new Response(
-        JSON.stringify({ error: "SMTP not configured" }),
+        JSON.stringify({ error: "SMTP password is not configured" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    const senderEmail = "erumshopify19@gmail.com";
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: { user: senderEmail, pass: gmailAppPassword },
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: { user: smtpUser, pass: smtpPassword },
     });
+
+    await transporter.verify();
 
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -102,6 +109,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     let sent = 0;
     let failed = 0;
+
     for (const sub of subscribers) {
       try {
         await transporter.sendMail({
@@ -115,6 +123,13 @@ const handler = async (req: Request): Promise<Response> => {
         console.error(`Failed to send to ${sub.email}:`, e);
         failed++;
       }
+    }
+
+    if (sent === 0 && failed > 0) {
+      return new Response(
+        JSON.stringify({ error: "SMTP authentication failed or all deliveries failed", sent, failed, total: subscribers.length }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     console.log(`Newsletter sent: ${sent} success, ${failed} failed`);

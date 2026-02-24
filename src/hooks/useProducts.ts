@@ -23,6 +23,7 @@ export interface Product {
   stock: number | null;
   certification_type: string | null;
   certification_number: string | null;
+  video_url: string | null;
   created_at: string;
 }
 

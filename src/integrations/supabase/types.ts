@@ -134,6 +134,7 @@ export type Database = {
           stone: string | null
           sub_category: string | null
           updated_at: string
+          video_url: string | null
           weight: string | null
         }
         Insert: {
@@ -159,6 +160,7 @@ export type Database = {
           stone?: string | null
           sub_category?: string | null
           updated_at?: string
+          video_url?: string | null
           weight?: string | null
         }
         Update: {
@@ -184,6 +186,7 @@ export type Database = {
           stone?: string | null
           sub_category?: string | null
           updated_at?: string
+          video_url?: string | null
           weight?: string | null
         }
         Relationships: []

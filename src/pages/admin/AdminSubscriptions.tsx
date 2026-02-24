@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Users, Send, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { format } from 'date-fns';
@@ -20,7 +20,7 @@ const AdminSubscriptions = () => {
   const [body, setBody] = useState('');
   const [sendDialogOpen, setSendDialogOpen] = useState(false);
 
-  const { data: subscribers = [], isLoading } = useQuery({
+  const { data: subscribers = [], isLoading, error: subscribersError } = useQuery({
     queryKey: ['subscribers'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -59,21 +59,19 @@ const AdminSubscriptions = () => {
 
   const sendNewsletter = useMutation({
     mutationFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-newsletter`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ subject, body }),
-        }
-      );
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.error);
-      return result;
+      const { data, error } = await supabase.functions.invoke('send-newsletter', {
+        body: { subject, body },
+      });
+
+      if (error) {
+        throw new Error(error.message || 'Failed to send newsletter');
+      }
+
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to send newsletter');
+      }
+
+      return data;
     },
     onSuccess: (data) => {
       toast({
@@ -109,6 +107,7 @@ const AdminSubscriptions = () => {
             <DialogContent className="sm:max-w-lg">
               <DialogHeader>
                 <DialogTitle>Send Newsletter to {activeCount} Subscribers</DialogTitle>
+                <DialogDescription>Compose a campaign email and send it to all active subscribers.</DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <Input
@@ -154,6 +153,8 @@ const AdminSubscriptions = () => {
           <CardContent className="p-0">
             {isLoading ? (
               <p className="p-6 text-center text-muted-foreground">Loading...</p>
+            ) : subscribersError ? (
+              <p className="p-6 text-center text-destructive">Unable to load subscribers. Please check your admin access.</p>
             ) : subscribers.length === 0 ? (
               <p className="p-6 text-center text-muted-foreground">No subscribers yet</p>
             ) : (
