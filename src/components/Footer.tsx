@@ -37,7 +37,7 @@ const Footer = () => {
           <div>
             <h4 className="font-serif text-lg font-medium mb-6 text-background">High Jewelry</h4>
             <ul className="space-y-3">
-              {[{
+              [{
               name: 'Rings',
               href: '/collections/rings'
             }, {
@@ -67,7 +67,7 @@ const Footer = () => {
           <div>
             <h4 className="font-serif text-lg font-medium mb-6 text-background">The House</h4>
             <ul className="space-y-3">
-              {[{
+              [{
               name: 'Our Heritage',
               href: '/about'
             }, {
@@ -79,6 +79,9 @@ const Footer = () => {
             }, {
               name: 'Ring Size Guide',
               href: '/ring-size-guide'
+            }, {
+              name: 'Blog',
+              href: '/blogs'
             }].map(item => <li key={item.name}>
                   <Link to={item.href} className="text-background/60 hover:text-primary transition-colors duration-300 text-sm">
                     {item.name}
