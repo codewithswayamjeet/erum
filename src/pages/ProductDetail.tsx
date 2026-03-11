@@ -16,15 +16,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { resolveImageUrl, resolveImageUrls } from '@/lib/imageUtils';
 
 // Size options by category
-const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
 const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
 const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
 
-const getSizesForCategory = (category: string): string[] => {
-  const cat = category.toLowerCase();
-  if (cat.includes('ring')) return RING_SIZES;
-  if (cat.includes('bracelet') || cat.includes('bangle')) return BRACELET_SIZES;
-  if (cat.includes('necklace') || cat.includes('chain') || cat.includes('pendant')) return NECKLACE_SIZES;
+const getSizesForProduct = (product: { category?: string | null; sub_category?: string | null; name?: string | null }): string[] => {
+  const haystack = `${product.category || ''} ${product.sub_category || ''} ${product.name || ''}`.toLowerCase();
+  if (haystack.includes('ring')) return RING_SIZES;
+  if (haystack.includes('bracelet') || haystack.includes('bangle')) return BRACELET_SIZES;
+  if (haystack.includes('necklace') || haystack.includes('chain') || haystack.includes('pendant')) return NECKLACE_SIZES;
   return [];
 };
 
