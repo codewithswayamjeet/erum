@@ -16,15 +16,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { resolveImageUrl, resolveImageUrls } from '@/lib/imageUtils';
 
 // Size options by category
-const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
 const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
 const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
 
-const getSizesForCategory = (category: string): string[] => {
-  const cat = category.toLowerCase();
-  if (cat.includes('ring')) return RING_SIZES;
-  if (cat.includes('bracelet') || cat.includes('bangle')) return BRACELET_SIZES;
-  if (cat.includes('necklace') || cat.includes('chain') || cat.includes('pendant')) return NECKLACE_SIZES;
+const getSizesForProduct = (product: { category?: string | null; sub_category?: string | null; name?: string | null }): string[] => {
+  const haystack = `${product.category || ''} ${product.sub_category || ''} ${product.name || ''}`.toLowerCase();
+  if (haystack.includes('ring')) return RING_SIZES;
+  if (haystack.includes('bracelet') || haystack.includes('bangle')) return BRACELET_SIZES;
+  if (haystack.includes('necklace') || haystack.includes('chain') || haystack.includes('pendant')) return NECKLACE_SIZES;
   return [];
 };
 
@@ -46,7 +46,7 @@ const ProductDetail = () => {
 
   const inWishlist = id ? isInWishlist(id) : false;
 
-  const availableSizes = product ? getSizesForCategory(product.category) : [];
+  const availableSizes = product ? getSizesForProduct(product) : [];
 
   const handleWishlistClick = async () => {
     if (!user) {
@@ -118,8 +118,11 @@ const ProductDetail = () => {
     toast({ title: 'Added to Cart', description: `${product.name}${selectedSize ? ` (Size: ${selectedSize})` : ''} has been added to your cart.` });
   };
 
-  const images = resolveImageUrls(product.images).length > 0 ? resolveImageUrls(product.images) : ['/placeholder.svg'];
-  const productVideoUrl = product.video_url ? resolveImageUrl(product.video_url) : null;
+  const imageUrls = resolveImageUrls(product.images).filter((media) => !/\.(mp4|mov|webm|m4v)(\?.*)?$/i.test(media));
+  const images = imageUrls.length > 0 ? imageUrls : ['/placeholder.svg'];
+  const fallbackVideoFromImages = resolveImageUrls(product.images).find((media) => /\.(mp4|mov|webm|m4v)(\?.*)?$/i.test(media));
+  const rawVideoUrl = product.video_url || fallbackVideoFromImages || null;
+  const productVideoUrl = rawVideoUrl ? resolveImageUrl(rawVideoUrl) : null;
   const filteredRelated = relatedProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   const productDetails = [

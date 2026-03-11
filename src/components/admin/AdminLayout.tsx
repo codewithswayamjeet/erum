@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, Lock, ScanSearch, Settings2, Mail, Video } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, Lock, ScanSearch, Settings2, Mail, Video, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -76,6 +76,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/page-controls', icon: Settings2, label: 'Page Controls' },
     { path: '/admin/subscriptions', icon: Mail, label: 'Email Subscriptions' },
     { path: '/admin/videos', icon: Video, label: 'Videos' },
+    { path: '/admin/blogs', icon: BookOpen, label: 'Blogs' },
     { path: '/admin/images', icon: ScanSearch, label: 'Image Scanner' },
     { path: '/admin/reports', icon: FileBarChart, label: 'Reports' },
   ];

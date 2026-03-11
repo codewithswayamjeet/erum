@@ -48,18 +48,13 @@ const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
 const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
 
 const getSizesForCategory = (category: string): string[] => {
-  switch (category) {
-    case 'Rings':
-      return RING_SIZES;
-    case 'Bracelets':
-    case 'Bangles':
-      return BRACELET_SIZES;
-    case 'Necklaces':
-    case 'Pendants':
-      return NECKLACE_SIZES;
-    default:
-      return [];
-  }
+  const normalized = category.toLowerCase();
+
+  if (normalized.includes('ring')) return RING_SIZES;
+  if (normalized.includes('bracelet') || normalized.includes('bangle')) return BRACELET_SIZES;
+  if (normalized.includes('necklace') || normalized.includes('pendant')) return NECKLACE_SIZES;
+
+  return [];
 };
 
 const emptyProduct = {

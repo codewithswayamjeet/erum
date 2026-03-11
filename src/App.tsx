@@ -26,6 +26,8 @@ import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
 import Search from "./pages/Search";
 import OrderHistory from "./pages/OrderHistory";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
@@ -38,6 +40,7 @@ import AdminImageScanner from "./pages/admin/AdminImageScanner";
 import AdminPageControls from "./pages/admin/AdminPageControls";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
 import AdminVideos from "./pages/admin/AdminVideos";
+import AdminBlogs from "./pages/admin/AdminBlogs";
 import RefundPolicy from "./pages/RefundPolicy";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
@@ -81,6 +84,8 @@ const App = () => {
                 <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
                 <Route path="/brand-promises" element={<BrandPromises />} />
                 <Route path="/bespoke-services" element={<BespokeServices />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blogs/:slug" element={<BlogDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/auth" element={<Auth />} />
@@ -94,10 +99,11 @@ const App = () => {
                 <Route path="/admin/customers" element={<AdminCustomers />} />
                 <Route path="/admin/reports" element={<AdminReports />} />
                 <Route path="/admin/submissions" element={<AdminSubmissions />} />
-                <Route path="/admin/images" element={<AdminImageScanner />} />
                 <Route path="/admin/page-controls" element={<AdminPageControls />} />
                 <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
                 <Route path="/admin/videos" element={<AdminVideos />} />
+                <Route path="/admin/blogs" element={<AdminBlogs />} />
+                <Route path="/admin/images" element={<AdminImageScanner />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
