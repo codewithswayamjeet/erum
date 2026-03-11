@@ -46,7 +46,7 @@ const ProductDetail = () => {
 
   const inWishlist = id ? isInWishlist(id) : false;
 
-  const availableSizes = product ? getSizesForCategory(product.category) : [];
+  const availableSizes = product ? getSizesForProduct(product) : [];
 
   const handleWishlistClick = async () => {
     if (!user) {
