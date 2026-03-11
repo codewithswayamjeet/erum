@@ -37,25 +37,25 @@ const Footer = () => {
           <div>
             <h4 className="font-serif text-lg font-medium mb-6 text-background">High Jewelry</h4>
             <ul className="space-y-3">
-              [{
-              name: 'Rings',
-              href: '/collections/rings'
-            }, {
-              name: 'Necklaces & Pendants',
-              href: '/collections/necklaces'
-            }, {
-              name: 'Earrings & Studs',
-              href: '/collections/earrings'
-            }, {
-              name: 'Bracelets & Bangles',
-              href: '/collections/bracelets'
-            }, {
-              name: 'Platinum Jewelry',
-              href: '/platinum-jewelry'
-            }, {
-              name: 'Hip Hop Jewelry',
-              href: '/hip-hop-jewelry'
-            }].map(item => <li key={item.name}>
+              {[{
+                name: 'Rings',
+                href: '/collections/rings'
+              }, {
+                name: 'Necklaces & Pendants',
+                href: '/collections/necklaces'
+              }, {
+                name: 'Earrings & Studs',
+                href: '/collections/earrings'
+              }, {
+                name: 'Bracelets & Bangles',
+                href: '/collections/bracelets'
+              }, {
+                name: 'Platinum Jewelry',
+                href: '/platinum-jewelry'
+              }, {
+                name: 'Hip Hop Jewelry',
+                href: '/hip-hop-jewelry'
+              }].map(item => <li key={item.name}>
                   <Link to={item.href} className="text-background/60 hover:text-primary transition-colors duration-300 text-sm">
                     {item.name}
                   </Link>
