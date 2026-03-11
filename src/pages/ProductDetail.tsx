@@ -118,8 +118,11 @@ const ProductDetail = () => {
     toast({ title: 'Added to Cart', description: `${product.name}${selectedSize ? ` (Size: ${selectedSize})` : ''} has been added to your cart.` });
   };
 
-  const images = resolveImageUrls(product.images).length > 0 ? resolveImageUrls(product.images) : ['/placeholder.svg'];
-  const productVideoUrl = product.video_url ? resolveImageUrl(product.video_url) : null;
+  const imageUrls = resolveImageUrls(product.images).filter((media) => !/\.(mp4|mov|webm|m4v)(\?.*)?$/i.test(media));
+  const images = imageUrls.length > 0 ? imageUrls : ['/placeholder.svg'];
+  const fallbackVideoFromImages = resolveImageUrls(product.images).find((media) => /\.(mp4|mov|webm|m4v)(\?.*)?$/i.test(media));
+  const rawVideoUrl = product.video_url || fallbackVideoFromImages || null;
+  const productVideoUrl = rawVideoUrl ? resolveImageUrl(rawVideoUrl) : null;
   const filteredRelated = relatedProducts.filter(p => p.id !== product.id).slice(0, 4);
 
   const productDetails = [

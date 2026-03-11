@@ -76,6 +76,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/page-controls', icon: Settings2, label: 'Page Controls' },
     { path: '/admin/subscriptions', icon: Mail, label: 'Email Subscriptions' },
     { path: '/admin/videos', icon: Video, label: 'Videos' },
+    { path: '/admin/blogs', icon: BookOpen, label: 'Blogs' },
     { path: '/admin/images', icon: ScanSearch, label: 'Image Scanner' },
     { path: '/admin/reports', icon: FileBarChart, label: 'Reports' },
   ];

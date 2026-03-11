@@ -63,10 +63,12 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const smtpPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-    const smtpUser = Deno.env.get("SMTP_USER_EMAIL") ?? "erumshopify19@gmail.com";
-    const senderEmail = Deno.env.get("SMTP_FROM_EMAIL") ?? smtpUser;
-    const smtpHost = Deno.env.get("SMTP_HOST") ?? "smtp.gmail.com";
+    const sanitizeSecret = (value: string | null) => value?.replace(/\s+/g, '').trim();
+
+    const smtpPassword = sanitizeSecret(Deno.env.get("SMTP_PASSWORD") ?? Deno.env.get("GMAIL_APP_PASSWORD"));
+    const smtpUser = Deno.env.get("SMTP_USER_EMAIL")?.trim() ?? "erumshopify19@gmail.com";
+    const senderEmail = Deno.env.get("SMTP_FROM_EMAIL")?.trim() ?? smtpUser;
+    const smtpHost = Deno.env.get("SMTP_HOST")?.trim() ?? "smtp.gmail.com";
     const smtpPort = Number(Deno.env.get("SMTP_PORT") ?? "465");
     const smtpSecure = (Deno.env.get("SMTP_SECURE") ?? "true").toLowerCase() !== "false";
 
