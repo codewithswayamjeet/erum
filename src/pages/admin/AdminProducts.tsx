@@ -34,6 +34,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
 import { useAllPageCategories } from '@/hooks/usePageCategories';
 import { resolveImageUrl } from '@/lib/imageUtils';
+import { getSizesForProduct } from '@/lib/productSizing';
 
 const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants', 'Hip Hop', 'Platinum'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
