@@ -56,6 +56,36 @@ export type Database = {
         }
         Relationships: []
       }
+      email_otps: {
+        Row: {
+          code: string
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          purpose: string
+          used: boolean
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          purpose?: string
+          used?: boolean
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          purpose?: string
+          used?: boolean
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           created_at: string

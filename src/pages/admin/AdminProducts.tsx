@@ -34,6 +34,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Product } from '@/hooks/useProducts';
 import { useAllPageCategories } from '@/hooks/usePageCategories';
 import { resolveImageUrl } from '@/lib/imageUtils';
+import { getSizesForProduct } from '@/lib/productSizing';
 
 const CATEGORIES = ['Rings', 'Earrings & Studs', 'Bracelets & Bangles', 'Necklaces', 'Pendants', 'Hip Hop', 'Platinum'];
 const MATERIALS = ['Gold', 'Silver', 'Platinum', 'Rose Gold', 'White Gold'];
@@ -42,20 +43,6 @@ const KARAT_OPTIONS = ['10K', '14K', '18K', '22K', '24K'];
 const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
 
 // Sub-categories are now fetched dynamically from page_categories table
-
-const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
-const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
-const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
-
-const getSizesForCategory = (category: string): string[] => {
-  const normalized = category.toLowerCase();
-
-  if (normalized.includes('ring')) return RING_SIZES;
-  if (normalized.includes('bracelet') || normalized.includes('bangle')) return BRACELET_SIZES;
-  if (normalized.includes('necklace') || normalized.includes('pendant')) return NECKLACE_SIZES;
-
-  return [];
-};
 
 const emptyProduct = {
   name: '',
@@ -650,19 +637,19 @@ const AdminProducts = () => {
                   </div>
                 </div>
 
-                {/* Size Selection based on Category */}
-                {formData.category && getSizesForCategory(formData.category).length > 0 && (
+                {/* Size Selection based on product metadata */}
+                {getSizesForProduct(formData).length > 0 && (
                   <div className="space-y-2">
-                    <Label>Available Sizes ({formData.category})</Label>
+                    <Label>Available Sizes</Label>
                     <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/30">
-                      {getSizesForCategory(formData.category).map((size) => (
+                      {getSizesForProduct(formData).map((size) => (
                         <span key={size} className="px-3 py-1 text-sm bg-primary/10 rounded-full border border-primary/20">
                           {size}
                         </span>
                       ))}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      These sizes will be available for customers to select
+                      Size options are detected from the category, sub-category, name, or size label.
                     </p>
                   </div>
                 )}

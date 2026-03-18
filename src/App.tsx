@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
+import RequireAdmin from "@/components/admin/RequireAdmin";
 import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
@@ -26,6 +27,7 @@ import Auth from "./pages/Auth";
 import Wishlist from "./pages/Wishlist";
 import Search from "./pages/Search";
 import OrderHistory from "./pages/OrderHistory";
+import OrderConfirmation from "./pages/OrderConfirmation";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
@@ -48,9 +50,9 @@ import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
+const protectAdmin = (element: JSX.Element) => <RequireAdmin>{element}</RequireAdmin>;
 
 const App = () => {
-  // Global safety net for unhandled promise rejections (e.g. PayPal SDK errors)
   useEffect(() => {
     const handler = (event: PromiseRejectionEvent) => {
       console.error("Unhandled rejection:", event.reason);
@@ -61,62 +63,63 @@ const App = () => {
   }, []);
 
   return (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/collections" element={<CollectionsRouter />} />
-                <Route path="/collections/:handle" element={<CollectionsRouter />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
-                <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />
-                <Route path="/platinum-jewelry" element={<PlatinumJewelry />} />
-                <Route path="/ring-size-guide" element={<RingSizeGuide />} />
-                <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
-                <Route path="/brand-promises" element={<BrandPromises />} />
-                <Route path="/bespoke-services" element={<BespokeServices />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blogs/:slug" element={<BlogDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/orders" element={<OrderHistory />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/products" element={<AdminProducts />} />
-                <Route path="/admin/orders" element={<AdminOrders />} />
-                <Route path="/admin/inventory" element={<AdminInventory />} />
-                <Route path="/admin/customers" element={<AdminCustomers />} />
-                <Route path="/admin/reports" element={<AdminReports />} />
-                <Route path="/admin/submissions" element={<AdminSubmissions />} />
-                <Route path="/admin/page-controls" element={<AdminPageControls />} />
-                <Route path="/admin/subscriptions" element={<AdminSubscriptions />} />
-                <Route path="/admin/videos" element={<AdminVideos />} />
-                <Route path="/admin/blogs" element={<AdminBlogs />} />
-                <Route path="/admin/images" element={<AdminImageScanner />} />
-                <Route path="/refund-policy" element={<RefundPolicy />} />
-                <Route path="/cancellation-policy" element={<CancellationPolicy />} />
-                <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                <Route path="/terms-conditions" element={<TermsConditions />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <ScrollToTop />
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/collections" element={<CollectionsRouter />} />
+                  <Route path="/collections/:handle" element={<CollectionsRouter />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/shopify-product/:handle" element={<ShopifyProductDetail />} />
+                  <Route path="/hip-hop-jewelry" element={<HipHopJewelry />} />
+                  <Route path="/platinum-jewelry" element={<PlatinumJewelry />} />
+                  <Route path="/ring-size-guide" element={<RingSizeGuide />} />
+                  <Route path="/meet-the-designer" element={<MeetTheDesigner />} />
+                  <Route path="/brand-promises" element={<BrandPromises />} />
+                  <Route path="/bespoke-services" element={<BespokeServices />} />
+                  <Route path="/blogs" element={<Blogs />} />
+                  <Route path="/blogs/:slug" element={<BlogDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/orders" element={<OrderHistory />} />
+                  <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+                  <Route path="/admin" element={protectAdmin(<AdminDashboard />)} />
+                  <Route path="/admin/products" element={protectAdmin(<AdminProducts />)} />
+                  <Route path="/admin/orders" element={protectAdmin(<AdminOrders />)} />
+                  <Route path="/admin/inventory" element={protectAdmin(<AdminInventory />)} />
+                  <Route path="/admin/customers" element={protectAdmin(<AdminCustomers />)} />
+                  <Route path="/admin/reports" element={protectAdmin(<AdminReports />)} />
+                  <Route path="/admin/submissions" element={protectAdmin(<AdminSubmissions />)} />
+                  <Route path="/admin/page-controls" element={protectAdmin(<AdminPageControls />)} />
+                  <Route path="/admin/subscriptions" element={protectAdmin(<AdminSubscriptions />)} />
+                  <Route path="/admin/videos" element={protectAdmin(<AdminVideos />)} />
+                  <Route path="/admin/blogs" element={protectAdmin(<AdminBlogs />)} />
+                  <Route path="/admin/images" element={protectAdmin(<AdminImageScanner />)} />
+                  <Route path="/refund-policy" element={<RefundPolicy />} />
+                  <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+                  <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                  <Route path="/terms-conditions" element={<TermsConditions />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 };
 

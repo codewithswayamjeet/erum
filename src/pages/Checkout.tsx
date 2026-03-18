@@ -172,7 +172,7 @@ const Checkout = () => {
 
   const handlePayPalSuccess = async (details: { orderId: string; status: string; payer: { email: string; name: string } }) => {
     setSubmitting(true);
-    
+
     const result = await createOrder('paid', details);
 
     if (result?.error) {
@@ -181,18 +181,20 @@ const Checkout = () => {
       return;
     }
 
-    toast({ 
-      title: 'Payment Successful!', 
-      description: `Thank you for your purchase! Your PayPal order ID: ${details.orderId}` 
+    const createdOrderId = result?.data?.id;
+
+    toast({
+      title: 'Payment Successful!',
+      description: `Thank you for your purchase! Your PayPal order ID: ${details.orderId}`,
     });
     clearCart();
-    navigate('/order-history');
+    navigate(createdOrderId ? `/order-confirmation/${createdOrderId}` : '/orders');
     setSubmitting(false);
   };
 
   const handleRazorpaySuccess = async (details: { orderId: string; paymentId: string }) => {
     setSubmitting(true);
-    
+
     const result = await createOrder('paid', details);
 
     if (result?.error) {
@@ -201,12 +203,14 @@ const Checkout = () => {
       return;
     }
 
-    toast({ 
-      title: 'Payment Successful!', 
-      description: `Thank you for your purchase! Payment ID: ${details.paymentId}` 
+    const createdOrderId = result?.data?.id;
+
+    toast({
+      title: 'Payment Successful!',
+      description: `Thank you for your purchase! Payment ID: ${details.paymentId}`,
     });
     clearCart();
-    navigate('/order-history');
+    navigate(createdOrderId ? `/order-confirmation/${createdOrderId}` : '/orders');
     setSubmitting(false);
   };
 
