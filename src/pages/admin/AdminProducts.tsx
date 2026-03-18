@@ -637,19 +637,19 @@ const AdminProducts = () => {
                   </div>
                 </div>
 
-                {/* Size Selection based on Category */}
-                {formData.category && getSizesForCategory(formData.category).length > 0 && (
+                {/* Size Selection based on product metadata */}
+                {getSizesForProduct(formData).length > 0 && (
                   <div className="space-y-2">
-                    <Label>Available Sizes ({formData.category})</Label>
+                    <Label>Available Sizes</Label>
                     <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/30">
-                      {getSizesForCategory(formData.category).map((size) => (
+                      {getSizesForProduct(formData).map((size) => (
                         <span key={size} className="px-3 py-1 text-sm bg-primary/10 rounded-full border border-primary/20">
                           {size}
                         </span>
                       ))}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      These sizes will be available for customers to select
+                      Size options are detected from the category, sub-category, name, or size label.
                     </p>
                   </div>
                 )}
