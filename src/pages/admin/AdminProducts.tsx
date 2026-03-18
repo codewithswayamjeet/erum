@@ -43,20 +43,6 @@ const CERTIFICATION_TYPES = ['GIA', 'IGI', 'None'];
 
 // Sub-categories are now fetched dynamically from page_categories table
 
-const RING_SIZES = ['4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
-const BRACELET_SIZES = ['7 inch', '7.5 inch', '8 inch', '8.5 inch'];
-const NECKLACE_SIZES = ['18 inch', '20 inch', '22 inch', '24 inch'];
-
-const getSizesForCategory = (category: string): string[] => {
-  const normalized = category.toLowerCase();
-
-  if (normalized.includes('ring')) return RING_SIZES;
-  if (normalized.includes('bracelet') || normalized.includes('bangle')) return BRACELET_SIZES;
-  if (normalized.includes('necklace') || normalized.includes('pendant')) return NECKLACE_SIZES;
-
-  return [];
-};
-
 const emptyProduct = {
   name: '',
   slug: '',
