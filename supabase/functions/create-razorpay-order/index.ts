@@ -57,7 +57,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        amount: amountInPaise,
+        amount: amountInSmallestUnit,
         currency: currency,
         receipt: receipt || `order_${Date.now()}`,
       }),
