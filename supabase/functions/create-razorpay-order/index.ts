@@ -33,10 +33,20 @@ serve(async (req) => {
       );
     }
 
-    // Razorpay expects amount in paise (smallest currency unit)
-    const amountInPaise = Math.round(amount * 100);
+    // Razorpay expects amount in smallest currency unit (paise for INR, cents for USD)
+    const amountInSmallestUnit = Math.round(amount * 100);
 
-    console.log('Creating Razorpay order for amount:', amountInPaise, currency);
+    // Razorpay max limit check (₹50,00,000 = 50000000 paise for INR)
+    const maxAmount = currency === 'INR' ? 50000000 : 9999999;
+    if (amountInSmallestUnit > maxAmount) {
+      console.error('Amount exceeds maximum:', amountInSmallestUnit, currency);
+      return new Response(
+        JSON.stringify({ error: `Amount exceeds maximum limit for ${currency}` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('Creating Razorpay order for amount:', amountInSmallestUnit, currency);
 
     const credentials = btoa(`${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}`);
     
@@ -47,7 +57,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        amount: amountInPaise,
+        amount: amountInSmallestUnit,
         currency: currency,
         receipt: receipt || `order_${Date.now()}`,
       }),
