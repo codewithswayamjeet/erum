@@ -640,16 +640,34 @@ const AdminProducts = () => {
                 {/* Size Selection based on product metadata */}
                 {getSizesForProduct(formData).length > 0 && (
                   <div className="space-y-2">
-                    <Label>Available Sizes</Label>
+                    <Label>Available Sizes (click to select)</Label>
                     <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/30">
-                      {getSizesForProduct(formData).map((size) => (
-                        <span key={size} className="px-3 py-1 text-sm bg-primary/10 rounded-full border border-primary/20">
-                          {size}
-                        </span>
-                      ))}
+                      {getSizesForProduct(formData).map((size) => {
+                        const selectedSizes = formData.size ? formData.size.split(',').map(s => s.trim()) : [];
+                        const isSelected = selectedSizes.includes(size);
+                        return (
+                          <button
+                            type="button"
+                            key={size}
+                            onClick={() => {
+                              const updated = isSelected
+                                ? selectedSizes.filter(s => s !== size)
+                                : [...selectedSizes, size];
+                              setFormData({ ...formData, size: updated.filter(Boolean).join(', ') });
+                            }}
+                            className={`px-3 py-1 text-sm rounded-full border transition-colors ${
+                              isSelected
+                                ? 'bg-primary text-primary-foreground border-primary'
+                                : 'bg-primary/10 border-primary/20 hover:bg-primary/20'
+                            }`}
+                          >
+                            {size}
+                          </button>
+                        );
+                      })}
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Size options are detected from the category, sub-category, name, or size label.
+                      Click sizes to toggle selection. Selected: {formData.size || 'None'}
                     </p>
                   </div>
                 )}
