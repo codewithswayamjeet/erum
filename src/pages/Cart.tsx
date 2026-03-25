@@ -7,6 +7,7 @@ import { useCurrency } from '@/contexts/CurrencyContext';
 
 const Cart = () => {
   const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
+  const { formatPrice } = useCurrency();
 
   if (cartItems.length === 0) {
     return (
