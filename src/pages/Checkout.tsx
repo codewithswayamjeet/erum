@@ -420,7 +420,7 @@ const Checkout = () => {
                         <p className="font-medium truncate">{item.name}</p>
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
-                      <p className="font-medium whitespace-nowrap">${(item.price * item.quantity).toLocaleString('en-US')}</p>
+                      <p className="font-medium whitespace-nowrap">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>
