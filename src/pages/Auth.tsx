@@ -294,6 +294,17 @@ const Auth = () => {
             )}
 
             <div className="mt-8 text-center">
+              {isForgotPassword ? (
+                <p className="text-muted-foreground">
+                  Remember your password?{' '}
+                  <button
+                    onClick={() => { setIsForgotPassword(false); setErrors({}); }}
+                    className="text-primary font-medium hover:underline"
+                  >
+                    Sign In
+                  </button>
+                </p>
+              ) : (
               <p className="text-muted-foreground">
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
                 <button
@@ -306,6 +317,7 @@ const Auth = () => {
                   {isSignUp ? 'Sign In' : 'Create Account'}
                 </button>
               </p>
+              )}
             </div>
           </motion.div>
         </div>
