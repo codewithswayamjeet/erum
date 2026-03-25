@@ -60,7 +60,7 @@ const Cart = () => {
                         <span className="w-10 text-center">{item.quantity}</span>
                         <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="p-2"><Plus className="w-4 h-4" /></button>
                       </div>
-                      <p className="font-medium">${(item.price * item.quantity).toLocaleString('en-US')}</p>
+                      <p className="font-medium">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   </div>
                 </motion.div>
