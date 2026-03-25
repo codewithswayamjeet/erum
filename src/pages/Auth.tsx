@@ -179,10 +179,12 @@ const Auth = () => {
           >
             <div className="text-center mb-10">
               <h1 className="font-serif text-3xl md:text-4xl mb-4">
-                {isSignUp ? 'Create Account' : 'Welcome Back'}
+                {isForgotPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}
               </h1>
               <p className="text-muted-foreground">
-                {isSignUp
+                {isForgotPassword
+                  ? 'Enter your email and we\'ll send you a reset link'
+                  : isSignUp
                   ? 'Join ERUM and discover exquisite jewellery'
                   : 'Sign in to continue your journey'}
               </p>
