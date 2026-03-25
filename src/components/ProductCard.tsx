@@ -80,7 +80,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
             {name}
           </h3>
           <p className="text-muted-foreground">
-            ${price.toLocaleString('en-US')}
+            {formatPrice(price)}
           </p>
         </div>
       </Link>

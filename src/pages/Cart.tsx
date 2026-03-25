@@ -70,10 +70,10 @@ const Cart = () => {
               <div className="bg-secondary border border-border p-8 sticky top-32">
                 <h2 className="font-serif text-xl mb-6">Order Summary</h2>
                 <div className="space-y-4 mb-6 pb-6 border-b border-border">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${cartTotal.toLocaleString('en-US')}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatPrice(cartTotal)}</span></div>
                   <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="text-primary">Complimentary</span></div>
                 </div>
-                <div className="flex justify-between text-lg font-medium mb-8"><span>Total</span><span>${cartTotal.toLocaleString('en-US')}</span></div>
+                <div className="flex justify-between text-lg font-medium mb-8"><span>Total</span><span>{formatPrice(cartTotal)}</span></div>
                 <Link to="/checkout" className="btn-luxury-primary w-full text-center block mb-6">Proceed to Checkout</Link>
                 <div className="flex items-center justify-center gap-6 text-muted-foreground text-sm">
                   <span className="flex items-center gap-2"><Shield className="w-4 h-4" /> Secure</span>
