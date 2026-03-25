@@ -285,9 +285,13 @@ const Auth = () => {
                 </div>
               )}
 
+              <div className="flex items-center justify-between">
+                <MathCaptcha onVerified={setCaptchaVerified} />
+              </div>
+
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !captchaVerified}
                 className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
