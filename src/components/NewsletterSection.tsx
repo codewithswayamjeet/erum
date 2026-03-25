@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import MathCaptcha from '@/components/MathCaptcha';
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState('');
