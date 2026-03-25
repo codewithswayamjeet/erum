@@ -436,7 +436,7 @@ const Checkout = () => {
                 </div>
                 <div className="flex justify-between text-lg font-medium">
                   <span>Total</span>
-                  <span>${cartTotal.toLocaleString('en-US')}</span>
+                  <span>{formatPrice(cartTotal)}</span>
                 </div>
               </div>
             </div>
