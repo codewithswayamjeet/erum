@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label';
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user, isLoading } = useAuth();
+  const { formatPrice } = useCurrency();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ 
