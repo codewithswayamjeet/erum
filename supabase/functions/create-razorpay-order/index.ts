@@ -36,8 +36,8 @@ serve(async (req) => {
     // Razorpay expects amount in smallest currency unit (paise for INR, cents for USD)
     const amountInSmallestUnit = Math.round(amount * 100);
 
-    // Razorpay max limit check (₹50,00,000 = 50000000 paise for INR)
-    const maxAmount = currency === 'INR' ? 50000000 : 9999999;
+    // Razorpay max limit check (₹50,00,000 = 50000000 paise for INR, $500,000 for USD)
+    const maxAmount = currency === 'INR' ? 50000000 : 50000000;
     if (amountInSmallestUnit > maxAmount) {
       console.error('Amount exceeds maximum:', amountInSmallestUnit, currency);
       return new Response(
