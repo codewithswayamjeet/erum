@@ -49,7 +49,7 @@ import CancellationPolicy from "./pages/CancellationPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-
+import ResetPassword from "./pages/ResetPassword";
 const queryClient = new QueryClient();
 const protectAdmin = (element: JSX.Element) => <RequireAdmin>{element}</RequireAdmin>;
 
