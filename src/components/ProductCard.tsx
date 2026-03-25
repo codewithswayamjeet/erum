@@ -18,6 +18,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
   const { user } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { toast } = useToast();
+  const { formatPrice } = useCurrency();
   const inWishlist = isInWishlist(id);
 
   const handleWishlistClick = async (e: React.MouseEvent) => {
