@@ -331,6 +331,12 @@ const Checkout = () => {
                 </div>
               </div>
 
+              {/* Email OTP Verification */}
+              <div className="bg-card border border-border p-6 md:p-8">
+                <h2 className="font-serif text-xl mb-6">Email Verification</h2>
+                <CheckoutOTP email={formData.email} onVerified={() => setEmailVerified(true)} />
+              </div>
+
               {/* Payment Method Selection */}
               <div className="bg-card border border-border p-6 md:p-8">
                 <h2 className="font-serif text-xl mb-6">Select Payment Method</h2>
