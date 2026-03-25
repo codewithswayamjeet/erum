@@ -8,6 +8,7 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useShopifyCartStore } from '@/stores/shopifyCartStore';
 import { ShopifyCartDrawer } from '@/components/ShopifyCartDrawer';
 import { useAllPageCategories } from '@/hooks/usePageCategories';
+import CurrencyToggle from '@/components/CurrencyToggle';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
