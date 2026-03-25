@@ -53,7 +53,7 @@ const Cart = () => {
                       </div>
                       <button onClick={() => removeFromCart(item.id, item.size)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
                     </div>
-                    <p className="text-muted-foreground text-sm mb-4">${item.price.toLocaleString('en-US')}</p>
+                    <p className="text-muted-foreground text-sm mb-4">{formatPrice(item.price)}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center border border-border">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-2"><Minus className="w-4 h-4" /></button>
