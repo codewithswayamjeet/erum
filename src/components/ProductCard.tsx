@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface ProductCardProps {
   id: string;
@@ -17,6 +18,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
   const { user } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { toast } = useToast();
+  const { formatPrice } = useCurrency();
   const inWishlist = isInWishlist(id);
 
   const handleWishlistClick = async (e: React.MouseEvent) => {
@@ -78,7 +80,7 @@ const ProductCard = ({ id, name, price, image, category }: ProductCardProps) => 
             {name}
           </h3>
           <p className="text-muted-foreground">
-            ${price.toLocaleString('en-US')}
+            {formatPrice(price)}
           </p>
         </div>
       </Link>

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,10 +13,12 @@ import PayPalButton from '@/components/PayPalButton';
 import RazorpayButton from '@/components/RazorpayButton';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import CheckoutOTP from '@/components/CheckoutOTP';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user, isLoading } = useAuth();
+  const { formatPrice } = useCurrency();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ 
@@ -29,6 +32,7 @@ const Checkout = () => {
     pincode: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'razorpay'>('razorpay');
 
   useEffect(() => {
@@ -101,7 +105,7 @@ const Checkout = () => {
   const isFormValid = () => {
     return formData.firstName && formData.lastName && formData.email && 
            formData.phone && formData.address && formData.city && 
-           formData.state && formData.pincode;
+           formData.state && formData.pincode && emailVerified;
   };
 
   const createOrder = async (paymentStatus: string, paymentDetails?: { orderId?: string; paymentId?: string; payer?: { email: string; name: string } }) => {
@@ -327,6 +331,12 @@ const Checkout = () => {
                 </div>
               </div>
 
+              {/* Email OTP Verification */}
+              <div className="bg-card border border-border p-6 md:p-8">
+                <h2 className="font-serif text-xl mb-6">Email Verification</h2>
+                <CheckoutOTP email={formData.email} onVerified={() => setEmailVerified(true)} />
+              </div>
+
               {/* Payment Method Selection */}
               <div className="bg-card border border-border p-6 md:p-8">
                 <h2 className="font-serif text-xl mb-6">Select Payment Method</h2>
@@ -418,14 +428,14 @@ const Checkout = () => {
                         <p className="font-medium truncate">{item.name}</p>
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
-                      <p className="font-medium whitespace-nowrap">${(item.price * item.quantity).toLocaleString('en-US')}</p>
+                      <p className="font-medium whitespace-nowrap">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>
                 <div className="space-y-2 mb-6 pb-6 border-b border-border">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${cartTotal.toLocaleString('en-US')}</span>
+                    <span>{formatPrice(cartTotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
@@ -434,7 +444,7 @@ const Checkout = () => {
                 </div>
                 <div className="flex justify-between text-lg font-medium">
                   <span>Total</span>
-                  <span>${cartTotal.toLocaleString('en-US')}</span>
+                  <span>{formatPrice(cartTotal)}</span>
                 </div>
               </div>
             </div>

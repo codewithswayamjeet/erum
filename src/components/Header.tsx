@@ -8,6 +8,7 @@ import { useWishlist } from '@/contexts/WishlistContext';
 import { useShopifyCartStore } from '@/stores/shopifyCartStore';
 import { ShopifyCartDrawer } from '@/components/ShopifyCartDrawer';
 import { useAllPageCategories } from '@/hooks/usePageCategories';
+import CurrencyToggle from '@/components/CurrencyToggle';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -240,6 +241,7 @@ const Header = () => {
 
             {/* Right Icons */}
             <div className="flex items-center gap-2 md:gap-3">
+              <CurrencyToggle />
               <Link to="/search" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
                 <Search className="h-5 w-5" />
               </Link>

@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import AffiliationsSection from '@/components/AffiliationsSection';
 import PhoneInputWithCountry from '@/components/PhoneInputWithCountry';
 import { supabase } from '@/integrations/supabase/client';
+import MathCaptcha from '@/components/MathCaptcha';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -17,6 +18,7 @@ const Contact = () => {
   });
   const [designImage, setDesignImage] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -193,9 +195,13 @@ const Contact = () => {
                 )}
               </div>
 
+              <div className="flex items-center justify-between">
+                <MathCaptcha onVerified={setCaptchaVerified} />
+              </div>
+
               <button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || !captchaVerified}
                 className="w-full btn-luxury-primary flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (

@@ -9,6 +9,7 @@ import RequireAdmin from "@/components/admin/RequireAdmin";
 import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -48,7 +49,8 @@ import CancellationPolicy from "./pages/CancellationPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-
+import ResetPassword from "./pages/ResetPassword";
+import AdminSettings from "./pages/admin/AdminSettings";
 const queryClient = new QueryClient();
 const protectAdmin = (element: JSX.Element) => <RequireAdmin>{element}</RequireAdmin>;
 
@@ -65,6 +67,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <CurrencyProvider>
         <CartProvider>
           <WishlistProvider>
             <TooltipProvider>
@@ -91,6 +94,7 @@ const App = () => {
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/orders" element={<OrderHistory />} />
@@ -107,6 +111,7 @@ const App = () => {
                   <Route path="/admin/videos" element={protectAdmin(<AdminVideos />)} />
                   <Route path="/admin/blogs" element={protectAdmin(<AdminBlogs />)} />
                   <Route path="/admin/images" element={protectAdmin(<AdminImageScanner />)} />
+                  <Route path="/admin/settings" element={protectAdmin(<AdminSettings />)} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                   <Route path="/shipping-policy" element={<ShippingPolicy />} />
@@ -118,6 +123,7 @@ const App = () => {
             </TooltipProvider>
           </WishlistProvider>
         </CartProvider>
+        </CurrencyProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

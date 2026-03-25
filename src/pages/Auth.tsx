@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import MathCaptcha from '@/components/MathCaptcha';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
@@ -14,6 +15,7 @@ const nameSchema = z.string().min(2, 'Name must be at least 2 characters');
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -21,6 +23,7 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [manualRedirectDone, setManualRedirectDone] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   
   const { signIn, signUp, user, isAdmin, isLoading, isRoleLoading } = useAuth();
   const { toast } = useToast();
@@ -63,6 +66,30 @@ const Auth = () => {
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const emailResult = emailSchema.safeParse(email);
+    if (!emailResult.success) {
+      setErrors({ email: emailResult.error.errors[0].message });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      } else {
+        toast({ title: 'Check your email', description: 'We sent you a password reset link.' });
+      }
+    } catch {
+      toast({ title: 'Error', description: 'Something went wrong.', variant: 'destructive' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -154,15 +181,43 @@ const Auth = () => {
           >
             <div className="text-center mb-10">
               <h1 className="font-serif text-3xl md:text-4xl mb-4">
-                {isSignUp ? 'Create Account' : 'Welcome Back'}
+                {isForgotPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}
               </h1>
               <p className="text-muted-foreground">
-                {isSignUp
+                {isForgotPassword
+                  ? 'Enter your email and we\'ll send you a reset link'
+                  : isSignUp
                   ? 'Join ERUM and discover exquisite jewellery'
                   : 'Sign in to continue your journey'}
               </p>
             </div>
 
+            {isForgotPassword ? (
+              <form onSubmit={handleForgotPassword} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-12 pr-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                  </div>
+                  {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </form>
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {isSignUp && (
                 <div>
@@ -218,16 +273,44 @@ const Auth = () => {
                 {errors.password && <p className="text-destructive text-sm mt-1">{errors.password}</p>}
               </div>
 
+              {!isSignUp && (
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => { setIsForgotPassword(true); setErrors({}); }}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <MathCaptcha onVerified={setCaptchaVerified} />
+              </div>
+
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !captchaVerified}
                 className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
               </button>
             </form>
+            )}
 
             <div className="mt-8 text-center">
+              {isForgotPassword ? (
+                <p className="text-muted-foreground">
+                  Remember your password?{' '}
+                  <button
+                    onClick={() => { setIsForgotPassword(false); setErrors({}); }}
+                    className="text-primary font-medium hover:underline"
+                  >
+                    Sign In
+                  </button>
+                </p>
+              ) : (
               <p className="text-muted-foreground">
                 {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
                 <button
@@ -240,6 +323,7 @@ const Auth = () => {
                   {isSignUp ? 'Sign In' : 'Create Account'}
                 </button>
               </p>
+              )}
             </div>
           </motion.div>
         </div>
