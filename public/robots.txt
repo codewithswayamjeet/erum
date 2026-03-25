@@ -12,3 +12,8 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://erum.lovable.app/sitemap.xml
+
+Disallow: /admin
+Disallow: /admin/
