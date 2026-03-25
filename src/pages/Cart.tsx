@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Minus, Plus, X, Shield, Truck } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useCart } from '@/contexts/CartContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 const Cart = () => {
   const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
