@@ -93,6 +93,7 @@ const App = () => {
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/orders" element={<OrderHistory />} />
