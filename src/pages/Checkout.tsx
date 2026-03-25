@@ -13,6 +13,7 @@ import PayPalButton from '@/components/PayPalButton';
 import RazorpayButton from '@/components/RazorpayButton';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import CheckoutOTP from '@/components/CheckoutOTP';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
