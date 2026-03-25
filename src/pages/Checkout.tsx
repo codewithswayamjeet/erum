@@ -32,6 +32,7 @@ const Checkout = () => {
     pincode: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'razorpay'>('razorpay');
 
   useEffect(() => {
