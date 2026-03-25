@@ -23,6 +23,7 @@ const Auth = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [manualRedirectDone, setManualRedirectDone] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   
   const { signIn, signUp, user, isAdmin, isLoading, isRoleLoading } = useAuth();
   const { toast } = useToast();
