@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface ProductCardProps {
   id: string;
