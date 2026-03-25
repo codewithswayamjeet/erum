@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import { Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, ScanSearch, Settings2, Mail, Video, BookOpen, Shield } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, Home, Users, Boxes, FileBarChart, MessageSquare, Menu, ScanSearch, Settings2, Mail, BookOpen, Shield, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
