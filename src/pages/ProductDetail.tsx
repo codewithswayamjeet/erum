@@ -23,6 +23,7 @@ const ProductDetail = () => {
   const { user } = useAuth();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { toast } = useToast();
+  const { formatPrice } = useCurrency();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string>('');
