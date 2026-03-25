@@ -7,6 +7,7 @@ import MathCaptcha from '@/components/MathCaptcha';
 const NewsletterSection = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const { toast } = useToast();
 
   const handleSubscribe = async (e: React.FormEvent) => {
