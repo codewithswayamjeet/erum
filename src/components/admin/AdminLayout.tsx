@@ -29,6 +29,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/blogs', icon: BookOpen, label: 'Blogs' },
     { path: '/admin/images', icon: ScanSearch, label: 'Image Scanner' },
     { path: '/admin/reports', icon: FileBarChart, label: 'Reports' },
+    { path: '/admin/settings', icon: DollarSign, label: 'Settings' },
   ];
 
   const NavContent = ({ onItemClick }: { onItemClick?: () => void }) => (
