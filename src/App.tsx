@@ -50,6 +50,7 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ResetPassword from "./pages/ResetPassword";
+import AdminSettings from "./pages/admin/AdminSettings";
 const queryClient = new QueryClient();
 const protectAdmin = (element: JSX.Element) => <RequireAdmin>{element}</RequireAdmin>;
 
