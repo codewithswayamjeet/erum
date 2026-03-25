@@ -190,6 +190,32 @@ const Auth = () => {
               </p>
             </div>
 
+            {isForgotPassword ? (
+              <form onSubmit={handleForgotPassword} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-12 pr-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                  </div>
+                  {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                </button>
+              </form>
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {isSignUp && (
                 <div>
@@ -245,6 +271,18 @@ const Auth = () => {
                 {errors.password && <p className="text-destructive text-sm mt-1">{errors.password}</p>}
               </div>
 
+              {!isSignUp && (
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => { setIsForgotPassword(true); setErrors({}); }}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -253,6 +291,7 @@ const Auth = () => {
                 {isSubmitting ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
               </button>
             </form>
+            )}
 
             <div className="mt-8 text-center">
               <p className="text-muted-foreground">
