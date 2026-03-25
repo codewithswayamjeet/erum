@@ -47,18 +47,23 @@ const NewsletterSection = () => {
         >
           <h3 className="font-serif text-2xl md:text-3xl mb-4">Join Our Inner Circle</h3>
           <p className="text-muted-foreground mb-8">Be the first to discover new collections, exclusive events, and timeless inspirations.</p>
-          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              required
-              placeholder="Enter your email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="flex-1 px-6 py-4 bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-            />
-            <button type="submit" disabled={loading} className="btn-luxury-primary">
-              {loading ? 'Subscribing...' : 'Subscribe'}
-            </button>
+          <form onSubmit={handleSubscribe} className="space-y-4 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <input
+                type="email"
+                required
+                placeholder="Enter your email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="flex-1 px-6 py-4 bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
+              />
+              <button type="submit" disabled={loading || !captchaVerified} className="btn-luxury-primary disabled:opacity-50">
+                {loading ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </div>
+            <div className="flex justify-center">
+              <MathCaptcha onVerified={setCaptchaVerified} />
+            </div>
           </form>
         </motion.div>
       </div>

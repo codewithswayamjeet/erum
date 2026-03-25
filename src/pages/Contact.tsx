@@ -195,9 +195,13 @@ const Contact = () => {
                 )}
               </div>
 
+              <div className="flex items-center justify-between">
+                <MathCaptcha onVerified={setCaptchaVerified} />
+              </div>
+
               <button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || !captchaVerified}
                 className="w-full btn-luxury-primary flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
