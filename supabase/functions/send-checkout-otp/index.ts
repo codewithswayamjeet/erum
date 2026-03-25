@@ -16,7 +16,7 @@ serve(async (req) => {
   }
 
   try {
-    const { email, action } = await req.json();
+    const { email, action, code } = await req.json();
 
     if (!email) {
       return new Response(JSON.stringify({ error: 'Email is required' }), {
@@ -29,14 +29,12 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     if (action === 'send') {
-      // Generate 6-digit OTP
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes
+      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
-      // Store OTP in database
       const { error: insertError } = await supabase.from('email_otps').insert({
         email: email.toLowerCase().trim(),
-        code,
+        code: otpCode,
         expires_at: expiresAt,
         purpose: 'checkout_verification',
       });
@@ -48,7 +46,6 @@ serve(async (req) => {
         });
       }
 
-      // Send OTP via SMTP
       const smtpUser = Deno.env.get('SMTP_USER_EMAIL') || 'erumshopify19@gmail.com';
       const smtpPass = sanitizeSecret(Deno.env.get('GMAIL_APP_PASSWORD') || '');
 
@@ -58,7 +55,6 @@ serve(async (req) => {
         });
       }
 
-      // Use Gmail SMTP via fetch to send email
       const emailHtml = `
         <div style="font-family: 'Georgia', serif; max-width: 500px; margin: 0 auto; padding: 40px 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
@@ -69,14 +65,13 @@ serve(async (req) => {
             <h2 style="color: #2d3748; font-size: 18px; margin-bottom: 10px;">Verify Your Email</h2>
             <p style="color: #718096; font-size: 14px; margin-bottom: 20px;">Enter this code to complete your checkout:</p>
             <div style="background: #2d3748; color: #fff; font-size: 32px; letter-spacing: 8px; padding: 15px 30px; display: inline-block; font-weight: bold;">
-              ${code}
+              ${otpCode}
             </div>
             <p style="color: #a0aec0; font-size: 12px; margin-top: 20px;">This code expires in 10 minutes.</p>
           </div>
         </div>
       `;
 
-      // Use a simple SMTP approach via Deno's built-in capabilities
       const { SMTPClient } = await import("https://deno.land/x/denomailer@1.6.0/mod.ts");
       
       const client = new SMTPClient({
@@ -101,17 +96,44 @@ serve(async (req) => {
 
       await client.close();
 
-      return new Response(JSON.stringify({ success: true, message: 'OTP sent successfully' }), {
+      return new Response(JSON.stringify({ success: true }), {
         status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
 
     } else if (action === 'verify') {
-      const { code } = await req.json();
-      
-      // This won't work since we already consumed req.json(). Let me fix the approach.
+      if (!code) {
+        return new Response(JSON.stringify({ error: 'Code is required' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      const { data, error } = await supabase
+        .from('email_otps')
+        .select('*')
+        .eq('email', email.toLowerCase().trim())
+        .eq('code', code)
+        .eq('purpose', 'checkout_verification')
+        .eq('used', false)
+        .gte('expires_at', new Date().toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !data) {
+        return new Response(JSON.stringify({ verified: false, error: 'Invalid or expired code' }), {
+          status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Mark OTP as used
+      await supabase.from('email_otps').update({ used: true }).eq('id', data.id);
+
+      return new Response(JSON.stringify({ verified: true }), {
+        status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
-    return new Response(JSON.stringify({ error: 'Invalid action' }), {
+    return new Response(JSON.stringify({ error: 'Invalid action. Use "send" or "verify".' }), {
       status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
