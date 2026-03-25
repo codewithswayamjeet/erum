@@ -110,6 +110,7 @@ const App = () => {
                   <Route path="/admin/videos" element={protectAdmin(<AdminVideos />)} />
                   <Route path="/admin/blogs" element={protectAdmin(<AdminBlogs />)} />
                   <Route path="/admin/images" element={protectAdmin(<AdminImageScanner />)} />
+                  <Route path="/admin/settings" element={protectAdmin(<AdminSettings />)} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/cancellation-policy" element={<CancellationPolicy />} />
                   <Route path="/shipping-policy" element={<ShippingPolicy />} />
