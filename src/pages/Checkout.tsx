@@ -105,7 +105,7 @@ const Checkout = () => {
   const isFormValid = () => {
     return formData.firstName && formData.lastName && formData.email && 
            formData.phone && formData.address && formData.city && 
-           formData.state && formData.pincode;
+           formData.state && formData.pincode && emailVerified;
   };
 
   const createOrder = async (paymentStatus: string, paymentDetails?: { orderId?: string; paymentId?: string; payer?: { email: string; name: string } }) => {
