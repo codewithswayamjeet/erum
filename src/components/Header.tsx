@@ -240,42 +240,44 @@ const Header = () => {
             </nav>
 
             {/* Right Icons */}
-            <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
-              <CurrencyToggle />
-              <Link to="/search" className="p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
-                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+            <div className="flex items-center gap-0.5 sm:gap-1.5 md:gap-3 flex-shrink-0">
+              <div className="hidden sm:block">
+                <CurrencyToggle />
+              </div>
+              <Link to="/search" className="p-1 sm:p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
+                <Search className="h-4 w-4 md:h-5 md:w-5" />
               </Link>
               
               {user && (
-                <Link to="/wishlist" className="relative p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
-                  <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Link to="/wishlist" className="relative p-1 sm:p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
+                  <Heart className="h-4 w-4 md:h-5 md:w-5" />
                   {wishlistIds.length > 0 && (
-                    <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">{wishlistIds.length}</span>
+                    <span className="absolute -top-1 -right-1 h-3.5 w-3.5 md:h-4 md:w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">{wishlistIds.length}</span>
                   )}
                 </Link>
               )}
               
-              <Link to="/cart" className="relative p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Shopping cart">
-                <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Link to="/cart" className="relative p-1 sm:p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Shopping cart">
+                <ShoppingBag className="h-4 w-4 md:h-5 md:w-5" />
                 {cartItemCount + shopifyCartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{cartItemCount + shopifyCartCount}</span>
+                  <span className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 rounded-full bg-primary text-primary-foreground text-[10px] md:text-xs flex items-center justify-center font-medium">{cartItemCount + shopifyCartCount}</span>
                 )}
               </Link>
               
               <ShopifyCartDrawer />
 
               {user ? (
-                <div className="hidden sm:flex items-center gap-1">
-                  <Link to="/orders" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Order History">
-                    <Package className="h-5 w-5" />
+                <div className="hidden sm:flex items-center gap-0.5 md:gap-1">
+                  <Link to="/orders" className="p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Order History">
+                    <Package className="h-4 w-4 md:h-5 md:w-5" />
                   </Link>
-                  <button onClick={handleSignOut} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Sign out">
-                    <LogOut className="h-5 w-5" />
+                  <button onClick={handleSignOut} className="p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Sign out">
+                    <LogOut className="h-4 w-4 md:h-5 md:w-5" />
                   </button>
                 </div>
               ) : (
-                <Link to="/auth" className="hidden sm:block p-2 text-foreground hover:text-primary transition-colors" aria-label="Sign in">
-                  <User className="h-5 w-5" />
+                <Link to="/auth" className="hidden sm:block p-1.5 md:p-2 text-foreground hover:text-primary transition-colors" aria-label="Sign in">
+                  <User className="h-4 w-4 md:h-5 md:w-5" />
                 </Link>
               )}
             </div>
@@ -305,9 +307,12 @@ const Header = () => {
               <div className="flex flex-col min-h-full">
                 <div className="flex items-center justify-between p-6 border-b border-border">
                   <img src="/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" alt="ERUM" className="h-8 w-auto object-contain" />
-                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Close menu">
-                    <X className="h-6 w-6" />
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <CurrencyToggle />
+                    <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Close menu">
+                      <X className="h-6 w-6" />
+                    </button>
+                  </div>
                 </div>
 
                 <nav className="flex-1 py-6 px-6">

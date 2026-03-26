@@ -91,7 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: #1a1a1a; padding: 20px; text-align: center;">
-          <img src="https://erum.lovable.app/images/erum-logo-email.png" alt="ERUM - The Jewellery Studio" style="height: 45px; width: auto;" />
+          <img src="https://erum.lovable.app/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" alt="ERUM - The Jewellery Studio" style="height: 45px; width: auto;" />
         </div>
         <div style="padding: 30px 20px;">
           <h2 style="color: #1a1a1a; margin: 0 0 20px;">${subject}</h2>

@@ -58,7 +58,7 @@ serve(async (req) => {
       const emailHtml = `
         <div style="font-family: 'Georgia', serif; max-width: 500px; margin: 0 auto; padding: 40px 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <img src="https://erum.lovable.app/images/erum-logo-email.png" alt="ERUM - The Jewellery Studio" style="height: 45px; width: auto;" />
+            <img src="https://erum.lovable.app/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" alt="ERUM - The Jewellery Studio" style="height: 45px; width: auto;" />
           </div>
           <div style="background: #faf9f7; padding: 30px; border: 1px solid #e8e4df; text-align: center;">
             <h2 style="color: #2d3748; font-size: 18px; margin-bottom: 10px;">Verify Your Email</h2>
