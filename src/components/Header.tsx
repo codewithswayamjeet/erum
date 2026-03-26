@@ -240,10 +240,10 @@ const Header = () => {
             </nav>
 
             {/* Right Icons */}
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
               <CurrencyToggle />
-              <Link to="/search" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
-                <Search className="h-5 w-5" />
+              <Link to="/search" className="p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
               
               {user && (
