@@ -247,8 +247,8 @@ const Header = () => {
               </Link>
               
               {user && (
-                <Link to="/wishlist" className="relative p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
-                  <Heart className="h-5 w-5" />
+                <Link to="/wishlist" className="relative p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
                   {wishlistIds.length > 0 && (
                     <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">{wishlistIds.length}</span>
                   )}
