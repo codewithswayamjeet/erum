@@ -240,23 +240,23 @@ const Header = () => {
             </nav>
 
             {/* Right Icons */}
-            <div className="flex items-center gap-2 md:gap-3">
+            <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
               <CurrencyToggle />
-              <Link to="/search" className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
-                <Search className="h-5 w-5" />
+              <Link to="/search" className="p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Search">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
               
               {user && (
-                <Link to="/wishlist" className="relative p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
-                  <Heart className="h-5 w-5" />
+                <Link to="/wishlist" className="relative p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Wishlist">
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
                   {wishlistIds.length > 0 && (
                     <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">{wishlistIds.length}</span>
                   )}
                 </Link>
               )}
               
-              <Link to="/cart" className="relative p-2 text-foreground hover:text-primary transition-colors" aria-label="Shopping cart">
-                <ShoppingBag className="h-5 w-5" />
+              <Link to="/cart" className="relative p-1.5 sm:p-2 text-foreground hover:text-primary transition-colors" aria-label="Shopping cart">
+                <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
                 {cartItemCount + shopifyCartCount > 0 && (
                   <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{cartItemCount + shopifyCartCount}</span>
                 )}

@@ -85,9 +85,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Customer confirmation email
     const customerEmailHtml = `
       <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto; background: #fff;">
-        <div style="background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); padding: 40px 30px; text-align: center;">
-          <h1 style="color: #d4af37; margin: 0; font-size: 28px; font-weight: normal;">ERUM</h1>
-          <p style="color: #fff; margin: 10px 0 0; font-size: 12px; letter-spacing: 3px;">FINE JEWELRY</p>
+        <div style="background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); padding: 30px; text-align: center;">
+          <img src="https://erum.lovable.app/images/erum-logo-email.png" alt="ERUM - The Jewellery Studio" style="height: 50px; width: auto;" />
         </div>
         
         <div style="padding: 40px 30px;">
