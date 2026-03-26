@@ -82,6 +82,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     const userConfirmationHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #1a1a1a; padding: 20px; text-align: center; margin-bottom: 20px;">
+          <img src="https://erum.lovable.app/images/erum-logo-email.png" alt="ERUM" style="height: 45px; width: auto;" />
+        </div>
         <h2 style="color: #1a1a1a; border-bottom: 2px solid #d4af37; padding-bottom: 10px;">
           Thank You for Contacting ERUM Jewelry
         </h2>
