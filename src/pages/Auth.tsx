@@ -21,6 +21,9 @@ const Auth = () => {
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resetNewPassword, setResetNewPassword] = useState('');
+  const [resetConfirmPassword, setResetConfirmPassword] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [manualRedirectDone, setManualRedirectDone] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   const [captchaVerified, setCaptchaVerified] = useState(false);
@@ -75,15 +78,29 @@ const Auth = () => {
       setErrors({ email: emailResult.error.errors[0].message });
       return;
     }
+    if (resetNewPassword.length < 6) {
+      toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+      return;
+    }
+    if (resetNewPassword !== resetConfirmPassword) {
+      toast({ title: 'Error', description: 'Passwords do not match.', variant: 'destructive' });
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
+        body: JSON.stringify({ email, newPassword: resetNewPassword }),
       });
-      if (error) {
-        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      const data = await res.json();
+      if (!res.ok) {
+        toast({ title: 'Error', description: data.error || 'Failed to reset password.', variant: 'destructive' });
       } else {
-        toast({ title: 'Check your email', description: 'We sent you a password reset link.' });
+        toast({ title: 'Password Updated', description: 'Your password has been changed. You can now sign in.' });
+        setIsForgotPassword(false);
+        setResetNewPassword('');
+        setResetConfirmPassword('');
       }
     } catch {
       toast({ title: 'Error', description: 'Something went wrong.', variant: 'destructive' });
@@ -209,12 +226,45 @@ const Auth = () => {
                   {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium mb-2">New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type={showResetPassword ? 'text' : 'password'}
+                      value={resetNewPassword}
+                      onChange={(e) => setResetNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="w-full pl-12 pr-12 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                    <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                      {showResetPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Confirm New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type={showResetPassword ? 'text' : 'password'}
+                      value={resetConfirmPassword}
+                      onChange={(e) => setResetConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="w-full pl-12 pr-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                  {isSubmitting ? 'Updating...' : 'Change Password'}
                 </button>
               </form>
             ) : (
