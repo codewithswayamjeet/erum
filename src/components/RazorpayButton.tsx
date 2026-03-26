@@ -156,15 +156,7 @@ const RazorpayButton = ({
         </>
       ) : (
         <>
-          <svg viewBox="0 0 122 28" className="w-24 h-6 mr-2" fill="none">
-            <path d="M11.5 2L2 26h6.5L13 16.5h9L18.5 26H25L15.5 2h-4zm1 10l2.5-7h.5l2.5 7h-5.5z" fill="#fff"/>
-            <path d="M33 8h-4.5L24 26h5l1.5-6h5L37 26h5L38 8h-5zm-.5 8l1.5-5h.5l1 5h-3z" fill="#fff"/>
-            <path d="M45 8l-3 18h18l1-4H50l.5-3h9l.5-4h-9l.5-3h10l1-4H45z" fill="#fff"/>
-            <path d="M64 8l-3 18h5l1-6h3c4 0 7-2.5 7.5-7S75 8 71 8h-7zm5 8l.5-4h2c1.5 0 2.5.5 2 3s-2 1-3 1h-1.5z" fill="#fff"/>
-            <path d="M82 8l-1 4h4l-2.5 14h5L90 12h4l1-4H82z" fill="#3395FF"/>
-            <path d="M93 8l-3 18h5l3-18h-5z" fill="#3395FF"/>
-            <path d="M110 8h-8l-3 18h5l1-6h3c4 0 7-2.5 7.5-7S114 8 110 8zm-2 8l.5-4h2c1.5 0 2.5.5 2 3s-2 1-3 1h-1.5z" fill="#3395FF"/>
-          </svg>
+          <img src={razorpayLogo} alt="Razorpay" className="h-6 w-6 mr-2" />
           Pay with Razorpay
         </>
       )}
