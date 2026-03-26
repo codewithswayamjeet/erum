@@ -307,9 +307,12 @@ const Header = () => {
               <div className="flex flex-col min-h-full">
                 <div className="flex items-center justify-between p-6 border-b border-border">
                   <img src="/lovable-uploads/228cc8d9-9fb2-47a6-a48d-06ff14811609.png" alt="ERUM" className="h-8 w-auto object-contain" />
-                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Close menu">
-                    <X className="h-6 w-6" />
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <CurrencyToggle />
+                    <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-foreground hover:text-primary transition-colors" aria-label="Close menu">
+                      <X className="h-6 w-6" />
+                    </button>
+                  </div>
                 </div>
 
                 <nav className="flex-1 py-6 px-6">
