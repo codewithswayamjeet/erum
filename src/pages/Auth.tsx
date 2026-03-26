@@ -226,12 +226,45 @@ const Auth = () => {
                   {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium mb-2">New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type={showResetPassword ? 'text' : 'password'}
+                      value={resetNewPassword}
+                      onChange={(e) => setResetNewPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="w-full pl-12 pr-12 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                    <button type="button" onClick={() => setShowResetPassword(!showResetPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                      {showResetPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Confirm New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type={showResetPassword ? 'text' : 'password'}
+                      value={resetConfirmPassword}
+                      onChange={(e) => setResetConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="w-full pl-12 pr-4 py-3 bg-secondary border border-border focus:border-primary focus:outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="btn-luxury-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Reset Link'}
+                  {isSubmitting ? 'Updating...' : 'Change Password'}
                 </button>
               </form>
             ) : (
