@@ -78,15 +78,29 @@ const Auth = () => {
       setErrors({ email: emailResult.error.errors[0].message });
       return;
     }
+    if (resetNewPassword.length < 6) {
+      toast({ title: 'Error', description: 'Password must be at least 6 characters.', variant: 'destructive' });
+      return;
+    }
+    if (resetNewPassword !== resetConfirmPassword) {
+      toast({ title: 'Error', description: 'Passwords do not match.', variant: 'destructive' });
+      return;
+    }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
+        body: JSON.stringify({ email, newPassword: resetNewPassword }),
       });
-      if (error) {
-        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      const data = await res.json();
+      if (!res.ok) {
+        toast({ title: 'Error', description: data.error || 'Failed to reset password.', variant: 'destructive' });
       } else {
-        toast({ title: 'Check your email', description: 'We sent you a password reset link.' });
+        toast({ title: 'Password Updated', description: 'Your password has been changed. You can now sign in.' });
+        setIsForgotPassword(false);
+        setResetNewPassword('');
+        setResetConfirmPassword('');
       }
     } catch {
       toast({ title: 'Error', description: 'Something went wrong.', variant: 'destructive' });
