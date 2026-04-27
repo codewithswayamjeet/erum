@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import MathCaptcha from '@/components/MathCaptcha';
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [captchaVerified, setCaptchaVerified] = useState(false);
   const { toast } = useToast();
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -57,12 +55,9 @@ const NewsletterSection = () => {
                 onChange={e => setEmail(e.target.value)}
                 className="flex-1 px-6 py-4 bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
               />
-              <button type="submit" disabled={loading || !captchaVerified} className="btn-luxury-primary disabled:opacity-50">
+              <button type="submit" disabled={loading} className="btn-luxury-primary disabled:opacity-50">
                 {loading ? 'Subscribing...' : 'Subscribe'}
               </button>
-            </div>
-            <div className="flex justify-center">
-              <MathCaptcha onVerified={setCaptchaVerified} />
             </div>
           </form>
         </motion.div>

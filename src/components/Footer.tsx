@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Linkedin, MapPin, Phone, Mail } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, MapPin, Phone, Mail, Twitter } from 'lucide-react';
 import footerLogo from '@/assets/erum-logo-footer.png';
 
 const jewelryLinks = [
@@ -37,6 +37,7 @@ const Footer = () => {
               <a href="https://www.instagram.com/erumjewellery" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300" aria-label="Instagram"><Instagram className="h-4 w-4" /></a>
               <a href="https://www.facebook.com/erumjewellery/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300" aria-label="Facebook"><Facebook className="h-4 w-4" /></a>
               <a href="https://www.linkedin.com/company/erumjewellery" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300" aria-label="LinkedIn"><Linkedin className="h-4 w-4" /></a>
+              <a href="https://x.com/erumjewellery" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:text-primary hover:border-primary transition-colors duration-300" aria-label="X (Twitter)"><Twitter className="h-4 w-4" /></a>
             </div>
           </div>
 

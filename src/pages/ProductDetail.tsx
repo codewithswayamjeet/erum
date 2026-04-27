@@ -121,7 +121,7 @@ const ProductDetail = () => {
     { label: 'Karat', value: product.karat },
     { label: 'Stone', value: product.stone },
     { label: 'Weight', value: product.weight },
-    { label: 'Size', value: product.size },
+    { label: 'Size', value: availableSizes.length > 0 ? product.size : null },
   ].filter(d => d.value);
 
   return (
