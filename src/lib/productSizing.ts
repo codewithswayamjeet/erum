@@ -18,6 +18,9 @@ const normalizeProductText = (product: ProductSizingInput) =>
 export const getSizesForProduct = (product: ProductSizingInput): string[] => {
   const haystack = normalizeProductText(product);
 
+  // Earrings never show sizes
+  if (haystack.includes('earring') || haystack.includes('stud')) return [];
+
   if (haystack.includes('ring')) return RING_SIZES;
   if (haystack.includes('bracelet') || haystack.includes('bangle')) return BRACELET_SIZES;
   if (haystack.includes('necklace') || haystack.includes('chain') || haystack.includes('pendant')) return NECKLACE_SIZES;
